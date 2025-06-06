@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="styles/create.css"/>
+  <title>Timexa</title>
+</head>
+<body>
+  
+  
+  <nav class = "nav-bar">
+    <div id="nav-img">
+      <a href="index.html"><img src="styles/timexa.png"></a>
+    </div>
+    <ul>
+      <li><a href="create.html">CREATE</a></li>
+      <li><a href="plans.html">PLANS</a></li>
+      <li><a href="signup_login.html">SIGN UP/LOGIN</a></li>
+    </ul>
+  </nav>
+  
+  <main class ="hero">
+    <h1 id="hd"> Ready For Your New Timetable ?</h1>
+    <form id="form">
+       <label>Enter Your Timetable Name </label>
+      <input id="dd" type ="text" name="Timetable Name" placeholder="Timetable Name">
+      <br>
+      <label>Choose Your Exam </label>
+      <select name="exam" id="Exam">
+        <option value="jee">JEE</option>
+        <option value="neet">NEET</option>
+      </select>
+      <br>
+      <label>Any Optional Subject</label>
+      <input type ="radio" name="optional" value="0">0
+      <input type ="radio" name="optional" value="1">1
+      <input type ="radio" name="optional" value="2">2
+      <input type ="radio" name="optional" value="3">3
+      <div id="here"></div>
+      <br>
+      <label >Schooling ?</label>
+      <select name="schooling" id="schooling">
+         <option value="why" >Do You Go To School ?</option>
+        <option value="yes" >Yes</option>
+        <option value="no"  >No</option>
+        <option value="no">Vacations On!</option>
+      </select>
+      <br>
+      <div id="her"></div>
+      <input type="submit" value="Get Set Go">
+      
+   </form>
+  </main>
+</body>
+<script src= "scripts/create.js"></script> 
+</html>
+

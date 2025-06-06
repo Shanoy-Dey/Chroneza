@@ -1,0 +1,92 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.nav-bar{
+  background-color: darkblue;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:nowrap;
+  padding:20px;
+}
+
+  nav img{
+    width:180px;
+  }
+  
+  nav ul{
+    padding-top:12px;
+    list-style: none;
+    font-weight:400;
+  }
+
+  nav li{
+    display:inline;
+  }
+  
+  nav a{
+      padding:25px;
+      text-decoration:none;
+      color: white;
+      transition:500ms ease;
+    }
+
+nav a:hover{
+    font-size:18px;
+}
+
+main{
+  background-color:#faffca;
+  margin:50px;
+  border:5px solid darkblue;
+  h1{
+    padding:70px;
+  					padding-top:70px;
+    font-size:375%;
+    color:darkblue;
+  }
+}
+
+#form{
+  padding:70px;
+  #heading{
+    color:darkblue;
+    padding-top:40px;
+  }
+}
+
+
+
+label{
+  margin-right:50px;
+  color:darkblue;
+  font-weight:500;
+}
+
+input,select{
+  margin-bottom:20px;
+  margin-left:40px;
+  
+}
+
+input[type="submit"]{
+    padding:10px;
+  align-content:center;
+  }
+
+table{
+  border:5px solid darkblue;
+  text-align: center;
+  
+  td{
+    border:2px solid darkblue;
+    padding:10px;
+  }
+}
+
+
+
+
