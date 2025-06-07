@@ -66,15 +66,15 @@ label{
   font-weight:500;
 }
 
-input,select{
+input,select,button{
   margin-bottom:20px;
   margin-left:40px;
   
 }
 
-input[type="submit"]{
+button{
     padding:10px;
-  align-content:center;
+  align-items:center;
   }
 
 table{
@@ -84,9 +84,15 @@ table{
   td{
     border:2px solid darkblue;
     padding:10px;
+    cursor: pointer;
+  user-select: none;
   }
 }
 
-
+.selected {
+  color:white !important;
+  border: 2px solid white !important;
+  background-color: darkblue !important;
+}
 
 

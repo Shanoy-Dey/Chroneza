@@ -17,91 +17,127 @@ document.addEventListener('DOMContentLoaded', function () {
                     container.appendChild(ta);
                 }
             }
+            const input = document.getElementsByTagName("input");
+for (let i = 0; i < input.length; i++) {
+    input[i].setAttribute('required', 'true');
+}
+
         });
     });
 });
 
+const input = document.getElementsByTagName("input");
+for (let i = 0; i < input.length; i++) {
+    input[i].setAttribute('required', 'true');
+}
 
 const school=document.getElementById("schooling");
-school.addEventListener('change',Table);
- let s=1;
-function Table(){
-  const val=school.value;
-  if(!(val=="why")&& s>0){
-    s=s-1;
-    const go=document.getElementById("her");
-    const heading=document.createElement('h3');
-    heading.textContent='Select Your Study Hours:';
-    heading.setAttribute('id','heading');
-    go.appendChild(heading);
-    go.appendChild(document.createElement('br'));
+const submit = document.getElementById("sb");
+submit.addEventListener('click', function(event) {
+  event.preventDefault();
+   if (form.checkValidity()) {
+    Table();
+  } else {
+    form.reportValidity();
+  }
+});
 
-    const head1=document.createElement('h4');
-    head1.textContent='Morning Hours:';
-    head1.setAttribute('id','heading');
-    go.appendChild(head1);
+function createHourTable(label, isMorning) {
+    const go = document.getElementById("her");
+    const head = document.createElement('h4');
+    head.textContent = label;
+    head.setAttribute('id', 'heading');
+    go.appendChild(head);
 
-    const timet=document.createElement('table');
-    const row=document.createElement('tr');
-    timet.setAttribute('id','tab');
-    
-    for(let i=0;i<=11;i++)
-    {
-        const col=document.createElement('td');
-        if(i==0)
-          col.textContent='12 AM to 1 AM';
-        else
-          col.textContent=`${i} AM to ${i+1} AM`;
-        if(i==11)
-          col.textContent=`${i} AM to ${i+1} PM`;
+    const table = document.createElement('table');
+    const row = document.createElement('tr');
+    table.setAttribute('id', 'tab');
+
+    for (let i = 0; i <= 11; i++) {
+        const col = document.createElement('td');
+        if (isMorning) {
+            if (i == 0)
+                col.textContent = '12 AM to 1 AM';
+            else if (i == 11)
+                col.textContent = '11 AM to 12 PM';
+            else
+                col.textContent = `${i} AM to ${i + 1} AM`;
+        } else {
+            if (i == 0)
+                col.textContent = '12 PM to 1 PM';
+            else if (i == 11)
+                col.textContent = '11 PM to 12 AM';
+            else
+                col.textContent = `${i} PM to ${i + 1} PM`;
+        }
         row.appendChild(col);
     }
 
-    timet.appendChild(row);
-    go.appendChild(timet);
+    table.appendChild(row);
+    go.appendChild(table);
     go.appendChild(document.createElement('br'));
-
-
-    const head2=document.createElement('h4');
-    head2.textContent='Evening Hours:';
-    head2.setAttribute('id','heading');
-    go.appendChild(head2);
-
-    const timet2=document.createElement('table');
-    const row2=document.createElement('tr');
-    timet.setAttribute('id','tab');
-    
-    for(let i=0;i<=11;i++)
-    {
-        const col=document.createElement('td');
-        if(i==0)
-          col.textContent='12 PM to 1 PM';
-        else
-          col.textContent=`${i} PM to ${i+1} PM`;
-        if(i==11)
-          col.textContent=`${i} PM to ${i+1} AM`;
-        row2.appendChild(col);
-    }
-
-    timet2.appendChild(row2);
-    go.appendChild(timet2);
-    go.appendChild(document.createElement('br'));
-  }
 }
 
-const tables = document.querySelectorAll("td");
-let ticount=0;
-tables.forEach( table=> {
-    if (table) { 
-  table.addEventListener("click", function() {
-    if (table.style.borderColor === "yellow") {
-      table.style.borderColor = "";
-        table.style.backgroundColor="";
-        count--;
-    } else {
-        table.style.backgroundColor="pink";
-      table.style.borderColor = "yellow";
-      count++;
-    }});
-    }
-});
+ var count = 0;
+let s=1;
+function Table() {
+        const val = school.value;
+        const go = document.getElementById("her");
+        go.innerHTML = "";
+        const heading = document.createElement('h3');
+        heading.textContent = 'Select Your Study Hours:';
+        heading.setAttribute('id', 'heading');
+        go.appendChild(heading);
+        go.appendChild(document.createElement('br'));
+
+        createHourTable('Morning Hours:', true);
+        createHourTable('Evening Hours:', false);
+
+        const messageDiv = document.createElement('div');
+       messageDiv.setAttribute('id', 'hour-limit-message');
+       messageDiv.style.color = 'red';
+       messageDiv.style.fontSize = '0.95em';
+       messageDiv.style.margin = '8px 0';
+       go.appendChild(messageDiv);
+       
+        function handleCellClick(event) {
+            const clickedCell = event.target.closest('td');
+            if (clickedCell) {
+                if (clickedCell.classList.contains('selected')) {
+                  clickedCell.classList.remove('selected');
+                    count--;
+                } else {
+                    if (val == "yes" && count >= 12) {
+                    messageDiv.textContent = "You can only select a maximum of 12 hours because 6 hours School and 6 hours Sleep is Necessary !";
+                    return;
+                }
+                else if (val == "no" && count >= 18) {
+                    messageDiv.textContent = "You can only select a maximum of 18 hours because 6 hours Sleep is Necessary !";
+                    return;
+                } 
+                clickedCell.classList.add('selected');
+                count++;
+                }
+            }
+        }
+        
+        const tables = go.querySelectorAll('table');
+        tables.forEach(table => {
+            table.addEventListener('click', handleCellClick);
+        });
+
+        if(val=="yes"){
+            const H1=document.createElement('input');
+            H1.setAttribute('type', 'radio');
+            H1.setAttribute('name', 'holidays');
+            H1.setAttribute('value', '6');
+            H1.textContent = "Saturday";
+            go.appendChild(H1);            
+        }
+
+        const finalsubmit = document.createElement('button');
+        finalsubmit.textContent = 'Ready For Your New Timetable!';
+        finalsubmit.setAttribute('id', 'sb');
+        finalsubmit.setAttribute('type', 'submit');
+        go.appendChild(finalsubmit);
+  }
