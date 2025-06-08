@@ -4,6 +4,7 @@
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
   <link rel="stylesheet" href="styles/create.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
   <title>Timexa</title>
 </head>
 <body>
@@ -20,12 +21,12 @@
     </ul>
   </nav>
   
-  <main class ="hero">
-    <h1 id="hd"> Ready For Your New Timetable ?</h1>
+  <main>
+    <h1> Ready For Your New Timetable ?</h1>
     <form id="form">
        <div id="her">
        <label>Enter Your Timetable Name </label>
-      <input type ="text" name="Timetable Name" placeholder="Timetable Name">
+      <input type ="text" name="Timetable Name" placeholder="Timetable Name" id="tname">
       <br>
       <label>Choose Your Exam </label>
       <select name="exam" id="Exam">
@@ -33,13 +34,13 @@
         <option value="neet">NEET</option>
       </select>
       <br>
-      <label>Any Optional Subject</label>
+      <label id="rd">Any Optional Subject</label>
       <input type ="radio" name="optional" value="0">0
       <input type ="radio" name="optional" value="1">1
       <input type ="radio" name="optional" value="2">2
       <input type ="radio" name="optional" value="3">3
-      <div id="here"></div>
       <br>
+      <div id="here"></div>
       <label >Schooling ?</label>
       <select name="schooling" id="schooling">
         <option value="yes" >Yes</option>
@@ -54,5 +55,6 @@
   </main>
 </body>
 <script src= "scripts/create.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </html>
 

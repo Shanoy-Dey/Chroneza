@@ -2,11 +2,11 @@
   margin:0;
   padding:0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .nav-bar{
-  background-color:black;
+  background: linear-gradient(90deg, purple, #87cefa, white);
   display:flex;
   justify-content:space-between;
   flex-wrap:nowrap;
@@ -30,7 +30,8 @@
   nav a{
       padding:25px;
       text-decoration:none;
-      color: white;
+      color: purple;
+      font-weight:500;
       transition:500ms ease;
     }
 
@@ -38,20 +39,22 @@ nav a:hover{
     font-size:18px;
 }
 
+
 .hero{
-    background-color:#bcg9af;
+    background-color:#bc9aaf;
     padding:70px;
-  padding-top:10px;
+    padding-top:10px;
     font-size: xx-large;
-  img{
+}
+
+.hero img{
     width:100px;
     opacity:0;
     transition:500ms ease;
-  }
-  
-  img:hover{
+}
+
+.hero img:hover{
     opacity:1.0;
-  }
 }
 
 #stext{
