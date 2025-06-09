@@ -36,6 +36,7 @@ const submit = document.getElementById("sb");
 submit.addEventListener('click', function(event) {
   event.preventDefault();
    if (form.checkValidity()) {
+    os=[document.getElementById("os1"), document.getElementById("os2"), document.getElementById("os3")];
     Table();
   } else {
     form.reportValidity();
@@ -151,23 +152,26 @@ function Table() {
         });
     }
 
-const os=[document.getElementById("os1"), document.getElementById("os2"), document.getElementById("os3")];
+let os=[];
 const tname = document.getElementById("tname");
-const nexam= document.getElementById("Exam");
-function Processing(cc) 
+let nexam= document.getElementById("Exam");
+var timec=[];
+function Processing() 
 {
 
     atime = atime.filter(item => item !== undefined && item !== null && item !== "");
     atime = atime.map(Number);
     atime.sort((a, b) => a - b);
-    var timec=[];
     for(let i=0;i<atime.length;i++){
         const td = document.querySelector('td[value="' + atime[i] + '"]');
         if (td) {
             timec[i] = td.textContent;
         }    
     }
-    const ftable = document.createElement('table');
+    // Calculate n once here for NEET
+    n = Math.floor((timec.length - 1) / 3);
+
+    var ftable = document.createElement('table');
     ftable.setAttribute('id', 'ftable');
 
     const title=document.createElement('tr');
@@ -201,22 +205,49 @@ function Processing(cc)
 
     ftable.appendChild(headerRow);
 
-    for (let i = 0; i < timec.length; i++) {
-        const row = document.createElement('tr');
-        const timeCell = document.createElement('td');
-        timeCell.textContent = timec[i];
-        timeCell.style.border = '1px solid #000';
-        timeCell.style.padding = '4px';
-        row.appendChild(timeCell);
-
-        for (let j = 0; j < 7; j++) {
+    // Column-wise: for each day (column), create all rows (time slots)
+    for (let j = 0; j < 7; j++) { // 6 days/columns (Monday to Saturday)
+        
+        for (let i = 0; i < timec.length; i++) {
+             // time slots/rows
+            if(i==0 && j%2==0){
+                p=0;
+                c=0;
+                b=0;
+                z=0;
+                pcf=0;
+                mcq=0;
+            }
+            let row;
+            // Create row only for the first column
+            if (j === 0) {
+                row = document.createElement('tr');
+                row.setAttribute('id', `row${i + 1}`);
+                const timeCell = document.createElement('td');
+                timeCell.textContent = timec[i];
+                timeCell.style.border = '1px solid #000';
+                timeCell.style.padding = '4px';
+                row.appendChild(timeCell);
+                ftable.appendChild(row);
+            } else if(j<7) {
+                // Get the existing row
+                row = ftable.querySelector(`#row${i + 1}`);
+            }
+            // Create cell for this column and row
             const cell = document.createElement('td');
+            // id is now cell{column}_{row}
+            cell.setAttribute('id', `cell${j+1}_${i+1}`);
+            const ex=nexam.value;
+        if(ex=="neet")
+        {
+             NEET(cell,j+1,i+1);
+        }
             cell.style.border = '1px solid #000';
             cell.style.padding = '4px';
             row.appendChild(cell);
         }
-        ftable.appendChild(row);
     }
+    
 
     go.appendChild(ftable);
 
@@ -231,4 +262,118 @@ function Processing(cc)
     }, 500);
 }
 
+let n=0;let m=0;let t=0;
+function NEET(cell,o,x) {
+    
+    const subjects=[
+        "Physics","Physics Numericals",
+        "Chemistry","Chemistry Numericals",
+        "Botany","Ncert Reading",
+        "Zoology","Ncert Reading",
+        "Phy-Chem NEET MCQs ",
+        "Biology NEET MCQs "
+    ];
+    os= os.filter(item => item !== undefined && item !== null && item !== "");
+    // n is now calculated once in Processing()
+    
+    for(let i=o;i<=6;i++){  
+    n=Math.floor((timec.length-1)/3);
+    
+    for(let i=o;i<=6;i++){  
+       
+        for(let l=x;l<=n*3&&n*3<timec.length;l++){
+            console.log(`cell${l}_${i}`);
+            
+           
+            if(x==n*3){
+                cell.textContent="Mistake Analysis";
+                return;
+            }
+            if(p!=n){
+                if(p==n-1){
+                    cell.textContent=subjects[1];
+                    p++;
+                    return;
+                }
+                cell.textContent=subjects[0];
+                p++;
+                return;
+            }
+            if(c!=n){
+                if(c==n-1){
+                    cell.textContent=subjects[3];
+                    c++;
+                    return;
+                }
+                cell.textContent=subjects[2];
+                c++;
+                return;
+            }
+            if(b!=n){
+                if(b==n-1&& l!=1&&z==n-1){
+                    cell.textContent=subjects[5];
+                    b++;
+                    return;
+                }
+                if(b<n-1){
+                    cell.textContent=subjects[4];
+                    b++;
+                    return;
+                }
+            }
+            if(z!=n){
+                if(z==n-1){
+                    cell.textContent=subjects[7];
+                    z++;
+                    return;
+                }
+                cell.textContent=subjects[6];
+                z++;
+                return;
+            }
+            if(pcf!=n-1){
+                cell.textContent=subjects[8];
+                pcf++;
+                return;
+            }
 
+            if(mcq!=n-1){
+                cell.textContent=subjects[9];
+                mcq++;
+                return;
+            }
+        }
+        ol:for(let l=x;l<=timec.length&&x!=7;l++){
+            for(;m<os.length&&t==0;)
+                {
+                cell.textContent = os[m].value;
+                t=1;
+                m++;
+                if(m==os.length){
+                    m=0;
+                }
+                if(l==timec.length)
+                    t=0;
+                return;
+            }
+            if (l==timec.length-1) {
+            cell.textContent ="Phy-Chem NCERT Reading";
+            return;
+            }
+            cell.textContent = "Revision";
+            t=0;
+            return;
+
+        }
+        
+    
+    }
+}
+    if (o === 7&& x === 1) {
+        cell.setAttribute('rowspan', timec.length);
+        cell.textContent = "Mixed Tests , NEET Pyqs , Revision of Everything Studied + Focus on Weak Points ";
+        cell.style.textAlign = 'center';
+        cell.style.fontSize = '20px';
+        // No return here, continue with the rest of the function
+    }
+}

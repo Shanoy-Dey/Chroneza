@@ -138,5 +138,6 @@ table{
   border-radius: 0%;
   td,th{
     border-radius: 0%;
+    color:purple;
   }
 }
