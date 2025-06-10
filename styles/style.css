@@ -138,6 +138,7 @@ nav a:hover{
 
 .hero-button {
   animation: pulse 1.2s infinite;
+  cursor: pointer;
 }
 
 .section {
@@ -240,4 +241,69 @@ nav a:hover{
 .ename-subjects h4 {
   margin-right: 20px; /* Adjust as needed for spacing */
   font-size: 1.2rem;
+}
+
+.footer {
+  background: linear-gradient(90deg, purple, #87cefa, white);
+  color: black;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  font-weight:500;
+}
+.footer p {
+  margin: 0;
+  font-size: 14px;
+}
+.footer a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+.footer img {
+  width: 50px;
+  transition: transform 0.3s;
+}
+.footer img:hover {
+  transform: scale(1.1);
+}
+
+.footer-text{
+  display:flex;
+  justify-content: center;
+  p{
+    margin-top:15px;
+  }
+}
+.footer-links{
+  a{
+  padding: 0px 20px;
+  }
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: purple;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  img{
+    width: 30px;
+    height: 30px;
+  }
+}
+.scroll-to-top:hover {
+  transform: scale(1.1);
 }
