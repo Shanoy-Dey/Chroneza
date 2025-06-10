@@ -94,8 +94,58 @@ function Table() {
         go.appendChild(heading);
         go.appendChild(document.createElement('br'));
 
+        function isMobile() {
+            return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+// Override createHourTable for mobile users
+if (isMobile()) {
+    // Redefine createHourTable for mobile
+    createHourTable = function(label, isMorning) {
+        const head = document.createElement('h4');
+        head.textContent = label;
+        head.setAttribute('id', 'heading');
+        go.appendChild(head);
+
+        // Create two rows of 6 columns each
+        const table = document.createElement('table');
+        table.setAttribute('id', 'tab');
+
+        for (let rowIdx = 0; rowIdx < 2; rowIdx++) {
+            const row = document.createElement('tr');
+            for (let colIdx = 0; colIdx < 6; colIdx++) {
+                const i = rowIdx * 6 + colIdx;
+                const col = document.createElement('td');
+                if (isMorning) {
+                    if (i == 0)
+                        col.textContent = '12 AM to 1 AM';
+                    else if (i == 11)
+                        col.textContent = '11 AM to 12 PM';
+                    else
+                        col.textContent = `${i} AM to ${i + 1} AM`;
+                } else {
+                    if (i == 0)
+                        col.textContent = '12 PM to 1 PM';
+                    else if (i == 11)
+                        col.textContent = '11 PM to 12 AM';
+                    else
+                        col.textContent = `${i} PM to ${i + 1} PM`;
+                }
+                col.setAttribute('value', j);
+                j++;
+                row.appendChild(col);
+            }
+            table.appendChild(row);
+        }
+
+        go.appendChild(table);
+        go.appendChild(document.createElement('br'));
+    };
+}
+        else{
         createHourTable('Morning Hours:', true);
         createHourTable('Evening Hours:', false);
+        }
 
         const messageDiv = document.createElement('div');
        messageDiv.setAttribute('id', 'hour-limit-message');
@@ -386,51 +436,4 @@ function NEET(cell,o,x) {
     }
 }
 
-function isMobile() {
-    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
 
-// Override createHourTable for mobile users
-if (isMobile()) {
-    // Redefine createHourTable for mobile
-    createHourTable = function(label, isMorning) {
-        const head = document.createElement('h4');
-        head.textContent = label;
-        head.setAttribute('id', 'heading');
-        go.appendChild(head);
-
-        // Create two rows of 6 columns each
-        const table = document.createElement('table');
-        table.setAttribute('id', 'tab');
-
-        for (let rowIdx = 0; rowIdx < 2; rowIdx++) {
-            const row = document.createElement('tr');
-            for (let colIdx = 0; colIdx < 6; colIdx++) {
-                const i = rowIdx * 6 + colIdx;
-                const col = document.createElement('td');
-                if (isMorning) {
-                    if (i == 0)
-                        col.textContent = '12 AM to 1 AM';
-                    else if (i == 11)
-                        col.textContent = '11 AM to 12 PM';
-                    else
-                        col.textContent = `${i} AM to ${i + 1} AM`;
-                } else {
-                    if (i == 0)
-                        col.textContent = '12 PM to 1 PM';
-                    else if (i == 11)
-                        col.textContent = '11 PM to 12 AM';
-                    else
-                        col.textContent = `${i} PM to ${i + 1} PM`;
-                }
-                col.setAttribute('value', j);
-                j++;
-                row.appendChild(col);
-            }
-            table.appendChild(row);
-        }
-
-        go.appendChild(table);
-        go.appendChild(document.createElement('br'));
-    };
-}
