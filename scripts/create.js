@@ -109,6 +109,14 @@ function Table() {
                   clickedCell.classList.remove('selected');
                     count--;
                 } else {
+                    if(count<6){
+                        messageDiv.textContent =`You have to study at least 6 hours if you want to crack ${nexam.value.toUpperCase()} !`;
+                        finalsubmit.disabled = true;
+                    }
+                    else {
+                    messageDiv.textContent = "";
+                        finalsubmit.disabled = false;
+                    }
                     
                     if (val == "yes" && count >= 12) {
                     messageDiv.textContent = "You can only select a maximum of 12 hours because 6 hours School and 6 hours Sleep is Necessary !";
@@ -343,7 +351,7 @@ function NEET(cell,o,x) {
                 return;
             }
         }
-        ol:for(let l=x;l<=timec.length&&x!=7;l++){
+        ol:for(let l=x;l<=timec.length;l++){
             for(;m<os.length&&t==0;)
                 {
                 cell.textContent = os[m].value;
@@ -376,4 +384,53 @@ function NEET(cell,o,x) {
         cell.style.fontSize = '20px';
         // No return here, continue with the rest of the function
     }
+}
+
+function isMobile() {
+    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Override createHourTable for mobile users
+if (isMobile()) {
+    // Redefine createHourTable for mobile
+    createHourTable = function(label, isMorning) {
+        const head = document.createElement('h4');
+        head.textContent = label;
+        head.setAttribute('id', 'heading');
+        go.appendChild(head);
+
+        // Create two rows of 6 columns each
+        const table = document.createElement('table');
+        table.setAttribute('id', 'tab');
+
+        for (let rowIdx = 0; rowIdx < 2; rowIdx++) {
+            const row = document.createElement('tr');
+            for (let colIdx = 0; colIdx < 6; colIdx++) {
+                const i = rowIdx * 6 + colIdx;
+                const col = document.createElement('td');
+                if (isMorning) {
+                    if (i == 0)
+                        col.textContent = '12 AM to 1 AM';
+                    else if (i == 11)
+                        col.textContent = '11 AM to 12 PM';
+                    else
+                        col.textContent = `${i} AM to ${i + 1} AM`;
+                } else {
+                    if (i == 0)
+                        col.textContent = '12 PM to 1 PM';
+                    else if (i == 11)
+                        col.textContent = '11 PM to 12 AM';
+                    else
+                        col.textContent = `${i} PM to ${i + 1} PM`;
+                }
+                col.setAttribute('value', j);
+                j++;
+                row.appendChild(col);
+            }
+            table.appendChild(row);
+        }
+
+        go.appendChild(table);
+        go.appendChild(document.createElement('br'));
+    };
 }
