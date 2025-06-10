@@ -1,3 +1,16 @@
+function isMobile() {
+    // Returns true for mobile/tablet, false for laptop/desktop
+    const ua = navigator.userAgent;
+    const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const isLaptopOrDesktop = /Windows NT|Macintosh|Linux x86_64|X11|CrOS/i.test(ua);
+    console.log("User Agent: " + ua);
+    console.log("Is Mobile Device: " + isMobileDevice);
+    console.log("Is Laptop or Desktop: " + isLaptopOrDesktop);
+    return isLaptopOrDesktop;
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const radioButtons = document.querySelectorAll('input[name="optional"]');
     const container = document.getElementById("here");
@@ -81,6 +94,46 @@ function createHourTable(label, isMorning) {
     go.appendChild(table);
     go.appendChild(document.createElement('br'));
 }
+
+function createTable(label, isMorning) {
+    const head = document.createElement('h4');
+    head.textContent = label;
+    head.setAttribute('id', 'heading');
+    go.appendChild(head);
+
+    const table = document.createElement('table');
+    table.setAttribute('id', 'tab');
+    for(let i=0;i<2;i++){
+    const row = document.createElement('tr');
+    for (let k=0; k <= 5; k++,j++) {
+        const col = document.createElement('td');
+        if (isMorning) {
+            if (k == 0&&i==0)
+                col.textContent = '12 AM to 1 AM';
+            else if (j == 12)
+                col.textContent = '11 AM to 12 PM';
+            else
+                col.textContent = `${j-1} AM to ${j} AM`;
+        } else {
+            if (k == 0&&i==0)
+                col.textContent = '12 PM to 1 PM';
+            else if (j == 24)
+                col.textContent = '11 PM to 12 AM';
+            else
+                col.textContent = `${j-13} PM to ${j-12} PM`;
+        }
+        col.setAttribute('value',j);
+        row.appendChild(col);
+    }
+
+
+    table.appendChild(row);
+}
+    go.appendChild(table);
+    go.appendChild(document.createElement('br'));
+}
+
+
 var atime=[];
  var count = 0;
 let s=0;
@@ -94,53 +147,12 @@ function Table() {
         go.appendChild(heading);
         go.appendChild(document.createElement('br'));
 
-        function isMobile() {
-            return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
+        
 // Override createHourTable for mobile users
 if (isMobile()) {
     // Redefine createHourTable for mobile
-    createHourTable = function(label, isMorning) {
-        const head = document.createElement('h4');
-        head.textContent = label;
-        head.setAttribute('id', 'heading');
-        go.appendChild(head);
-
-        // Create two rows of 6 columns each
-        const table = document.createElement('table');
-        table.setAttribute('id', 'tab');
-
-        for (let rowIdx = 0; rowIdx < 2; rowIdx++) {
-            const row = document.createElement('tr');
-            for (let colIdx = 0; colIdx < 6; colIdx++) {
-                const i = rowIdx * 6 + colIdx;
-                const col = document.createElement('td');
-                if (isMorning) {
-                    if (i == 0)
-                        col.textContent = '12 AM to 1 AM';
-                    else if (i == 11)
-                        col.textContent = '11 AM to 12 PM';
-                    else
-                        col.textContent = `${i} AM to ${i + 1} AM`;
-                } else {
-                    if (i == 0)
-                        col.textContent = '12 PM to 1 PM';
-                    else if (i == 11)
-                        col.textContent = '11 PM to 12 AM';
-                    else
-                        col.textContent = `${i} PM to ${i + 1} PM`;
-                }
-                col.setAttribute('value', j);
-                j++;
-                row.appendChild(col);
-            }
-            table.appendChild(row);
-        }
-
-        go.appendChild(table);
-        go.appendChild(document.createElement('br'));
-    };
+        createTable('Morning Hours:', true);
+        createTable('Evening Hours:', false);
 }
         else{
         createHourTable('Morning Hours:', true);
