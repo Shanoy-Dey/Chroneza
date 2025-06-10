@@ -65,11 +65,3 @@ nav a:hover{
 #stext:hover{
   color:black;
 }
-
-@media(max-width:300px){
-  nav img{
-    width:180px;
-  }
-  
-  
-}
