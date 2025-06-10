@@ -1,3 +1,4 @@
+let isM=true;
 function isMobile() {
     // Returns true for mobile/tablet, false for laptop/desktop
     const ua = navigator.userAgent;
@@ -6,8 +7,69 @@ function isMobile() {
     console.log("User Agent: " + ua);
     console.log("Is Mobile Device: " + isMobileDevice);
     console.log("Is Laptop or Desktop: " + isLaptopOrDesktop);
-    return isLaptopOrDesktop;
+    isM = isMobileDevice;
+    const nav = document.querySelector('nav');
+    if (isM && nav) {
+        // Remove all li elements in nav
+        const navList = nav.querySelector('ul');
+        let links = [];
+        if (navList) {
+            links = Array.from(navList.querySelectorAll('li')).map(li => li.cloneNode(true));
+            navList.remove();
+        }
+        // Create dropdown button
+        const dropdownBtn = document.createElement('button');
+        dropdownBtn.setAttribute('id', 'nav-dropdown-btn');
+        dropdownBtn.style.background = 'none';
+        dropdownBtn.style.border = 'none';
+        dropdownBtn.style.cursor = 'pointer';
+        dropdownBtn.style.padding = '8px';
+        dropdownBtn.style.display = 'flex';
+        dropdownBtn.style.alignItems = 'center';
+
+        const icon = document.createElement('img');
+        icon.src = 'dropdown.png';
+        icon.alt = 'Menu';
+        icon.style.width = '32px';
+        icon.style.height = '32px';
+        dropdownBtn.appendChild(icon);
+
+        nav.appendChild(dropdownBtn);
+
+        // Create dropdown menu (hidden by default)
+        const dropdownMenu = document.createElement('ul');
+        dropdownMenu.setAttribute('id', 'nav-dropdown-menu');
+        dropdownMenu.style.display = 'none';
+        dropdownMenu.style.position = 'absolute';
+        dropdownMenu.style.background = '#fff';
+        dropdownMenu.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+        dropdownMenu.style.listStyle = 'none';
+        dropdownMenu.style.margin = '0';
+        dropdownMenu.style.padding = '8px 0';
+        dropdownMenu.style.right = '8px';
+        dropdownMenu.style.top = '48px';
+        dropdownMenu.style.zIndex = '1000';
+
+        links.forEach(li => {
+            li.style.padding = '8px 16px';
+            li.style.cursor = 'pointer';
+            dropdownMenu.appendChild(li);
+        });
+
+        nav.appendChild(dropdownMenu);
+
+        dropdownBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function () {
+            dropdownMenu.style.display = 'none';
+        });
+    }
 }
+isMobile();
 
 
 

@@ -161,3 +161,59 @@ table{
     white-space: normal;
   }
 }
+
+@media (max-width: 500px) {
+  main {
+    margin: 10px;
+    border-radius: 15px;
+    padding: 10px;
+  }
+
+  #form {
+    padding: 20px 5px;
+  }
+
+  h1, #heading {
+    font-size: 150%;
+    padding: 20px 0 10px 0;
+  }
+
+  label {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+
+  input, select {
+    margin-left: 0;
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  #Exam, #schooling {
+    margin-left: 0;
+  }
+
+  #rd {
+    margin-right: 0;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  table, #ftable {
+    font-size: 12px;
+    width: 100%;
+    margin: 0;
+    border-radius: 5px;
+  }
+
+  table td, table th, #ftable td, #ftable th {
+    padding: 4px;
+    font-size: 12px;
+    border-radius: 0;
+  }
+}
