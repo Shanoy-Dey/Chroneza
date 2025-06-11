@@ -4,10 +4,12 @@
     justify-content: center;
     min-height: 70vh;
     gap: 60px;
-    background-image: url("styles/study-time.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background: url("form.png") center center no-repeat;
+    background-size: cover;
+    
 }
 
 .lmain-img {
@@ -15,6 +17,7 @@
 }
 
 .lmain-form {
+    
     flex: 1;
     min-width: 340px;
     max-width: 400px;
@@ -24,7 +27,7 @@
 }
 
 .login-form {
-    background: #f8f0fa;
+    
     padding: 32px 28px;
     border-radius: 16px;
     -webkit-box-shadow: 0 2px 12px rgba(120,0,120,0.08);
@@ -34,4 +37,97 @@
     flex-direction: column;
     gap: 18px;
     border: 2px solid purple; /* Add purple border */
+}
+/* ...existing code... */
+
+.login-logo {
+    width: 64px;
+    height: 64px;
+    display: block;
+    margin: 0 auto 10px auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(120,0,120,0.10);
+}
+
+.login-heading {
+    text-align: center;
+    color: #8d1a8d;
+    font-size: 2rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.login-divider {
+    border: none;
+    border-top: 2px solid #c9a4e6;
+    margin: 0 0 18px 0;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-form label {
+    color: #751646;
+    font-weight: 500;
+    margin-bottom: 2px;
+    font-size:110%;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    padding: 10px 12px;
+    border: 1.5px solid #c9a4e6;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    transition: border 0.2s;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border: 1.5px solid #8d1a8d;
+    outline: none;
+}
+
+.login-btn {
+    background: linear-gradient(90deg, #c9a4e6 0%, #e94e77 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(120,0,120,0.08);
+    transition: background 0.2s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(90deg, #e94e77 0%, #c9a4e6 100%);
+}
+
+.login-signup-link {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.98rem;
+    padding-bottom: 35px;
+}
+
+.login-signup-link a {
+    color: #8d1a8d;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .lmain-form {
+        min-width: 90vw;
+        max-width: 98vw;
+        padding: 0 8px;
+    }
+    .login-form {
+        padding: 18px 8px;
+    }
 }
