@@ -140,8 +140,8 @@ var atime=[];
  var count = 0;
 let s=0;
 function Table() {
+        window.scrollTo({ top: 450, behavior: 'smooth' });
         const val = school.value;
-        const go = document.getElementById("her");
         go.innerHTML = "";
         const heading = document.createElement('h3');
         heading.textContent = 'Select Your Study Hours:';
@@ -155,7 +155,7 @@ if (isM) {
     // Redefine createHourTable for mobile
         createTable('Morning Hours:', true);
         createTable('Evening Hours:', false);
-}
+        }
         else{
         createHourTable('Morning Hours:', true);
         createHourTable('Evening Hours:', false);
@@ -230,7 +230,7 @@ let nexam= document.getElementById("Exam");
 var timec=[];
 function Processing() 
 {
-
+    window.scrollBy({ top: 450, behavior: 'smooth' });
     atime = atime.filter(item => item !== undefined && item !== null && item !== "");
     atime = atime.map(Number);
     atime.sort((a, b) => a - b);
@@ -242,7 +242,12 @@ function Processing()
     }
     // Calculate n once here for NEET
     n = Math.floor((timec.length - 1) / 3);
-
+    const hr=document.createElement("h3");
+    hr.setAttribute("id","heading");
+    hr.textContent="Any Last Changes ?";
+    hr.style.display = "block";
+    hr.style.textAlign = "center";
+    go.appendChild(hr);
     var ftable = document.createElement('table');
     ftable.setAttribute('id', 'ftable');
 
@@ -323,15 +328,27 @@ function Processing()
 
     go.appendChild(ftable);
 
-    setTimeout(() => {
-        html2canvas(ftable).then(canvas => {
-            // Create a link to download the image
-            const link = document.createElement('a');
-            link.download = 'timetable.jpg';
-            link.href = canvas.toDataURL('image/jpeg', 1.0);
-            link.click();
-        });
-    }, 500);
+    const editableCells = ftable.querySelectorAll('td');
+editableCells.forEach(td => {
+    td.setAttribute('contenteditable', 'true');
+});
+    const Gen=document.createElement("button");
+
+    Gen.textContent = "Generate Timetable Image";
+    Gen.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        setTimeout(() => {
+            html2canvas(ftable).then(canvas => {
+                // Create a link to download the image
+                const link = document.createElement('a');
+                link.download = 'timetable.jpg';
+                link.href = canvas.toDataURL('image/jpeg', 1.0);
+                link.click();
+            });
+        }, 500);
+    });
+    go.appendChild(Gen);
 }
 
 let n=0;let m=0;let t=0;

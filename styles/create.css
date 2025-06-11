@@ -143,6 +143,9 @@ table{
     border-radius: 0%;
     color:purple;
   }
+  td{
+    cursor:text;
+  }
 }
 
 @media (max-width: 900px) {
