@@ -287,14 +287,7 @@ function Processing()
         
         for (let i = 0; i < timec.length; i++) {
              // time slots/rows
-            if(i==0 && j%2==0){
-                p=0;
-                c=0;
-                b=0;
-                z=0;
-                pcf=0;
-                mcq=0;
-            }
+            
             let row;
             // Create row only for the first column
             if (j === 0) {
@@ -315,9 +308,8 @@ function Processing()
             // id is now cell{column}_{row}
             cell.setAttribute('id', `cell${j+1}_${i+1}`);
             const ex=nexam.value;
-        if(ex=="neet")
-        {
-             NEET(cell,j+1,i+1);
+        if (typeof window[ex] === "function") {
+            window[ex](cell, j + 1, i + 1);
         }
             cell.style.border = '1px solid #000';
             cell.style.padding = '4px';
@@ -351,8 +343,9 @@ editableCells.forEach(td => {
     go.appendChild(Gen);
 }
 
+let p=0,c=0,b=0,z=0,pcf=0,mcq=0;
 let n=0;let m=0;let t=0;
-function NEET(cell,o,x) {
+function neet(cell,o,x) {
     
     const subjects=[
         "Physics","Physics Numericals",
@@ -364,14 +357,20 @@ function NEET(cell,o,x) {
     ];
     os= os.filter(item => item !== undefined && item !== null && item !== "");
     // n is now calculated once in Processing()
-    
+    if(x==1 && o%2==1){
+        p=0;
+        c=0;
+        b=0;
+        z=0;
+        pcf=0;
+        mcq=0;
+    }
     for(let i=o;i<=6;i++){  
     n=Math.floor((timec.length-1)/3);
     
     for(let i=o;i<=6;i++){  
        
         for(let l=x;l<=n*3&&n*3<timec.length;l++){
-            console.log(`cell${l}_${i}`);
             
            
             if(x==n*3){
@@ -461,6 +460,105 @@ function NEET(cell,o,x) {
     if (o === 7&& x === 1) {
         cell.setAttribute('rowspan', timec.length);
         cell.textContent = "Mixed Tests , NEET Pyqs , Revision of Everything Studied + Focus on Weak Points ";
+        cell.style.textAlign = 'center';
+        cell.style.fontSize = '20px';
+        // No return here, continue with the rest of the function
+    }
+}
+
+let mt=0,pyq=0
+function jee(cell,o,x) {
+    
+    const subjects=[
+        "Physics","Physics Numericals",
+        "Chemistry","Chemistry Numericals",
+        "Mathematics","Mathematics Questions",
+        "JEE Main PYQs"
+    ];
+    os= os.filter(item => item !== undefined && item !== null && item !== "");
+    // n is now calculated once in Processing()
+    if(x==1){
+        p=0;
+        c=0;
+        mt=0;
+        pyq=0;
+    }
+    for(let i=o;i<=6;i++){  
+    n=Math.floor((timec.length-1)/3);
+    
+    for(let i=o;i<=6;i++){  
+       
+        for(let l=x;l<=n*3&&n*3<timec.length;l++){            
+           
+
+            if(p!=n){
+                if(p==n-1){
+                    cell.textContent=subjects[1];
+                    p++;
+                    return;
+                }
+                cell.textContent=subjects[0];
+                p++;
+                return;
+            }
+            if(c!=n){
+                if(c==n-1){
+                    cell.textContent=subjects[3];
+                    c++;
+                    return;
+                }
+                cell.textContent=subjects[2];
+                c++;
+                return;
+            }
+            if(mt!=n){
+                if(mt==n-1){
+                    cell.textContent=subjects[5];
+                    mt++;
+                    return;
+                }
+                if(mt<n-1){
+                    cell.textContent=subjects[4];
+                    mt++;
+                    return;
+                }
+            }
+
+            if(x==n*3){
+                cell.textContent=subjects[6];
+                return;
+            }
+        }
+        ol:for(let l=x;l<=timec.length;l++){
+            for(;m<os.length&&t==0;)
+                {
+                cell.textContent = os[m].value;
+                t=1;
+                m++;
+                if(m==os.length){
+                    m=0;
+                }
+                if(l==timec.length)
+                    t=0;
+                return;
+            }
+            if(l==timec.length-1){
+                cell.textContent="Notes Review";
+                return;
+            }
+            if(o%2==0)
+            cell.textContent = "Mistake Analysis";
+            else
+            cell.textContent=subjects[6];
+            t=0;
+            return;
+
+        }
+    }
+}
+    if (o === 7&& x === 1) {
+        cell.setAttribute('rowspan', timec.length);
+        cell.textContent = "Mixed Tests , JEE Advanced Pyqs , Revision of Written Notes + Focus on Weak Points ";
         cell.style.textAlign = 'center';
         cell.style.fontSize = '20px';
         // No return here, continue with the rest of the function
