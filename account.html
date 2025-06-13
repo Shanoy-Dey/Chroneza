@@ -1,0 +1,15 @@
+<div id="account"></div>
+
+<script>
+const userId = localStorage.getItem('userId');
+if (!userId) {
+  document.getElementById('account').innerText = "Please login.";
+} else {
+  fetch(`/.netlify/functions/account?id=${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('account').innerText =
+        `Welcome ${data.username} (${data.email})`;
+    });
+}
+</script>
