@@ -1,15 +1,75 @@
-<div id="account"></div>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timexa-Login</title>
+    <link rel="stylesheet" href="styles/user.css"/>
+    <link rel="stylesheet" href="styles/style.css"/>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div id="nav-img">
+            <a href="index.html"><img src="styles/timexa.png" alt="Timexa Logo"></a>
+        </div>
+        <ul>
+            <li><a href="create.html">CREATE</a></li>
+            <li><a href="plans.html">PLANS</a></li>
+            <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+        </ul>
+    </nav>
+    <main class="lmain">
+        <form class="login-form">
+        <div id="account"></div>
+        </form>
+    </main>
+    <footer class="footer">
+    <p>&copy; 2025 Timexa. All rights reserved.</p>
+    <div class="footer-text">
+    <p>Follow us on :</p>
+    <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
+    </div>
+    <p>For Queries,Email Us At : timexa.timetables@gmail.com</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="create.html">Create</a>
+    <a href="plans.html">Plans</a>
+    <a id="nav-account-link" href="login.html">Sign Up/Login</a>
+  </div>
+</footer>
+</body>
 <script>
 const userId = localStorage.getItem('userId');
 if (!userId) {
   document.getElementById('account').innerText = "Please login.";
 } else {
   fetch(`/.netlify/functions/account?id=${userId}`)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
     .then(data => {
-      document.getElementById('account').innerText =
-        `Welcome ${data.username} (${data.email})`;
+      if (data && data.username && data.email) {
+        document.getElementById('account').innerHTML =
+          `<label>Username :</label>
+          ${data.username}<br>
+          <label>Email :</label>
+          ${data.email}<br>
+          <button id="signout-btn" type="button">Sign Out</button>`;
+
+        document.getElementById('signout-btn').onclick = function() {
+          localStorage.removeItem('userId');
+          window.location.href = 'login.html';
+        };
+      } else {
+        document.getElementById('account').innerText = "Account data not found.";
+      }
+    })
+    .catch(error => {
+      document.getElementById('account').innerText = "Error loading account information.";
+      console.error(error);
     });
 }
 </script>
+<script src="scripts/navbar.js"></script>
+</html>
