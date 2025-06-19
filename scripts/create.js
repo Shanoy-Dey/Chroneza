@@ -228,8 +228,10 @@ let os=[];
 const tname = document.getElementById("tname");
 let nexam= document.getElementById("Exam");
 var timec=[];
+let xy=100;
 function Processing() 
 {
+    const aim=["AIIMS DELHI","IIT DELHI"];
     window.scrollBy({ top: 450, behavior: 'smooth' });
     atime = atime.filter(item => item !== undefined && item !== null && item !== "");
     atime = atime.map(Number);
@@ -316,8 +318,15 @@ function Processing()
             row.appendChild(cell);
         }
     }
-    
-
+    const row = document.createElement("tr");
+    const td = document.createElement("td");
+    td.setAttribute("colspan", "8");
+    td.textContent = "AIM -for- " + aim[xy];
+    td.style.textAlign = "center";
+    td.style.fontSize="24px";
+    td.style.fontWeight = '500';
+    row.appendChild(td);
+    ftable.appendChild(row);
     go.appendChild(ftable);
 
     const editableCells = ftable.querySelectorAll('td');
@@ -331,7 +340,7 @@ editableCells.forEach(td => {
         event.preventDefault();
 
         setTimeout(() => {
-            html2canvas(ftable).then(canvas => {
+            html2canvas(ftable,{scale:3}).then(canvas => {
                 // Create a link to download the image
                 const link = document.createElement('a');
                 link.download = 'timetable.jpg';
@@ -345,8 +354,9 @@ editableCells.forEach(td => {
 
 let p=0,c=0,b=0,z=0,pcf=0,mcq=0;
 let n=0;let m=0;let t=0;
+
 function neet(cell,o,x) {
-    
+    xy=0;
     const subjects=[
         "Physics","Physics Numericals",
         "Chemistry","Chemistry Numericals",
@@ -462,13 +472,14 @@ function neet(cell,o,x) {
         cell.textContent = "Mixed Tests , NEET Pyqs , Revision of Everything Studied + Focus on Weak Points ";
         cell.style.textAlign = 'center';
         cell.style.fontSize = '20px';
+        cell.style.width = '120px';
         // No return here, continue with the rest of the function
     }
 }
 
 let mt=0,pyq=0
 function jee(cell,o,x) {
-    
+    xy=1;
     const subjects=[
         "Physics","Physics Numericals",
         "Chemistry","Chemistry Numericals",
@@ -561,6 +572,7 @@ function jee(cell,o,x) {
         cell.textContent = "Mixed Tests , JEE Advanced Pyqs , Revision of Written Notes + Focus on Weak Points ";
         cell.style.textAlign = 'center';
         cell.style.fontSize = '20px';
+        cell.style.width = '120px';
         // No return here, continue with the rest of the function
     }
 }

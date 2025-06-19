@@ -40,6 +40,10 @@
       transition:500ms ease;
     }
 
+#nav-account-link{
+  margin-left:-12px;
+}
+
 nav a:hover{
     font-size:18px;
 }
@@ -308,4 +312,181 @@ nav a:hover{
 }
 .scroll-to-top:hover {
   transform: scale(1.1);
+}
+
+#timexa-loader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+  background: transparent;
+  overflow: hidden;
+}
+
+.panel {
+  position: absolute;
+  background: linear-gradient(180deg, purple 0%, #aa39df 50%, rgb(18, 204, 250) 100%);
+  z-index: 2;
+  transition: all 1.2s cubic-bezier(.77,0,.18,1);
+}
+
+.panel-top {
+  left: 0; top: 0;
+  width: 100vw; height: 50vh;
+  border-bottom: 5px solid black;
+}
+
+.panel-bottom {
+  left: 0;
+  bottom: 0;
+  width: 100vw; height: 50vh;
+  border-top: 5px solid black;
+}
+
+.panel-left {
+  left: 0; top: 0;
+  width: 50vw; height: 100vh;
+  border-right: 5px solid black;
+}
+
+.panel-right {
+  right: 0; top: 0;
+  width: 50vw; height: 100vh;
+  border-left: 5px solid black;
+}
+
+.center-box {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 5px solid #000;
+  padding: 16px 38px;
+  z-index: 3;
+  border-radius: 6px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  transition: filter 0.8s cubic-bezier(.77,0,.18,1);
+}
+
+#timexa-text {
+  font-size: 2.5rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #222;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+body.loading {
+  overflow: hidden;
+}
+
+@media (max-width: 300px) {
+  .nav-bar {
+    flex-direction: column;
+    align-items:center;
+    padding: 10px;
+  }
+  nav img {
+    width: 100px;
+  }
+  nav ul {
+    padding-top: 2px;
+  }
+  nav a {
+    padding: 4px 2px;
+    font-size: 9px;
+  }
+
+  nav a:hover{
+    font-size:12px;
+  }
+
+  #nav-account-link{
+    margin-left:0px;
+  }
+  .main {
+    padding: 4px 2px;
+    font-size: 0.8rem;
+  }
+  .hero {
+    padding-top: 10px;
+    font-size: 0.8rem;
+  }
+  .hero-text {
+    margin-left: 2px;
+    font-size: 0.8rem;
+    gap: 2px;
+  }
+  #main-img {
+    width: 60px;
+    margin-top: -8px;
+  }
+  #subtext, #subtext2 {
+    margin-left: 2px;
+    margin-top: -10px;
+    padding-bottom: 10px;
+    font-size: 0.7rem;
+  }
+  .hero-button {
+    padding: 3px;
+    font-size: 0.7rem;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+  .section {
+    padding: 4px;
+    margin: 4px 0;
+  }
+  .section h2 {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+  }
+  .section p {
+    font-size: 0.7rem;
+  }
+  .section-table th, .section-table td {
+    padding: 1px;
+    font-size: 0.6rem;
+  }
+  .exams h2, .exams h3 {
+    font-size: 0.8rem;
+  }
+  .ename {
+    padding: 2px 2px;
+    border-radius: 4px;
+    margin: 4px 0;
+  }
+  .ename-text {
+    font-size: 0.7rem;
+  }
+  .exams img {
+    width: 24px;
+  }
+  .ename-subjects h4 {
+    margin-right: 2px;
+    font-size: 0.7rem;
+  }
+  .footer {
+    padding: 4px;
+    font-size: 0.6rem;
+  }
+  .footer img {
+    width: 12px;
+  }
+  .footer-links a {
+    padding: 0 2px;
+    font-size: 0.6rem;
+  }
+  .scroll-to-top {
+    width: 16px;
+    height: 16px;
+    bottom: 4px;
+    right: 4px;
+  }
+  .scroll-to-top img {
+    width: 8px;
+    height: 8px;
+  }
 }

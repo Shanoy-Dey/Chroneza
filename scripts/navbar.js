@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const navAccount = document.getElementById('nav-account-link');
   if (navAccount) {
     if (userId) {
-      navAccount.innerHTML = '<a id="nav-account-link" href="account.html">Account</a>';
+      navAccount.innerHTML = '<a id="nav-account-link" href="account.html">ACCOUNT</a>';
     } else {
       navAccount.innerHTML = '<a id="nav-account-link" href="login.html">SIGN UP/LOGIN</a>';
     }

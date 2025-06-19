@@ -129,3 +129,21 @@
         padding: 18px 8px;
     }
 }
+
+#signout-btn{
+    background: linear-gradient(90deg, #c9a4e6 0%, #e94e77 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(120,0,120,0.08);
+    transition: background 0.2s;
+}
+
+#signout-btn:hover {
+    background: linear-gradient(90deg, #e94e77 0%, #c9a4e6 100%);
+}
