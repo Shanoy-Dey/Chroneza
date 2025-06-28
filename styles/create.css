@@ -109,6 +109,7 @@ table{
   margin-right: auto;
   
   td,th{
+    font-size: 9px;
     border:2px solid purple;
     border-radius: 10px;
     padding:10px;
@@ -213,10 +214,14 @@ table{
     margin: 0;
     border-radius: 5px;
   }
-
+  #ftable{
+    padding:0;
+    width:20%;
+    height:20%;
+  }
   table td, table th, #ftable td, #ftable th {
     padding: 4px;
-    font-size: 12px;
+    font-size: 9px;
     border-radius: 0;
   }
 }

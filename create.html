@@ -5,6 +5,8 @@
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
   <link rel="stylesheet" href="styles/create.css"/>
   <link rel="stylesheet" href="styles/style.css"/>
+  <link rel="stylesheet" href="styles/mobile.css" media="only screen and (max-width: 360px)">
+
   <title>Timexa-Create</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3263604566953868"
      crossorigin="anonymous"></script>
@@ -16,7 +18,13 @@
     <div id="nav-img">
       <a href="index.html"><img src="styles/timexa.png"></a>
     </div>
-    <ul>
+    <ul id="nav-content">
+      <li><a href="create.html">CREATE</a></li>
+      <li><a href="plans.html">PLANS</a></li>
+      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+    </ul>
+    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
+    <ul id="dropdown-menu">
       <li><a href="create.html">CREATE</a></li>
       <li><a href="plans.html">PLANS</a></li>
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
@@ -81,5 +89,7 @@
 <script src= "scripts/create.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="scripts/navbar.js"></script>
+<script src="scripts/script.js"></script>
+
 </html>
 

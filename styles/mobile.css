@@ -1,0 +1,111 @@
+.nav-bar {
+    padding: 15px 0px;
+}
+
+.nav-bar img {
+    width: 140px;
+}
+
+.nav-bar a {
+    padding: 0px;
+}
+
+.nav-bar #navimg2 {
+    cursor: pointer;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    padding-right: 10px;
+    padding-top: 10px;
+    filter: invert(17%) sepia(97%) saturate(7472%) hue-rotate(271deg) brightness(94%) contrast(101%);
+}
+
+#nav-content li {
+    display: none;
+}
+
+.main {
+    padding: 0;
+}
+
+.hero {
+    font-size: large;
+    display: block;
+    
+}
+
+#main-img {
+    display: none;
+}
+
+.hero-text {
+    text-align:left;
+}
+
+.hero-sub{
+    display:block;
+    margin-top:10px;
+    font-size:18px;
+    margin-right:40px;
+    margin-left:40px;
+    text-align: left;
+    text-shadow:
+    0 0 5px #751646,
+    0 0 10px #751646,
+    0 0 20px #751646;
+    padding-bottom:120px;
+}
+
+#hero-button{
+    font-size: 15px;
+    margin-top:-40px;
+}
+
+#hton{
+    padding-bottom: 70px;
+}
+
+.ename{
+    display:block;
+    p{
+        display:none;
+    }
+     img{
+        width:80px;
+        transform: rotate(45deg);
+        margin-left:-50px;
+        padding-top:10px;
+     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*create.css */
+
+#main-h{
+    font-size:170%;
+    padding:30px;
+}
+
+#form{
+    padding:30px;
+    text-align: center;
+}
+#heading{
+    padding-bottom:10px;
+    margin-top:-30px;
+}
+
+.hied{
+    margin-top:-30px;
+}

@@ -146,20 +146,20 @@ function Table() {
         const heading = document.createElement('h3');
         heading.textContent = 'Select Your Study Hours:';
         heading.setAttribute('id', 'heading');
+        heading.setAttribute('class','hied');
         go.appendChild(heading);
         go.appendChild(document.createElement('br'));
 
         
 // Override createHourTable for mobile users
-if (isM) {
-    // Redefine createHourTable for mobile
-        createTable('Morning Hours:', true);
-        createTable('Evening Hours:', false);
-        }
-        else{
-        createHourTable('Morning Hours:', true);
-        createHourTable('Evening Hours:', false);
-        }
+if (isM || window.innerWidth < 350) {
+    // Use mobile-friendly table for mobile devices or very small screens
+    createTable('Morning Hours:', true);
+    createTable('Evening Hours:', false);
+} else {
+    createHourTable('Morning Hours:', true);
+    createHourTable('Evening Hours:', false);
+}
 
         const messageDiv = document.createElement('div');
        messageDiv.setAttribute('id', 'hour-limit-message');

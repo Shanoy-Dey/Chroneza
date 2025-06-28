@@ -13,13 +13,12 @@
   padding:20px;
 }
 
-  nav img{
+  #nav-img img{
     width:180px;
-    transition: 0.5s ease;
   }
 
-  nav img:hover{
-    transform: scale(1.1);
+#navimg2{
+  display:none;
 }
   
   nav ul{
@@ -44,8 +43,29 @@
   margin-left:-12px;
 }
 
-nav a:hover{
+nav li:hover{
     font-size:18px;
+}
+
+#dropdown-menu{
+   display:none;
+   position:absolute;
+   top:50px;
+   right:20px;
+   padding:20px;
+   border-radius:30px;
+  background: linear-gradient(135deg, #fff 30%, #d1c4e9 100%);
+   box-shadow:0 2px 8px rgba(0,0,0,0.15);
+   z-index:1000;
+   li{
+    display:block;
+    text-align: center;
+    justify-content: center;
+    padding-bottom: 4px;
+   }
+   #nav-account-link{
+    padding-left:10px;
+   }
 }
 
 
@@ -70,15 +90,10 @@ nav a:hover{
   justify-content: flex-start;
   gap: 10px; /* space between lines */
   margin-left:40px;
-  transition:  0.5s  ease;
   text-shadow:
     0 0 10px #751646,
     0 0 20px #751646,
     0 0 40px #751646;
-}
-
-.hero-text:hover{
-  font-size:110%;
 }
 
 #stext {
@@ -97,10 +112,6 @@ nav a:hover{
   display: flex;
   flex-direction: row;
   gap:8px;
-}
-
-#subtext,
-#subtext2 {
   margin-left:45px;
   margin-top:-90px;
   padding-bottom:100px;
@@ -109,13 +120,9 @@ nav a:hover{
   color:white;
 }
 
-#subtext2{
-  margin-left:0;
-  color:purple;
-  font-weight: bold;
-}
 
-.hero-button{
+
+#hero-button{
   padding:15px;
   margin-top:-30px;
   font-size:18px;
@@ -142,7 +149,7 @@ nav a:hover{
   }
 }
 
-.hero-button {
+#hero-button {
   animation: pulse 1.2s infinite;
   cursor: pointer;
 }
@@ -230,6 +237,7 @@ nav a:hover{
   font-weight: bold;
   color: purple;
   text-align: center;
+  cursor:pointer;
 }
 
 
@@ -382,111 +390,4 @@ body.loading {
   overflow: hidden;
 }
 
-@media (max-width: 300px) {
-  .nav-bar {
-    flex-direction: column;
-    align-items:center;
-    padding: 10px;
-  }
-  nav img {
-    width: 100px;
-  }
-  nav ul {
-    padding-top: 2px;
-  }
-  nav a {
-    padding: 4px 2px;
-    font-size: 9px;
-  }
 
-  nav a:hover{
-    font-size:12px;
-  }
-
-  #nav-account-link{
-    margin-left:0px;
-  }
-  .main {
-    padding: 4px 2px;
-    font-size: 0.8rem;
-  }
-  .hero {
-    padding-top: 10px;
-    font-size: 0.8rem;
-  }
-  .hero-text {
-    margin-left: 2px;
-    font-size: 0.8rem;
-    gap: 2px;
-  }
-  #main-img {
-    width: 60px;
-    margin-top: -8px;
-  }
-  #subtext, #subtext2 {
-    margin-left: 2px;
-    margin-top: -10px;
-    padding-bottom: 10px;
-    font-size: 0.7rem;
-  }
-  .hero-button {
-    padding: 3px;
-    font-size: 0.7rem;
-    border-radius: 4px;
-    margin-bottom: 4px;
-  }
-  .section {
-    padding: 4px;
-    margin: 4px 0;
-  }
-  .section h2 {
-    font-size: 0.8rem;
-    margin-bottom: 2px;
-  }
-  .section p {
-    font-size: 0.7rem;
-  }
-  .section-table th, .section-table td {
-    padding: 1px;
-    font-size: 0.6rem;
-  }
-  .exams h2, .exams h3 {
-    font-size: 0.8rem;
-  }
-  .ename {
-    padding: 2px 2px;
-    border-radius: 4px;
-    margin: 4px 0;
-  }
-  .ename-text {
-    font-size: 0.7rem;
-  }
-  .exams img {
-    width: 24px;
-  }
-  .ename-subjects h4 {
-    margin-right: 2px;
-    font-size: 0.7rem;
-  }
-  .footer {
-    padding: 4px;
-    font-size: 0.6rem;
-  }
-  .footer img {
-    width: 12px;
-  }
-  .footer-links a {
-    padding: 0 2px;
-    font-size: 0.6rem;
-  }
-  .scroll-to-top {
-    width: 16px;
-    height: 16px;
-    bottom: 4px;
-    right: 4px;
-  }
-  .scroll-to-top img {
-    width: 8px;
-    height: 8px;
-  }
-}
