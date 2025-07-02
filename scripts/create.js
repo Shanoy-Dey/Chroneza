@@ -139,6 +139,7 @@ function createTable(label, isMorning) {
 var atime=[];
  var count = 0;
 let s=0;
+var ok=false;
 function Table() {
         window.scrollTo({ top: 450, behavior: 'smooth' });
         const val = school.value;
@@ -161,7 +162,7 @@ if (isM || window.innerWidth < 350) {
     createHourTable('Evening Hours:', false);
 }
 
-        const messageDiv = document.createElement('div');
+    const messageDiv = document.createElement('div');
        messageDiv.setAttribute('id', 'hour-limit-message');
        go.appendChild(messageDiv);
        
@@ -169,6 +170,7 @@ if (isM || window.innerWidth < 350) {
             const clickedCell = event.target.closest('td');
             if (clickedCell) {
                 setTime(clickedCell.getAttribute('value'));
+                if(ok == false){
                 if (clickedCell.classList.contains('selected')) {
                   clickedCell.classList.remove('selected');
                     count--;
@@ -195,6 +197,7 @@ if (isM || window.innerWidth < 350) {
                 }
             }
         }
+    }
         
         function setTime(i){
             for(let j=0;j<atime.length;j++){
@@ -220,6 +223,7 @@ if (isM || window.innerWidth < 350) {
         finalsubmit.addEventListener('click', function(event) {
             event.preventDefault();
             finalsubmit.disabled = true;
+            ok=true;
             Processing();
         });
     }
@@ -269,7 +273,6 @@ function Processing()
     const timeHeader = document.createElement('th');
     timeHeader.textContent = 'Time';
     timeHeader.style.border = '1px solid #000';
-    timeHeader.style.padding = '4px';
     headerRow.appendChild(timeHeader);
 
     // Days of the week headers
@@ -469,6 +472,7 @@ function neet(cell,o,x) {
 }
     if (o === 7&& x === 1) {
         cell.setAttribute('rowspan', timec.length);
+        cell.setAttribute('id','Sunday')
         cell.textContent = "Mixed Tests , NEET Pyqs , Revision of Everything Studied + Focus on Weak Points ";
         cell.style.textAlign = 'center';
         cell.style.fontSize = '20px';
@@ -569,10 +573,13 @@ function jee(cell,o,x) {
 }
     if (o === 7&& x === 1) {
         cell.setAttribute('rowspan', timec.length);
+        cell.setAttribute('id','Sunday')
         cell.textContent = "Mixed Tests , JEE Advanced Pyqs , Revision of Written Notes + Focus on Weak Points ";
-        cell.style.textAlign = 'center';
-        cell.style.fontSize = '20px';
-        cell.style.width = '120px';
+        if (cell) {
+            cell.style.textAlign = 'center';
+            cell.style.fontSize = '18px';
+            cell.style.width = '120px';
+        }
         // No return here, continue with the rest of the function
     }
 }

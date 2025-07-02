@@ -1,10 +1,10 @@
+
 .nav-bar {
-    padding: 15px 0px;
+    padding: 20px 0px;
 }
 
-.nav-bar img {
-    width: 140px;
-}
+#nav-img img{
+    width: 200px;}
 
 .nav-bar a {
     padding: 0px;
@@ -13,10 +13,10 @@
 .nav-bar #navimg2 {
     cursor: pointer;
     display: flex;
-    width: 40px;
-    height: 40px;
-    padding-right: 10px;
-    padding-top: 10px;
+    width:70px;
+    height:50px;
+    padding-right: 20px;
+    padding-top: 0px;
     filter: invert(17%) sepia(97%) saturate(7472%) hue-rotate(271deg) brightness(94%) contrast(101%);
 }
 
@@ -29,7 +29,6 @@
 }
 
 .hero {
-    font-size: large;
     display: block;
     
 }
@@ -39,30 +38,32 @@
 }
 
 .hero-text {
+    font-size: 70%;
     text-align:left;
+    margin-left: 30px;;
 }
 
 .hero-sub{
     display:block;
-    margin-top:10px;
-    font-size:18px;
-    margin-right:40px;
-    margin-left:40px;
+    margin-top:25px;
+    font-size:20px;
+    margin-left:30px;
     text-align: left;
     text-shadow:
     0 0 5px #751646,
     0 0 10px #751646,
     0 0 20px #751646;
-    padding-bottom:120px;
+    padding-bottom:80px;
 }
 
 #hero-button{
     font-size: 15px;
-    margin-top:-40px;
+    margin-top:40px;
+    padding:15px;
 }
 
 #hton{
-    padding-bottom: 70px;
+    padding-bottom: 120px;
 }
 
 .ename{
@@ -71,14 +72,17 @@
         display:none;
     }
      img{
-        width:80px;
+        width:90px;
         transform: rotate(45deg);
         margin-left:-50px;
         padding-top:10px;
      }
 }
 
-
+#nav-account-link{
+    display: block;
+    align-self: center;
+}
 
 
 
@@ -98,7 +102,7 @@
 }
 
 #form{
-    padding:30px;
+    padding:10px;
     text-align: center;
 }
 #heading{
@@ -109,3 +113,74 @@
 .hied{
     margin-top:-30px;
 }
+#rad{
+    margin-top:15px;
+    display:block;
+}
+
+#tab td,th{
+    font-size: 12px;
+}
+
+  #main-create {
+    margin: 10px;
+    border-radius: 15px;
+    padding: 10px;
+  }
+
+  #form {
+    padding: 20px 5px;
+  }
+
+  h1, #heading {
+    font-size: 150%;
+    padding: 20px 0 10px 0;
+  }
+
+  label {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+
+  input, select {
+    margin-left: 0;
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  #Exam, #schooling {
+    margin-left: 0;
+  }
+
+  #rd {
+    margin-right: 0;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+#ftable {
+    font-size: 10px;
+    transform: scale(0.5);
+    transform-origin: top left;
+    margin-left: 30px;
+    display: table;
+  }
+  #ftable td, #ftable th {
+    font-size: 10px;
+  }
+#ftable td:first-child,
+#ftable th:first-child {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+  #Sunday {
+    font-size:70%;
+    text-align: center;
+  }
+
