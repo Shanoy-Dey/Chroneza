@@ -1,4 +1,4 @@
-let isM=true;
+let isM = true;
 function isMobile() {
     // Returns true for mobile/tablet, false for laptop/desktop
     const ua = navigator.userAgent;
@@ -18,24 +18,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById("here");
 
     radioButtons.forEach(radio => {
-        radio.addEventListener('change', function() {
+        radio.addEventListener('change', function () {
             document.querySelectorAll('.optional-subject-input').forEach(input => input.remove());
             const numberOfSubjects = parseInt(this.value);
-            
+
             if (!isNaN(numberOfSubjects) && numberOfSubjects > 0) {
                 for (let i = 1; i <= numberOfSubjects; i++) {
                     const ta = document.createElement("input");
                     ta.setAttribute('type', 'text');
                     ta.setAttribute('placeholder', `Optional Subject ${i}`);
-                    ta.setAttribute('id', `os${i}`); 
-                    ta.classList.add('optional-subject-input'); 
+                    ta.setAttribute('id', `os${i}`);
+                    ta.classList.add('optional-subject-input');
                     container.appendChild(ta);
                 }
             }
             const input = document.getElementsByTagName("input");
-for (let i = 0; i < input.length; i++) {
-    input[i].setAttribute('required', 'true');
-}
+            for (let i = 0; i < input.length; i++) {
+                input[i].setAttribute('required', 'true');
+            }
 
         });
     });
@@ -46,20 +46,20 @@ for (let i = 0; i < input.length; i++) {
     input[i].setAttribute('required', 'true');
 }
 
-const school=document.getElementById("schooling");
+const school = document.getElementById("schooling");
 const submit = document.getElementById("sb");
-submit.addEventListener('click', function(event) {
-  event.preventDefault();
-   if (form.checkValidity()) {
-    os=[document.getElementById("os1"), document.getElementById("os2"), document.getElementById("os3")];
-    Table();
-  } else {
-    form.reportValidity();
-  }
+submit.addEventListener('click', function (event) {
+    event.preventDefault();
+    if (form.checkValidity()) {
+        os = [document.getElementById("os1"), document.getElementById("os2"), document.getElementById("os3")];
+        Table();
+    } else {
+        form.reportValidity();
+    }
 });
 
-    var j=1;
-        const go = document.getElementById("her");
+var j = 1;
+const go = document.getElementById("her");
 
 function createHourTable(label, isMorning) {
     const head = document.createElement('h4');
@@ -74,20 +74,20 @@ function createHourTable(label, isMorning) {
         const col = document.createElement('td');
         if (isMorning) {
             if (i == 0)
-                col.textContent = '12 AM to 1 AM';
+                col.textContent = '12 - 1 AM';
             else if (i == 11)
-                col.textContent = '11 AM to 12 PM';
+                col.textContent = '11 - 12 PM';
             else
-                col.textContent = `${i} AM to ${i + 1} AM`;
+                col.textContent = `${i} - ${i + 1} AM`;
         } else {
             if (i == 0)
-                col.textContent = '12 PM to 1 PM';
+                col.textContent = '12 - 1 PM';
             else if (i == 11)
-                col.textContent = '11 PM to 12 AM';
+                col.textContent = '11 - 12 AM';
             else
-                col.textContent = `${i} PM to ${i + 1} PM`;
+                col.textContent = `${i} - ${i + 1} PM`;
         }
-        col.setAttribute('value',j);
+        col.setAttribute('value', j);
         j++;
         row.appendChild(col);
     }
@@ -104,161 +104,162 @@ function createTable(label, isMorning) {
     go.appendChild(head);
 
     const table = document.createElement('table');
-    table.setAttribute('id', 'tab');
-    for(let i=0;i<2;i++){
-    const row = document.createElement('tr');
-    for (let k=0; k <= 5; k++,j++) {
-        const col = document.createElement('td');
-        if (isMorning) {
-            if (k == 0&&i==0)
-                col.textContent = '12 AM to 1 AM';
-            else if (j == 12)
-                col.textContent = '11 AM to 12 PM';
-            else
-                col.textContent = `${j-1} AM to ${j} AM`;
-        } else {
-            if (k == 0&&i==0)
-                col.textContent = '12 PM to 1 PM';
-            else if (j == 24)
-                col.textContent = '11 PM to 12 AM';
-            else
-                col.textContent = `${j-13} PM to ${j-12} PM`;
+    table.setAttribute('id', 'tab2');
+    for (let i = 0; i < 2; i++) {
+        const row = document.createElement('tr');
+        for (let k = 0; k <= 5; k++, j++) {
+            const col = document.createElement('td');
+            if (isMorning) {
+                if (k == 0 && i == 0)
+                    col.textContent = '12 - 1 AM';
+                else if (j == 12)
+                    col.textContent = '11 - 12 PM';
+                else
+                    col.textContent = `${j - 1} - ${j} AM`;
+            } else {
+                if (k == 0 && i == 0)
+                    col.textContent = '12 - 1 PM';
+                else if (j == 24)
+                    col.textContent = '11 - 12 AM';
+                else
+                    col.textContent = `${j - 13} - ${j - 12} PM`;
+            }
+            col.setAttribute('value', j);
+            row.appendChild(col);
         }
-        col.setAttribute('value',j);
-        row.appendChild(col);
+
+
+        table.appendChild(row);
     }
-
-
-    table.appendChild(row);
-}
     go.appendChild(table);
     go.appendChild(document.createElement('br'));
 }
 
 
-var atime=[];
- var count = 0;
-let s=0;
-var ok=false;
+var atime = [];
+var count = 0;
+let s = 0;
+var ok = false;
 function Table() {
-        window.scrollTo({ top: 450, behavior: 'smooth' });
-        const val = school.value;
-        go.innerHTML = "";
-        const heading = document.createElement('h3');
-        heading.textContent = 'Select Your Study Hours:';
-        heading.setAttribute('id', 'heading');
-        heading.setAttribute('class','hied');
-        go.appendChild(heading);
-        go.appendChild(document.createElement('br'));
+    window.scrollTo({ top: 450, behavior: 'smooth' });
+    const val = school.value;
+    go.innerHTML = "";
+    const heading = document.createElement('h3');
+    heading.textContent = 'Select Your Study Hours:';
+    heading.setAttribute('id', 'heading');
+    heading.setAttribute('class', 'hied');
+    go.appendChild(heading);
+    go.appendChild(document.createElement('br'));
 
-        
-// Override createHourTable for mobile users
-if (isM || window.innerWidth < 350) {
-    // Use mobile-friendly table for mobile devices or very small screens
-    createTable('Morning Hours:', true);
-    createTable('Evening Hours:', false);
-} else {
-    createHourTable('Morning Hours:', true);
-    createHourTable('Evening Hours:', false);
-}
+
+    // Override createHourTable for mobile users
+    if (isM || window.innerWidth < 350) {
+        // Use mobile-friendly table for mobile devices or very small screens
+        createTable('Morning Hours:', true);
+        createTable('Evening Hours:', false);
+    } else {
+        createHourTable('Morning Hours:', true);
+        createHourTable('Evening Hours:', false);
+    }
 
     const messageDiv = document.createElement('div');
-       messageDiv.setAttribute('id', 'hour-limit-message');
-       go.appendChild(messageDiv);
-       
-        function handleCellClick(event) {
-            const clickedCell = event.target.closest('td');
-            if (clickedCell) {
-                setTime(clickedCell.getAttribute('value'));
-                if(ok == false){
+    messageDiv.setAttribute('id', 'hour-limit-message');
+    go.appendChild(messageDiv);
+
+    function handleCellClick(event) {
+        const clickedCell = event.target.closest('td');
+        if (clickedCell) {
+            setTime(clickedCell.getAttribute('value'));
+            if (ok == false) {
                 if (clickedCell.classList.contains('selected')) {
-                  clickedCell.classList.remove('selected');
+                    clickedCell.classList.remove('selected');
                     count--;
                 } else {
-                    if(count<6){
-                        messageDiv.textContent =`You have to study at least 6 hours if you want to crack ${nexam.value.toUpperCase()} !`;
+                    if (count < 6) {
+                        messageDiv.textContent = `You have to study at least 6 hours if you want to crack ${nexam.value.toUpperCase()} !`;
                         finalsubmit.disabled = true;
                     }
                     else {
-                    messageDiv.textContent = "";
+                        messageDiv.textContent = "";
                         finalsubmit.disabled = false;
                     }
-                    
+
                     if (val == "yes" && count >= 12) {
-                    messageDiv.textContent = "You can only select a maximum of 12 hours because 6 hours School and 6 hours Sleep is Necessary !";
-                    return;
-                }
-                else if (val == "no" && count >= 18) {
-                    messageDiv.textContent = "You can only select a maximum of 18 hours because 6 hours Sleep is Necessary !";
-                    return;
-                } 
-                clickedCell.classList.add('selected');
-                count++;
+                        messageDiv.textContent = "You can only select a maximum of 12 hours because 6 hours School and 6 hours Sleep is Necessary !";
+                        return;
+                    }
+                    else if (val == "no" && count >= 18) {
+                        messageDiv.textContent = "You can only select a maximum of 18 hours because 6 hours Sleep is Necessary !";
+                        return;
+                    }
+                    clickedCell.classList.add('selected');
+                    count++;
                 }
             }
         }
     }
-        
-        function setTime(i){
-            for(let j=0;j<atime.length;j++){
-                 if (i == atime[j]) {
-                    atime.splice(j, 1);
-                    return;
-                } 
+
+    function setTime(i) {
+        for (let j = 0; j < atime.length; j++) {
+            if (i == atime[j]) {
+                atime.splice(j, 1);
+                return;
             }
-            atime[s]=i;
-            s++;
         }
-
-        const tables = go.querySelectorAll('table');
-        tables.forEach(table => {
-            table.addEventListener('click', handleCellClick);
-        });
-
-        const finalsubmit = document.createElement('button');
-        finalsubmit.textContent = ' Finish ';
-        finalsubmit.setAttribute('id', 'sb');
-        finalsubmit.setAttribute('type', 'submit');
-        go.appendChild(finalsubmit);
-        finalsubmit.addEventListener('click', function(event) {
-            event.preventDefault();
-            finalsubmit.disabled = true;
-            ok=true;
-            Processing();
-        });
+        atime[s] = i;
+        s++;
     }
 
-let os=[];
+    const tables = go.querySelectorAll('table');
+    tables.forEach(table => {
+        table.addEventListener('click', handleCellClick);
+    });
+
+    const finalsubmit = document.createElement('button');
+    finalsubmit.textContent = ' Finish ';
+    finalsubmit.setAttribute('id', 'sb');
+    finalsubmit.setAttribute('type', 'submit');
+    go.appendChild(finalsubmit);
+    finalsubmit.addEventListener('click', function (event) {
+        event.preventDefault();
+        finalsubmit.disabled = true;
+        ok = true;
+        Processing();
+    });
+}
+
+let os = [];
 const tname = document.getElementById("tname");
-let nexam= document.getElementById("Exam");
-var timec=[];
-let xy=100;
-function Processing() 
-{
-    const aim=["AIIMS DELHI","IIT DELHI"];
+let nexam = document.getElementById("Exam");
+var timec = [];
+let xy = 100;
+function Processing() {
+    const aim = ["AIIMS DELHI", "IIT BOMBAY"];
     window.scrollBy({ top: 450, behavior: 'smooth' });
     atime = atime.filter(item => item !== undefined && item !== null && item !== "");
     atime = atime.map(Number);
     atime.sort((a, b) => a - b);
-    for(let i=0;i<atime.length;i++){
+    for (let i = 0; i < atime.length; i++) {
         const td = document.querySelector('td[value="' + atime[i] + '"]');
         if (td) {
             timec[i] = td.textContent;
-        }    
+        }
     }
     // Calculate n once here for NEET
     n = Math.floor((timec.length - 1) / 3);
-    const hr=document.createElement("h3");
-    hr.setAttribute("id","heading");
-    hr.textContent="Any Last Changes ?";
+    const hr = document.createElement("h3");
+    hr.setAttribute("id", "heading");
+    hr.textContent = "Any Last Changes ?";
     hr.style.display = "block";
     hr.style.textAlign = "center";
     go.appendChild(hr);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'ftable-wrapper';
     var ftable = document.createElement('table');
     ftable.setAttribute('id', 'ftable');
 
-    const title=document.createElement('tr');
-    const hd= document.createElement('th');
+    const title = document.createElement('tr');
+    const hd = document.createElement('th');
     hd.setAttribute('colspan', '8');
     hd.textContent = tname.value + " - For " + nexam.value.toUpperCase();
     hd.style.textAlign = 'center';
@@ -272,6 +273,8 @@ function Processing()
     const headerRow = document.createElement('tr');
     const timeHeader = document.createElement('th');
     timeHeader.textContent = 'Time';
+    timeHeader.setAttribute('id', 'timeHeader');
+    timeHeader.style.textAlign = 'center';
     timeHeader.style.border = '1px solid #000';
     headerRow.appendChild(timeHeader);
 
@@ -289,10 +292,10 @@ function Processing()
 
     // Column-wise: for each day (column), create all rows (time slots)
     for (let j = 0; j < 7; j++) { // 6 days/columns (Monday to Saturday)
-        
+
         for (let i = 0; i < timec.length; i++) {
-             // time slots/rows
-            
+            // time slots/rows
+
             let row;
             // Create row only for the first column
             if (j === 0) {
@@ -304,21 +307,47 @@ function Processing()
                 timeCell.style.padding = '4px';
                 row.appendChild(timeCell);
                 ftable.appendChild(row);
-            } else if(j<7) {
+            } else if (j < 7) {
                 // Get the existing row
                 row = ftable.querySelector(`#row${i + 1}`);
             }
             // Create cell for this column and row
             const cell = document.createElement('td');
             // id is now cell{column}_{row}
-            cell.setAttribute('id', `cell${j+1}_${i+1}`);
-            const ex=nexam.value;
-        if (typeof window[ex] === "function") {
-            window[ex](cell, j + 1, i + 1);
-        }
-            cell.style.border = '1px solid #000';
-            cell.style.padding = '4px';
-            row.appendChild(cell);
+            cell.setAttribute('id', `cell${j + 1}_${i + 1}`);
+            cell.style.textAlign = 'center';
+            // Only add the Sunday cell (j==6) to the first row (i==0), with rowspan
+            if (j === 6) {
+                if (i === 0) {
+                    const sundayCell = document.createElement('td');
+                    sundayCell.setAttribute('rowspan', timec.length);
+                    sundayCell.setAttribute('id', 'Sunday');
+                    // Call your function to fill content
+                    const ex = nexam.value;
+                    if (typeof window[ex] === "function") {
+                        window[ex](sundayCell, j + 1, i + 1);
+                    }
+                    sundayCell.style.textAlign = 'center';
+                    sundayCell.style.fontSize = '18px';
+                    sundayCell.style.width = '120px';
+                    sundayCell.style.border = '1px solid #000';
+                    sundayCell.style.padding = '4px';
+                    row.appendChild(sundayCell);
+                }
+                // For other rows, do NOT append a cell for Sunday
+            } else {
+                // All other days: add a cell as usual
+                const cell = document.createElement('td');
+                cell.setAttribute('id', `cell${j + 1}_${i + 1}`);
+                cell.style.textAlign = 'center';
+                const ex = nexam.value;
+                if (typeof window[ex] === "function") {
+                    window[ex](cell, j + 1, i + 1);
+                }
+                cell.style.border = '1px solid #000';
+                cell.style.padding = '4px';
+                row.appendChild(cell);
+            }
         }
     }
     const row = document.createElement("tr");
@@ -326,24 +355,25 @@ function Processing()
     td.setAttribute("colspan", "8");
     td.textContent = "AIM -for- " + aim[xy];
     td.style.textAlign = "center";
-    td.style.fontSize="24px";
+    td.style.fontSize = "24px";
     td.style.fontWeight = '500';
     row.appendChild(td);
     ftable.appendChild(row);
-    go.appendChild(ftable);
+    wrapper.appendChild(ftable);
+    go.appendChild(wrapper);
 
     const editableCells = ftable.querySelectorAll('td');
-editableCells.forEach(td => {
-    td.setAttribute('contenteditable', 'true');
-});
-    const Gen=document.createElement("button");
+    editableCells.forEach(td => {
+        td.setAttribute('contenteditable', 'true');
+    });
+    const Gen = document.createElement("button");
 
     Gen.textContent = "Generate Timetable Image";
-    Gen.addEventListener('click', function(event) {
+    Gen.addEventListener('click', function (event) {
         event.preventDefault();
 
         setTimeout(() => {
-            html2canvas(ftable,{scale:3}).then(canvas => {
+            html2canvas(ftable, { scale: 3 }).then(canvas => {
                 // Create a link to download the image
                 const link = document.createElement('a');
                 link.download = 'timetable.jpg';
@@ -355,124 +385,123 @@ editableCells.forEach(td => {
     go.appendChild(Gen);
 }
 
-let p=0,c=0,b=0,z=0,pcf=0,mcq=0;
-let n=0;let m=0;let t=0;
+let p = 0, c = 0, b = 0, z = 0, pcf = 0, mcq = 0;
+let n = 0; let m = 0; let t = 0;
 
-function neet(cell,o,x) {
-    xy=0;
-    const subjects=[
-        "Physics","Physics Numericals",
-        "Chemistry","Chemistry Numericals",
-        "Botany","Ncert Reading",
-        "Zoology","Ncert Reading",
+function neet(cell, o, x) {
+    xy = 0;
+    const subjects = [
+        "Physics", "Physics Numericals",
+        "Chemistry", "Chemistry Numericals",
+        "Botany", "Ncert Reading",
+        "Zoology", "Ncert Reading",
         "Phy-Chem NEET MCQs ",
         "Biology NEET MCQs "
     ];
-    os= os.filter(item => item !== undefined && item !== null && item !== "");
+    os = os.filter(item => item !== undefined && item !== null && item !== "");
     // n is now calculated once in Processing()
-    if(x==1 && o%2==1){
-        p=0;
-        c=0;
-        b=0;
-        z=0;
-        pcf=0;
-        mcq=0;
+    if (x == 1 && o % 2 == 1) {
+        p = 0;
+        c = 0;
+        b = 0;
+        z = 0;
+        pcf = 0;
+        mcq = 0;
     }
-    for(let i=o;i<=6;i++){  
-    n=Math.floor((timec.length-1)/3);
-    
-    for(let i=o;i<=6;i++){  
-       
-        for(let l=x;l<=n*3&&n*3<timec.length;l++){
-            
-           
-            if(x==n*3){
-                cell.textContent="Mistake Analysis";
-                return;
-            }
-            if(p!=n){
-                if(p==n-1){
-                    cell.textContent=subjects[1];
+    for (let i = o; i <= 6; i++) {
+        n = Math.floor((timec.length - 1) / 3);
+
+        for (let i = o; i <= 6; i++) {
+
+            for (let l = x; l <= n * 3 && n * 3 < timec.length; l++) {
+
+
+                if (x == n * 3) {
+                    cell.textContent = "Mistake Analysis";
+                    return;
+                }
+                if (p != n) {
+                    if (p == n - 1) {
+                        cell.textContent = subjects[1];
+                        p++;
+                        return;
+                    }
+                    cell.textContent = subjects[0];
                     p++;
                     return;
                 }
-                cell.textContent=subjects[0];
-                p++;
-                return;
-            }
-            if(c!=n){
-                if(c==n-1){
-                    cell.textContent=subjects[3];
+                if (c != n) {
+                    if (c == n - 1) {
+                        cell.textContent = subjects[3];
+                        c++;
+                        return;
+                    }
+                    cell.textContent = subjects[2];
                     c++;
                     return;
                 }
-                cell.textContent=subjects[2];
-                c++;
-                return;
-            }
-            if(b!=n){
-                if(b==n-1&& l!=1&&z==n-1){
-                    cell.textContent=subjects[5];
-                    b++;
-                    return;
+                if (b != n) {
+                    if (b == n - 1 && l != 1 && z == n - 1) {
+                        cell.textContent = subjects[5];
+                        b++;
+                        return;
+                    }
+                    if (b < n - 1) {
+                        cell.textContent = subjects[4];
+                        b++;
+                        return;
+                    }
                 }
-                if(b<n-1){
-                    cell.textContent=subjects[4];
-                    b++;
-                    return;
-                }
-            }
-            if(z!=n){
-                if(z==n-1){
-                    cell.textContent=subjects[7];
+                if (z != n) {
+                    if (z == n - 1) {
+                        cell.textContent = subjects[7];
+                        z++;
+                        return;
+                    }
+                    cell.textContent = subjects[6];
                     z++;
                     return;
                 }
-                cell.textContent=subjects[6];
-                z++;
-                return;
-            }
-            if(pcf!=n-1){
-                cell.textContent=subjects[8];
-                pcf++;
-                return;
-            }
-
-            if(mcq!=n-1){
-                cell.textContent=subjects[9];
-                mcq++;
-                return;
-            }
-        }
-        ol:for(let l=x;l<=timec.length;l++){
-            for(;m<os.length&&t==0;)
-                {
-                cell.textContent = os[m].value;
-                t=1;
-                m++;
-                if(m==os.length){
-                    m=0;
+                if (pcf != n - 1) {
+                    cell.textContent = subjects[8];
+                    pcf++;
+                    return;
                 }
-                if(l==timec.length)
-                    t=0;
+
+                if (mcq != n - 1) {
+                    cell.textContent = subjects[9];
+                    mcq++;
+                    return;
+                }
+            }
+            ol: for (let l = x; l <= timec.length; l++) {
+                for (; m < os.length && t == 0;) {
+                    cell.textContent = os[m].value;
+                    t = 1;
+                    m++;
+                    if (m == os.length) {
+                        m = 0;
+                    }
+                    if (l == timec.length)
+                        t = 0;
+                    return;
+                }
+                if (l == timec.length - 1) {
+                    cell.textContent = "Phy-Chem NCERT Reading";
+                    return;
+                }
+                cell.textContent = "Revision";
+                t = 0;
                 return;
+
             }
-            if (l==timec.length-1) {
-            cell.textContent ="Phy-Chem NCERT Reading";
-            return;
-            }
-            cell.textContent = "Revision";
-            t=0;
-            return;
+
 
         }
-        
-    
     }
-}
-    if (o === 7&& x === 1) {
+    if (o === 7 && x === 1) {
         cell.setAttribute('rowspan', timec.length);
-        cell.setAttribute('id','Sunday')
+        cell.setAttribute('id', 'Sunday')
         cell.textContent = "Mixed Tests , NEET Pyqs , Revision of Everything Studied + Focus on Weak Points ";
         cell.style.textAlign = 'center';
         cell.style.fontSize = '20px';
@@ -481,99 +510,98 @@ function neet(cell,o,x) {
     }
 }
 
-let mt=0,pyq=0
-function jee(cell,o,x) {
-    xy=1;
-    const subjects=[
-        "Physics","Physics Numericals",
-        "Chemistry","Chemistry Numericals",
-        "Mathematics","Mathematics Questions",
+let mt = 0, pyq = 0
+function jee(cell, o, x) {
+    xy = 1;
+    const subjects = [
+        "Physics", "Physics Numericals",
+        "Chemistry", "Chemistry Numericals",
+        "Mathematics", "Mathematics Questions",
         "JEE Main PYQs"
     ];
-    os= os.filter(item => item !== undefined && item !== null && item !== "");
+    os = os.filter(item => item !== undefined && item !== null && item !== "");
     // n is now calculated once in Processing()
-    if(x==1){
-        p=0;
-        c=0;
-        mt=0;
-        pyq=0;
+    if (x == 1) {
+        p = 0;
+        c = 0;
+        mt = 0;
+        pyq = 0;
     }
-    for(let i=o;i<=6;i++){  
-    n=Math.floor((timec.length-1)/3);
-    
-    for(let i=o;i<=6;i++){  
-       
-        for(let l=x;l<=n*3&&n*3<timec.length;l++){            
-           
+    for (let i = o; i <= 6; i++) {
+        n = Math.floor((timec.length - 1) / 3);
 
-            if(p!=n){
-                if(p==n-1){
-                    cell.textContent=subjects[1];
+        for (let i = o; i <= 6; i++) {
+
+            for (let l = x; l <= n * 3 && n * 3 < timec.length; l++) {
+
+
+                if (p != n) {
+                    if (p == n - 1) {
+                        cell.textContent = subjects[1];
+                        p++;
+                        return;
+                    }
+                    cell.textContent = subjects[0];
                     p++;
                     return;
                 }
-                cell.textContent=subjects[0];
-                p++;
-                return;
-            }
-            if(c!=n){
-                if(c==n-1){
-                    cell.textContent=subjects[3];
+                if (c != n) {
+                    if (c == n - 1) {
+                        cell.textContent = subjects[3];
+                        c++;
+                        return;
+                    }
+                    cell.textContent = subjects[2];
                     c++;
                     return;
                 }
-                cell.textContent=subjects[2];
-                c++;
-                return;
-            }
-            if(mt!=n){
-                if(mt==n-1){
-                    cell.textContent=subjects[5];
-                    mt++;
+                if (mt != n) {
+                    if (mt == n - 1) {
+                        cell.textContent = subjects[5];
+                        mt++;
+                        return;
+                    }
+                    if (mt < n - 1) {
+                        cell.textContent = subjects[4];
+                        mt++;
+                        return;
+                    }
+                }
+
+                if (x == n * 3) {
+                    cell.textContent = subjects[6];
                     return;
                 }
-                if(mt<n-1){
-                    cell.textContent=subjects[4];
-                    mt++;
+            }
+            ol: for (let l = x; l <= timec.length; l++) {
+                for (; m < os.length && t == 0;) {
+                    cell.textContent = os[m].value;
+                    t = 1;
+                    m++;
+                    if (m == os.length) {
+                        m = 0;
+                    }
+                    if (l == timec.length)
+                        t = 0;
                     return;
                 }
-            }
-
-            if(x==n*3){
-                cell.textContent=subjects[6];
-                return;
-            }
-        }
-        ol:for(let l=x;l<=timec.length;l++){
-            for(;m<os.length&&t==0;)
-                {
-                cell.textContent = os[m].value;
-                t=1;
-                m++;
-                if(m==os.length){
-                    m=0;
+                if (l == timec.length - 1) {
+                    cell.textContent = "Notes Review";
+                    return;
                 }
-                if(l==timec.length)
-                    t=0;
+                if (o % 2 == 0)
+                    cell.textContent = "Mistake Analysis";
+                else
+                    cell.textContent = subjects[6];
+                t = 0;
                 return;
-            }
-            if(l==timec.length-1){
-                cell.textContent="Notes Review";
-                return;
-            }
-            if(o%2==0)
-            cell.textContent = "Mistake Analysis";
-            else
-            cell.textContent=subjects[6];
-            t=0;
-            return;
 
+            }
         }
     }
-}
-    if (o === 7&& x === 1) {
+    if (o === 7 && x === 1) {
         cell.setAttribute('rowspan', timec.length);
-        cell.setAttribute('id','Sunday')
+        cell.setAttribute('id', 'Sunday')
         cell.textContent = "Mixed Tests , JEE Advanced Pyqs , Revision of Written Notes + Focus on Weak Points ";
         if (cell) {
             cell.style.textAlign = 'center';

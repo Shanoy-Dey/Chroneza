@@ -1,82 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timexa-Login</title>
-    <link rel="stylesheet" href="styles/user.css"/>
-    <link rel="stylesheet" href="styles/style.css"/>
-</head>
-<body>
-    <nav class="nav-bar">
-        <div id="nav-img">
-            <a href="index.html"><img src="styles/timexa.png" alt="Timexa Logo"></a>
-        </div>
-        <ul>
-            <li><a href="create.html">CREATE</a></li>
-            <li><a href="plans.html">PLANS</a></li>
-            <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
-        </ul>
-    </nav>
 
-    <main class="lmain">
-        <div class="lmain-form">
-            <br><br>
-            <h1 class="login-heading">Sign Up to Timexa</span></h1>
-            <hr class="login-divider">
-            <form method="POST" class="login-form" id="loginForm" onsubmit="signup(event)">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Username" required>
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" placeholder="Email" required>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <label for="cpassword">Confirm Password</label>
-                <input type="password" id="cpassword" name="cpassword" placeholder="Confirm Password" required>
-                <button type="submit" class="login-btn">Sign Up</button>
-            </form>
-            <p class="login-signup-link">
-                Already has an account? <a href="login.html">Login</a>
-            </p>
-        </div>
-    </main>
-    <footer class="footer">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timexa-Login</title>
+  <link rel="stylesheet" href="styles/user.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/mobile.css"
+    media="only screen and (max-width: 600px), only screen and (max-device-width: 600px)">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3263604566953868"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="nav-bar">
+    <div id="nav-img">
+      <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
+    </div>
+    <ul id="nav-content">
+      <li><a href="create.html">CREATE</a></li>
+      <li><a href="plans.html">PLANS</a></li>
+      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+    </ul>
+    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
+    <ul id="dropdown-menu">
+      <li><a href="create.html">CREATE</a></li>
+      <li><a href="plans.html">PLANS</a></li>
+      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+    </ul>
+  </nav>
+
+  <main class="lmain">
+    <div class="lmain-form">
+      <br><br>
+      <h1 class="login-heading">Sign Up to Timexa</span></h1>
+      <hr class="login-divider">
+      <form method="POST" class="login-form" id="loginForm" onsubmit="signup(event)">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" placeholder="Email" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <label for="cpassword">Confirm Password</label>
+        <input type="password" id="cpassword" name="cpassword" placeholder="Confirm Password" required>
+        <button type="submit" class="login-btn">Sign Up</button>
+      </form>
+      <p class="login-signup-link">
+        Already has an account? <a href="login.html">Login</a>
+      </p>
+    </div>
+  </main>
+  <footer class="footer">
     <p>&copy; 2025 Timexa. All rights reserved.</p>
     <div class="footer-text">
-    <p>Follow us on :</p>
-    <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
+      <p>Follow us on :</p>
+      <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
     </div>
     <p>For Queries,Email Us At : timexa.timetables@gmail.com</p>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="create.html">Create</a>
-    <a href="plans.html">Plans</a>
-    <a id="nav-account-link" href="login.html">Sign Up/Login</a>
-  </div>
-</footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="create.html">Create</a>
+      <a href="plans.html">Plans</a>
+      <a id="nav-account-link" href="login.html">Sign Up/Login</a>
+    </div>
+  </footer>
 </body>
 <script>
-    window.scrollTo({top:127,behavior:'smooth'});
-    function signup(e) {
-  e.preventDefault();
-  const password = document.getElementById('password').value;
-  const cpassword = document.getElementById('cpassword').value;
-  if (password !== cpassword) {
-    alert('Passwords do not match!');
-    return;
-  }
-  fetch('/.netlify/functions/signup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      username: document.getElementById('username').value,
-      email: document.getElementById('email').value,
-      password: password,
+  window.scrollTo({ top: 127, behavior: 'smooth' });
+  function signup(e) {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const cpassword = document.getElementById('cpassword').value;
+    if (password !== cpassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+    fetch('/.netlify/functions/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: document.getElementById('username').value,
+        email: document.getElementById('email').value,
+        password: password,
+      })
     })
-  })
-  .then(res => res.json())
-  .then(data => alert(data.message || data.error));
-}
+      .then(res => res.json())
+      .then(data => alert(data.message || data.error));
+  }
 </script>
 <script src="scripts/navbar.js"></script>
+<script src="scripts/script.js"></script>
+
 </html>

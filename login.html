@@ -1,79 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timexa-Login</title>
-    <link rel="stylesheet" href="styles/user.css"/>
-    <link rel="stylesheet" href="styles/style.css"/>
-    <link rel="stylesheet" href="styles/mobile.css" media="only screen and (max-width: 360px)">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timexa-Login</title>
+  <link rel="stylesheet" href="styles/user.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/mobile.css"
+    media="only screen and (max-width: 600px), only screen and (max-device-width: 600px)">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3263604566953868"
+    crossorigin="anonymous"></script>
 </head>
-<body>
-    <nav class="nav-bar">
-        <div id="nav-img">
-            <a href="index.html"><img src="styles/timexa.png" alt="Timexa Logo"></a>
-        </div>
-        <ul>
-            <li><a href="create.html">CREATE</a></li>
-            <li><a href="plans.html">PLANS</a></li>
-            <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
-        </ul>
-    </nav>
 
-    <main class="lmain">
-        <div class="lmain-form">
-            <br><br>
-            <h1 class="login-heading">Login to Timexa</span></h1>
-            <hr class="login-divider">
-            <form class="login-form" id="loginForm" onsubmit="login(event)">
-                <label for="username">Username/Email</label>
-                <input type="text" id="username" name="username" placeholder="Username/Email" required>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-            <p class="login-signup-link">
-                Don't have an account? <a href="signup.html">Sign Up</a>
-            </p>
-        </div>
-    </main>
-    <footer class="footer">
+<body>
+   <nav class="nav-bar">
+    <div id="nav-img">
+      <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
+    </div>
+    <ul id="nav-content">
+      <li><a href="create.html">CREATE</a></li>
+      <li><a href="plans.html">PLANS</a></li>
+      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+    </ul>
+    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
+    <ul id="dropdown-menu">
+      <li><a href="create.html">CREATE</a></li>
+      <li><a href="plans.html">PLANS</a></li>
+      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+    </ul>
+  </nav>
+
+  <main class="lmain">
+    <div class="lmain-form">
+      <br><br>
+      <h1 class="login-heading">Login to Timexa</span></h1>
+      <hr class="login-divider">
+      <form class="login-form" id="loginForm" onsubmit="login(event)">
+        <label for="username">Username/Email</label>
+        <input type="text" id="username" name="username" placeholder="Username/Email" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+      <p class="login-signup-link">
+        Don't have an account? <a href="signup.html">Sign Up</a>
+      </p>
+    </div>
+  </main>
+  <footer class="footer">
     <p>&copy; 2025 Timexa. All rights reserved.</p>
     <div class="footer-text">
-    <p>Follow us on :</p>
-    <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
+      <p>Follow us on :</p>
+      <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
     </div>
     <p>For Queries,Email Us At : timexa.timetables@gmail.com</p>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="create.html">Create</a>
-    <a href="plans.html">Plans</a>
-    <a id="nav-account-link" href="login.html">Sign Up/Login</a>
-  </div>
-</footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="create.html">Create</a>
+      <a href="plans.html">Plans</a>
+      <a id="nav-account-link" href="login.html">Sign Up/Login</a>
+    </div>
+  </footer>
 </body>
 <script>
-    function login(e) {
-  e.preventDefault();
-  fetch('/.netlify/functions/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email: document.getElementById('username').value,
-      password: document.getElementById('password').value,
+  function login(e) {
+    e.preventDefault();
+    fetch('/.netlify/functions/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+      })
     })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.id) {
-      localStorage.setItem('userId', data.id);
-      window.location.href = '/account.html';
-    } else {
-      alert(data.error);
-    }
-  });
-}
+      .then(res => res.json())
+      .then(data => {
+        if (data.id) {
+          localStorage.setItem('userId', data.id);
+          window.location.href = '/account.html';
+        } else {
+          alert(data.error);
+        }
+      });
+  }
 </script>
 <script src="scripts/navbar.js"></script>
 <script src="scripts/script.js"></script>
