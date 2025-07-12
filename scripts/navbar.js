@@ -10,4 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-  
+  if (window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('signup.html')) {
+    const scrollTop = window.innerWidth > 600 ? 170 : 0;
+    window.scrollTo({ top: scrollTop, behavior: 'auto' });
+  }
+

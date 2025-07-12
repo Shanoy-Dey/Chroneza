@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timexa-Login</title>
+  <title>Timexa-Sign Up</title>
   <link rel="stylesheet" href="styles/user.css" />
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="stylesheet" href="styles/mobile.css"
@@ -14,27 +14,38 @@
 </head>
 
 <body>
+  <div id="timexa-loader">
+    <div class="panel panel-top"></div>
+    <div class="panel panel-bottom"></div>
+    <div class="panel panel-left"></div>
+    <div class="panel panel-right"></div>
+    <div class="center-box">
+      <span id="timexa-text">TIMEXA</span>
+    </div>
+  </div>
   <nav class="nav-bar">
     <div id="nav-img">
       <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
     </div>
     <ul id="nav-content">
+      <li><a href="index.html">HOME</a></li>
       <li><a href="create.html">CREATE</a></li>
       <li><a href="plans.html">PLANS</a></li>
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
     </ul>
     <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
     <ul id="dropdown-menu">
+      <li><a href="index.html">HOME</a></li>
       <li><a href="create.html">CREATE</a></li>
       <li><a href="plans.html">PLANS</a></li>
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
     </ul>
   </nav>
 
-  <main class="lmain">
+  <main class="smain">
     <div class="lmain-form">
       <br><br>
-      <h1 class="login-heading">Sign Up to Timexa</span></h1>
+      <h1 class="login-heading">Welcome to Timexa</span></h1>
       <hr class="login-divider">
       <form method="POST" class="login-form" id="loginForm" onsubmit="signup(event)">
         <label for="username">Username</label>
@@ -43,8 +54,6 @@
         <input type="text" id="email" name="email" placeholder="Email" required>
         <label for="password">Password</label>
         <input type="password" id="password" name="password" placeholder="Password" required>
-        <label for="cpassword">Confirm Password</label>
-        <input type="password" id="cpassword" name="cpassword" placeholder="Confirm Password" required>
         <button type="submit" class="login-btn">Sign Up</button>
       </form>
       <p class="login-signup-link">
@@ -72,11 +81,6 @@
   function signup(e) {
     e.preventDefault();
     const password = document.getElementById('password').value;
-    const cpassword = document.getElementById('cpassword').value;
-    if (password !== cpassword) {
-      alert('Passwords do not match!');
-      return;
-    }
     fetch('/.netlify/functions/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -90,7 +94,7 @@
       .then(data => alert(data.message || data.error));
   }
 </script>
+<script src="scripts/load.js"></script>
 <script src="scripts/navbar.js"></script>
 <script src="scripts/script.js"></script>
-
 </html>

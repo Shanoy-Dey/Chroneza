@@ -14,17 +14,28 @@
 </head>
 
 <body>
+  <div id="timexa-loader">
+    <div class="panel panel-top"></div>
+    <div class="panel panel-bottom"></div>
+    <div class="panel panel-left"></div>
+    <div class="panel panel-right"></div>
+    <div class="center-box">
+      <span id="timexa-text">TIMEXA</span>
+    </div>
+  </div>
    <nav class="nav-bar">
     <div id="nav-img">
       <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
     </div>
     <ul id="nav-content">
+      <li><a href="index.html">HOME</a></li>
       <li><a href="create.html">CREATE</a></li>
       <li><a href="plans.html">PLANS</a></li>
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
     </ul>
     <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
     <ul id="dropdown-menu">
+      <li><a href="index.html">HOME</a></li>
       <li><a href="create.html">CREATE</a></li>
       <li><a href="plans.html">PLANS</a></li>
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
@@ -34,7 +45,7 @@
   <main class="lmain">
     <div class="lmain-form">
       <br><br>
-      <h1 class="login-heading">Login to Timexa</span></h1>
+      <h1 class="login-heading">Welcome to Timexa</span></h1>
       <hr class="login-divider">
       <form class="login-form" id="loginForm" onsubmit="login(event)">
         <label for="username">Username/Email</label>
@@ -48,6 +59,7 @@
       </p>
     </div>
   </main>
+  </div>
   <footer class="footer">
     <p>&copy; 2025 Timexa. All rights reserved.</p>
     <div class="footer-text">
@@ -85,6 +97,7 @@
       });
   }
 </script>
+<script src="scripts/load.js"></script>
 <script src="scripts/navbar.js"></script>
 <script src="scripts/script.js"></script>
 

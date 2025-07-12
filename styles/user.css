@@ -1,13 +1,18 @@
-.lmain {
+main{
+  background-image: url("Login_signup.png");
+}
+
+.lmain,.smain {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: flex-end;
     min-height: 70vh;
-    gap: 60px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background: url("form.png") center center/cover no-repeat;
+    padding:120px 40px;
+    padding-right:150px;
+}
+
+.smain{
+    padding-top:50px;
 }
 
 .lmain-img {
@@ -15,18 +20,14 @@
 }
 
 .lmain-form {
-    
     flex: 1;
     min-width: 340px;
     max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .login-form {
-    
-    padding: 2px 28px;
+    background-color: white;
+    padding: 32px 28px;
     border-radius: 16px;
     -webkit-box-shadow: 0 2px 12px rgba(120,0,120,0.08);
     -moz-box-shadow: 0 2px 12px rgba(120,0,120,0.08);
@@ -49,7 +50,7 @@
 
 .login-heading {
     text-align: center;
-    color: #8d1a8d;
+    color:white;
     font-size: 2rem;
     margin-bottom: 8px;
     font-weight: 700;
@@ -66,7 +67,7 @@
 }
 
 .login-form label {
-    color: #751646;
+    color: #381291;
     font-weight: 500;
     margin-bottom: 2px;
     font-size:110%;
@@ -107,6 +108,7 @@
 }
 
 .login-signup-link {
+    color:#ffffff;
     text-align: center;
     margin-top: 12px;
     font-size: 0.98rem;
@@ -114,9 +116,12 @@
 }
 
 .login-signup-link a {
-    color: #8d1a8d;
+    color: white;
     font-weight: 600;
-    text-decoration: underline;
+    transition: color 0.2s;
+}
+.login-signup-link a:hover {
+    color: blue;
 }
 
 @media (max-width: 600px) {
@@ -146,4 +151,39 @@
 
 #signout-btn:hover {
     background: linear-gradient(90deg, #e94e77 0%, #c9a4e6 100%);
+}
+
+@media (max-width: 600px) {
+    .lmain ,.smain{
+        justify-content: center;
+        padding:0;
+    }
+        
+    .lmain-form {
+        min-width: 90vw;
+        max-width: 100px;
+        padding: 0 8px;
+    }
+    
+    .login-form {
+        padding: 18px 20px;
+        border-radius: 12px;
+    }
+
+    main{
+        background-image: none;
+        background:linear-gradient(90deg, purple, #87cefa, white);
+    }
+
+    .login-heading{
+        color:#2a0c6e;
+    }
+
+    .login-signup-link{
+        color:#2a0c6e;
+        font-weight: 500;
+        a{
+            color:blue;
+        }
+    }
 }
