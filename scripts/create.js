@@ -137,20 +137,61 @@ function createTable(label, isMorning) {
 
 
 var atime = [];
+var coach = [];
 var count = 0;
-let s = 0;
+let s1 = 0,s2=0;
 var ok = false;
+var choice = true;
 function Table() {
     window.scrollTo({ top: 450, behavior: 'smooth' });
     const val = school.value;
     go.innerHTML = "";
     const heading = document.createElement('h3');
     heading.textContent = 'Select Your Study Hours:';
+
+    const choiceTable = document.createElement('table');
+    choiceTable.setAttribute('id', 'choice');
+    const choiceRow = document.createElement('tr');
+    const choiceCell = document.createElement('td');
+    choiceCell.setAttribute('id', 'self-study');
+    choiceCell.textContent = 'Self Study Hours';
+    choiceCell.classList.add('self-study');
+    choiceRow.appendChild(choiceCell);
+    const choiceCell2 = document.createElement('td');
+    choiceCell2.setAttribute('id', 'coaching');
+    choiceCell2.textContent = 'Coaching Hours';
+    choiceRow.appendChild(choiceCell2);
+    choiceTable.appendChild(choiceRow);
     heading.setAttribute('id', 'heading');
     heading.setAttribute('class', 'hied');
     go.appendChild(heading);
     go.appendChild(document.createElement('br'));
+    go.appendChild(choiceTable);
+    go.appendChild(document.createElement('br'));
 
+    function chooseCellClick(event) {
+        const clickedCell = event.target.closest('td#self-study');
+        const clickedCell2 = event.target.closest('td#coaching');
+        if (clickedCell) {
+            clickedCell.classList.add('self-study');
+            const coachingCell = clickedCell.parentElement.querySelector('#coaching');
+            if (coachingCell) coachingCell.classList.remove('coaching');
+            choice = true;
+        }
+        if (clickedCell2) {
+            clickedCell2.classList.add('coaching');
+            const selfStudyCell = clickedCell2.parentElement.querySelector('#self-study');
+            if (selfStudyCell) selfStudyCell.classList.remove('self-study');
+            choice = false;
+        }
+    }
+
+    const choose = go.querySelectorAll('table#choice');
+    choose.forEach(table => {
+        table.addEventListener('click', chooseCellClick);
+    });
+
+    
 
     // Override createHourTable for mobile users
     if (isM || window.innerWidth < 350) {
@@ -169,14 +210,30 @@ function Table() {
     function handleCellClick(event) {
         const clickedCell = event.target.closest('td');
         if (clickedCell) {
-            setTime(clickedCell.getAttribute('value'));
             if (ok == false) {
-                if (clickedCell.classList.contains('selected')) {
-                    clickedCell.classList.remove('selected');
+                if (clickedCell.classList.contains('self-study')) {
+                    clickedCell.classList.remove('self-study');
                     count--;
-                } else {
-                    if (count < 6) {
-                        messageDiv.textContent = `You have to study at least 6 hours if you want to crack ${nexam.value.toUpperCase()} !`;
+                }
+                else if (clickedCell.classList.contains('coaching')) {
+                    clickedCell.classList.remove('coaching');
+                    count--;
+                }
+                else {
+                    if(window.choice == true) {
+                        clickedCell.classList.add('self-study');
+                        setTime(clickedCell.getAttribute('value'));
+                        count++;
+                    }
+                    else if(window.choice == false) {
+                        clickedCell.classList.add('coaching');
+                        setTime(clickedCell.getAttribute('value'));
+                        setCoachingTime(clickedCell.getAttribute('value'));
+                        count++;
+                    }
+
+                    if (count <8) {
+                        messageDiv.textContent = `You have to study at least a total of 8 hours if you want to crack ${nexam.value.toUpperCase()} !`;
                         finalsubmit.disabled = true;
                     }
                     else {
@@ -192,8 +249,6 @@ function Table() {
                         messageDiv.textContent = "You can only select a maximum of 18 hours because 6 hours Sleep is Necessary !";
                         return;
                     }
-                    clickedCell.classList.add('selected');
-                    count++;
                 }
             }
         }
@@ -206,11 +261,22 @@ function Table() {
                 return;
             }
         }
-        atime[s] = i;
-        s++;
+        atime[s1] = i;
+        s1++;
     }
 
-    const tables = go.querySelectorAll('table');
+    function setCoachingTime(i) {
+        for (let j = 0; j < coach.length; j++) {
+            if (i == coach[j]) {
+                coach.splice(j, 1);
+                return;
+            }
+        }
+        coach[s2] = i;
+        s2++;
+    }
+
+    const tables = go.querySelectorAll('table#tab, table#tab2');
     tables.forEach(table => {
         table.addEventListener('click', handleCellClick);
     });
@@ -232,21 +298,33 @@ let os = [];
 const tname = document.getElementById("tname");
 let nexam = document.getElementById("Exam");
 var timec = [];
+var coaching = [];
 let xy = 100;
 function Processing() {
     const aim = ["AIIMS DELHI", "IIT BOMBAY"];
     window.scrollBy({ top: 450, behavior: 'smooth' });
     atime = atime.filter(item => item !== undefined && item !== null && item !== "");
     atime = atime.map(Number);
+    coach = coach.filter(item => item !== undefined && item !== null && item !== "");
+    coach = coach.map(Number);
     atime.sort((a, b) => a - b);
+    coach.sort((a, b) => a - b);
+
     for (let i = 0; i < atime.length; i++) {
         const td = document.querySelector('td[value="' + atime[i] + '"]');
         if (td) {
             timec[i] = td.textContent;
         }
     }
+
+    for (let i = 0; i < coach.length; i++) {
+        const td = document.querySelector('td[value="' + coach[i] + '"]');
+        if (td) {
+            coaching[i] = td.textContent;
+        }
+    }
     // Calculate n once here for NEET
-    n = Math.floor((timec.length - 1) / 3);
+    n = Math.floor((timec.length -1-coach.length) / 3);
     const hr = document.createElement("h3");
     hr.setAttribute("id", "heading");
     hr.textContent = "Any Last Changes ?";
@@ -303,6 +381,11 @@ function Processing() {
                 row.setAttribute('id', `row${i + 1}`);
                 const timeCell = document.createElement('td');
                 timeCell.textContent = timec[i];
+                for(let k = 0; k < coach.length; k++) {
+                    if(timec[i]==coaching[k]){
+                        coach[k]=i;
+                    }
+                }
                 timeCell.style.border = '1px solid #000';
                 timeCell.style.padding = '4px';
                 row.appendChild(timeCell);
@@ -340,9 +423,12 @@ function Processing() {
                 const cell = document.createElement('td');
                 cell.setAttribute('id', `cell${j + 1}_${i + 1}`);
                 cell.style.textAlign = 'center';
-                const ex = nexam.value;
-                if (typeof window[ex] === "function") {
-                    window[ex](cell, j + 1, i + 1);
+                if (coach.includes(i)) {
+                    cell.textContent = "Coaching";
+                } else {
+                    if (typeof window[nexam.value] === "function") {
+                        window[nexam.value](cell, j + 1, i + 1);
+                    }
                 }
                 cell.style.border = '1px solid #000';
                 cell.style.padding = '4px';
@@ -409,14 +495,14 @@ function neet(cell, o, x) {
         mcq = 0;
     }
     for (let i = o; i <= 6; i++) {
-        n = Math.floor((timec.length - 1) / 3);
+        n = Math.floor((timec.length - coach.length  - 1) / 3);
 
         for (let i = o; i <= 6; i++) {
 
-            for (let l = x; l <= n * 3 && n * 3 < timec.length; l++) {
+            for (let l = x; l <= (n * 3)+coach.length && n * 3 < timec.length; l++) {
 
 
-                if (x == n * 3) {
+                if (x ==  (n * 3)+coach.length) {
                     cell.textContent = "Mistake Analysis";
                     return;
                 }
@@ -474,7 +560,7 @@ function neet(cell, o, x) {
                     return;
                 }
             }
-            ol: for (let l = x; l <= timec.length; l++) {
+            ol: for (let l = x; l <= timec.length ; l++) {
                 for (; m < os.length && t == 0;) {
                     cell.textContent = os[m].value;
                     t = 1;
@@ -528,11 +614,11 @@ function jee(cell, o, x) {
         pyq = 0;
     }
     for (let i = o; i <= 6; i++) {
-        n = Math.floor((timec.length - 1) / 3);
+        n = Math.floor((timec.length- coach.length- 1) / 3);
 
         for (let i = o; i <= 6; i++) {
 
-            for (let l = x; l <= n * 3 && n * 3 < timec.length; l++) {
+            for (let l = x; l <= (n * 3)+coach.length && n * 3 < timec.length; l++) {
 
 
                 if (p != n) {
