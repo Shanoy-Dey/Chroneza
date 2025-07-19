@@ -109,6 +109,12 @@
   text-align: center;
 }
 
+#error-message{
+  top:-20px;
+  overlay: auto;
+  font-size: 12px;;
+}
+
 #heading {
   padding-bottom: 10px;
   margin-top: -30px;

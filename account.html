@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timexa-Login</title>
+  <title>Timexa-Account</title>
   <link rel="stylesheet" href="styles/user.css" />
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="stylesheet" href="styles/mobile.css"
@@ -14,42 +14,57 @@
 </head>
 
 <body>
-  <nav class="nav-bar">
-    <div id="nav-img">
-      <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
+  <div id="timexa-loader">
+    <div class="panel panel-top"></div>
+    <div class="panel panel-bottom"></div>
+    <div class="panel panel-left"></div>
+    <div class="panel panel-right"></div>
+    <div class="center-box">
+      <span id="timexa-text">TIMEXA</span>
     </div>
-    <ul id="nav-content">
-      <li><a href="create.html">CREATE</a></li>
-      <li><a href="plans.html">PLANS</a></li>
-      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
-    </ul>
-    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
-    <ul id="dropdown-menu">
-      <li><a href="create.html">CREATE</a></li>
-      <li><a href="plans.html">PLANS</a></li>
-      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
-    </ul>
-  </nav>
 
-  <main class="lmain">
-    <form class="login-form">
-      <div id="account"></div>
-    </form>
-  </main>
-  <footer class="footer">
-    <p>&copy; 2025 Timexa. All rights reserved.</p>
-    <div class="footer-text">
-      <p>Follow us on :</p>
-      <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
-    </div>
-    <p>For Queries,Email Us At : timexa.timetables@gmail.com</p>
-    <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="create.html">Create</a>
-      <a href="plans.html">Plans</a>
-      <a id="nav-account-link" href="login.html">Sign Up/Login</a>
-    </div>
-  </footer>
+    <nav class="nav-bar">
+      <div id="nav-img">
+        <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
+      </div>
+      <ul id="nav-content">
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="create.html">CREATE</a></li>
+        <li><a href="plans.html">PLANS</a></li>
+        <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+      </ul>
+      <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
+      <ul id="dropdown-menu">
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="create.html">CREATE</a></li>
+        <li><a href="plans.html">PLANS</a></li>
+        <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+      </ul>
+    </nav>
+
+    <main class="amain">
+      <div class="lmain-form">
+      <br><br>
+      <h1 class="login-heading">Your Account Details</span></h1>
+      <hr class="login-divider">
+      <form class="login-form">
+        <div id="account"></div>
+      </form>
+    </main>
+    <footer class="footer">
+      <p>&copy; 2025 Timexa. All rights reserved.</p>
+      <div class="footer-text">
+        <p>Follow us on :</p>
+        <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
+      </div>
+      <p>For Queries,Email Us At : timexa.timetables@gmail.com</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="create.html">Create</a>
+        <a href="plans.html">Plans</a>
+        <a id="nav-account-link" href="login.html">Sign Up/Login</a>
+      </div>
+    </footer>
 </body>
 <script>
   const userId = localStorage.getItem('userId');
@@ -68,7 +83,7 @@
           ${data.username}<br>
           <label>Email :</label>
           ${data.email}<br>
-          <button id="signout-btn" type="button">Sign Out</button>`;
+          <button id="signout-btn" type="button">Log Out</button>`;
 
           document.getElementById('signout-btn').onclick = function () {
             localStorage.removeItem('userId');
@@ -86,5 +101,7 @@
 </script>
 <script src="scripts/navbar.js"></script>
 <script src="scripts/script.js"></script>
+<screipt src="scripts/load.js">
+  </script>
 
 </html>

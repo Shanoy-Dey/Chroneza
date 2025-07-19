@@ -4,14 +4,19 @@ function isMobile() {
     const ua = navigator.userAgent;
     const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
     const isLaptopOrDesktop = /Windows NT|Macintosh|Linux x86_64|X11|CrOS/i.test(ua);
-    console.log("User Agent: " + ua);
-    console.log("Is Mobile Device: " + isMobileDevice);
-    console.log("Is Laptop or Desktop: " + isLaptopOrDesktop);
     isM = isMobileDevice;
     const nav = document.querySelector('nav');
 }
 isMobile();
 
+function Show_Message(){
+    document.getElementById("error-message").style.display = "inline";
+    if(document.getElementById("error-message").style.display === "inline"){
+        setTimeout(function() {
+            document.getElementById("error-message").style.display = "none";
+        }, 2000);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const radioButtons = document.querySelectorAll('input[name="optional"]');

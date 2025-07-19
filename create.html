@@ -50,7 +50,11 @@
     <form id="form">
       <div id="her">
         <label>Enter Your Timetable Name </label>
+        <div id="t-input">
         <input type="text" name="Timetable Name" placeholder="Timetable Name" id="tname">
+        <img src="styles/exclamation.png" alt="Exclamation Mark" id="exclamation-mark" onclick="Show_Message()">
+        <span id="error-message">You may include "Timetable" at the End.</span>
+        </div>
         <br>
         <label>Choose Your Exam </label>
         <select name="exam" id="Exam">

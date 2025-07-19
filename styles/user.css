@@ -2,13 +2,18 @@ main{
   background-image: url("Login_signup.png");
 }
 
-.lmain,.smain {
+.lmain,.smain,.amain {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     min-height: 70vh;
     padding:120px 40px;
     padding-right:150px;
+}
+
+.amain{
+    padding-bottom:420px;
+    padding-top:280px;
 }
 
 .smain{
@@ -26,6 +31,9 @@ main{
 }
 
 .login-form {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
     background-color: white;
     padding: 32px 28px;
     border-radius: 16px;
