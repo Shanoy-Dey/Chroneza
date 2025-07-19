@@ -1,4 +1,4 @@
-/sign_up signup.html 200
-/login login.html 200
-/create create.html 200
-/account account.html 200
+/sign_up /signup.html 200
+/login /login.html 200
+/create /create.html 200
+/account /account.html 200
