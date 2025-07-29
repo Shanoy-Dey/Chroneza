@@ -10,6 +10,11 @@
   <link rel="stylesheet" href="styles/style.css">
   <link rel="stylesheet" href="styles/mobile.css"
     media="only screen and (max-width: 600px), only screen and (max-device-width: 600px)">
+
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Timexa - Your Timetable Assistant">
+  <meta property="og:url" content="https://timexa.netlify.app">
   <meta property="og:image" content="styles/icon.png">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
@@ -20,27 +25,18 @@
   <meta name="keywords"
     content="Timetable maker, JEE preparation, NEET timetable, Study planner, Competitive exam schedule, Timexa">
     <link rel="icon" href="styles/site-icon.png" type="image/x-icon">
-  <title>Timexa</title>
 
+
+  <title>Timexa</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3263604566953868"
     crossorigin="anonymous"></script>
 
 </head>
 
 <body>
-  <div id="timexa-loader">
-    <div class="panel panel-top"></div>
-    <div class="panel panel-bottom"></div>
-    <div class="panel panel-left"></div>
-    <div class="panel panel-right"></div>
-    <div class="center-box">
-      <span id="timexa-text">TIMEXA</span>
-    </div>
-  </div>
-
   <nav class="nav-bar">
     <div id="nav-img">
-      <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
+      <a href="index.html"><img id="nav-img" src="styles/timexa.png" alt="Timexa Logo" loading="lazy"></a>
     </div>
     <ul id="nav-content">
       <li><a href="index.html">HOME</a></li>
@@ -48,7 +44,7 @@
       <li><a href="plans.html">PLANS</a></li>
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
     </ul>
-    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
+    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()" alt="Menu Icon" loading="lazy">
     <ul id="dropdown-menu">
       <li><a href="index.html">HOME</a></li>
       <li><a href="create.html">CREATE</a></li>
@@ -60,10 +56,10 @@
   <main class="main">
     <div class="hero">
       <div class="hero-text">
-        <h2>Your Own</h2>
+        <h1>Your Own</h1>
         <h1 id="stext">Time–Table Assistant</h1>
       </div>
-      <img id="main-img" src="styles/main-im.png">
+      <img id="main-img" src="styles/main-im.png" alt="Timexa Hero Image" loading="lazy">
     </div>
     <div class="hero-sub">
       <span id="subtext">Timexa , built just to improve the Consistency of</span><span
@@ -118,7 +114,7 @@
         <p>JEE (Joint Entrance Examination) is an entrance test for various undergraduate engineering programs in India.
           It consists of two stages: JEE Main and JEE Advanced.</p>
       </div>
-      <img class="arrow" src="styles/right-arrow.png">
+      <img class="arrow" src="styles/right-arrow.png" alt="Arrow" loading="lazy">
       <div class="ename-subjects">
         <h4>Physics</h4>
         <h4>Chemistry</h4>
@@ -133,7 +129,7 @@
         <p>NEET (National Eligibility cum Entrance Test) is an entrance examination for students aspiring to pursue
           undergraduate medical courses in India.</p>
       </div>
-      <img class="arrow" src="styles/right-arrow.png">
+      <img class="arrow" src="styles/right-arrow.png" alt="Arrow" loading="lazy">
       <div class="ename-subjects">
         <h4>Physics</h4>
         <h4>Chemistry</h4>
@@ -142,13 +138,13 @@
         <h4>NEET PYQs</h4>
       </div>
     </div>
-    <h2>More Examination Timetables : Coming Soon</h2>
+    <h3>More Examination Timetables : Coming Soon</h3>
   </section>
   <footer class="footer">
     <p>&copy; 2025 Timexa. All rights reserved.</p>
     <div class="footer-text">
       <p>Follow us on :</p>
-      <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
+      <a href=""><img src="styles/Telegram.png" alt="Telegram" loading="lazy"></a>
     </div>
     <p>For Queries,Email Us At : timexa.timetables@gmail.com</p>
     <div class="footer-links">
@@ -159,7 +155,7 @@
     </div>
   </footer>
   <div class="scroll-to-top" onclick="scrollToTop()">
-    <img src="styles/up-arrow.png" alt="Scroll to Top">
+    <img src="styles/up-arrow.png" alt="Scroll to Top" loading="lazy">
   </div>
 
   <script>
@@ -169,7 +165,6 @@
   </script>
 </body>
 <script src="scripts/create.js"></script>
-<script src="scripts/load.js"></script>
 <script src="scripts/navbar.js"></script>
 <script src="scripts/script.js"></script>
 

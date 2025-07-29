@@ -6,6 +6,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+@font-face {
+  font-family: 'YourFont';
+  src: url('your-font.woff2') format('woff2');
+  font-display: swap;
+}
+
+
 .nav-bar {
   background: linear-gradient(90deg, purple, #87cefa, white);
   display: flex;
