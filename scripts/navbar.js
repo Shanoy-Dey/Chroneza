@@ -4,12 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const navAccounts = document.querySelectorAll('#nav-account-link');
   navAccounts.forEach(navAccount => {
     if (userId) {
-      navAccount.innerHTML = '<a id="nav-account-link" href="account.html">ACCOUNT</a>';
+      navAccount.innerHTML = '<href="account.html">ACCOUNT</href>';
     } else {
-      navAccount.innerHTML = '<a id="nav-account-link" href="login.html">SIGN UP/LOGIN</a>';
+      navAccount.innerHTML = '<href="login.html">SIGN UP/LOGIN</href>';
     }
   });
 });
+
+
   if (window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('signup.html')) {
     const scrollTop = window.innerWidth > 600 ? 170 : 0;
     window.scrollTo({ top: scrollTop, behavior: 'auto' });

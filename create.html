@@ -10,18 +10,21 @@
   <link rel="stylesheet" href="styles/mobile.css"
     media="only screen and (max-width: 600px), only screen and (max-device-width: 600px)">
 
+  <meta property="og:site_name" content="Timexa-Create" />
+  <meta name="application-name" content="Timexa-Create">
+  <meta name="apple-mobile-web-app-title" content="Timexa-Create">
+
 
   <meta property="og:type" content="website">
+  <meta property="og:title" content="Timexa - Your Timetable Assistant">
+  <meta property="og:url" content="https://timexa.netlify.app/create">
   <meta property="og:image" content="styles/icon.png">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="description"
-    content="Create your perfect study schedule with Timexa — the timetable assistant designed for aspirants. Free, fast, and fully customizable.">
-  <meta name="keywords"
-    content="Timetable maker, JEE preparation, NEET timetable, Study planner, Competitive exam schedule, Timexa">
-    <link rel="icon" href="styles/site-icon.png" type="image/x-icon">
+  <link rel="icon" href="styles/favicon.png" type="image/png">
+
 
 
   <title>Timexa-Create</title>
@@ -29,7 +32,7 @@
     crossorigin="anonymous"></script>
 </head>
 
-<body> 
+<body>
 
   <nav class="nav-bar">
     <div id="nav-img">
@@ -42,51 +45,64 @@
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
     </ul>
     <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()" alt="Menu Icon" loading="lazy">
-    <ul id="dropdown-menu">
-      <li><a href="index.html">HOME</a></li>
-      <li><a href="create.html">CREATE</a></li>
-      <li><a href="plans.html">PLANS</a></li>
-      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
-    </ul>
   </nav>
 
   <main id="main-create">
-    <h1 id="main-h"> Ready For Your New Timetable ?</h1>
-    <form id="form">
-      <div id="her">
-        <label>Enter Your Timetable Name </label>
-        <div id="t-input">
-        <input type="text" name="Timetable Name" placeholder="Timetable Name" id="tname">
-        <img src="styles/exclamation.png" alt="Exclamation Mark" id="exclamation-mark" onclick="Show_Message()" loading="lazy">
-        <span id="error-message">You may include "Timetable" at the End.</span>
-        </div>
-        <br>
-        <label>Choose Your Exam </label>
-        <select name="exam" id="Exam">
-          <option value="jee">JEE</option>
-          <option value="neet">NEET</option>
-        </select>
-        <br>
-        <label id="rd">Any Optional Subject</label>
-        <div id="rad">
-          <input type="radio" name="optional" value="0">0
-          <input type="radio" name="optional" value="1">1
-          <input type="radio" name="optional" value="2">2
-          <input type="radio" name="optional" value="3">3
-        </div>
-        <br>
-        <div id="here"></div>
-        <label>Schooling ?</label>
-        <select name="schooling" id="schooling">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-          <option value="no">Vacations On!</option>
-        </select>
-        <br>
-        <button type="submit" id="sb" name="submit">GET SET GO</button>
+    <div id="mob-nav">
+      <div id="upper">
+        <a href="">HOME</a>
+        <a href="create" style="background:purple;color:cyan;">CREATE</a>
       </div>
+      <div id="lower">
+        <a href="plans">PLANS</a>
+        <a id="nav-account-link" href="login">Sign Up/Login</a>
+      </div>
+    </div>
 
-    </form>
+
+    <div id="hero">
+      <h1 id="main-h"> Ready For Your New Timetable ?</h1>
+      <form id="form">
+        <div id="her">
+          <label>Enter Your Timetable Name </label>
+          <div id="t-input">
+            <input type="text" name="Timetable Name" placeholder="Timetable Name" id="tname">
+            <img src="styles/exclamation.png" alt="Exclamation Mark" id="exclamation-mark" onclick="Show_Message()"
+              loading="lazy">
+            <span id="error-message">You may include "Timetable" at the End.</span>
+          </div>
+          <br>
+          <label>Choose Your Exam </label>
+          <select name="exam" id="Exam">
+            <option value="">Select Exam</option>
+            <option value="jee">JEE</option>
+            <option value="neet">NEET</option>
+          </select>
+          <br>
+          <label id="rd">Any Optional Subject</label>
+          <div id="rad">
+            <input type="radio" name="optional" value="0" checked>0
+            <input type="radio" name="optional" value="1">1
+            <input type="radio" name="optional" value="2">2
+            <input type="radio" name="optional" value="3">3
+          </div>
+          <br>
+          <div id="here"></div>
+          <label>Schooling ?</label>
+          <select name="schooling" id="schooling">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+            <option value="no">Vacations On!</option>
+          </select>
+          <br>
+          <div id="warn">
+          </div>
+          <br>
+          <button type="submit" id="sb" name="submit">GET SET GO</button>
+        </div>
+
+      </form>
+    </div>
   </main>
   <footer class="footer">
     <p>&copy; 2025 Timexa. All rights reserved.</p>

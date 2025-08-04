@@ -23,11 +23,6 @@ main{
     display: none; /* Hide the image element since it's now a background */
 }
 
-.lmain-form {
-    flex: 1;
-    min-width: 340px;
-    max-width: 400px;
-}
 
 .login-form {
     display:flex;
@@ -161,7 +156,7 @@ main{
 }
 
 @media (max-width: 600px) {
-    .lmain ,.smain{
+    .lmain ,.smain,.amain{
         justify-content: center;
         padding:0;
     }

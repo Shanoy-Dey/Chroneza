@@ -47,10 +47,6 @@ nav a {
   transition: 500ms ease;
 }
 
-#nav-account-link {
-  margin-left: -12px;
-}
-
 nav li:hover {
   font-size: 120%;
 }
@@ -73,9 +69,7 @@ nav li:hover {
     padding-bottom: 20px;
   }
 
-  #nav-account-link {
-    padding-left: 10px;
-  }
+
 }
 
 
@@ -85,8 +79,7 @@ nav li:hover {
   padding: 20px 40px;
 }
 
-.hero {
-
+#hero-in{
   font-size: xx-large;
   display: flex;
   justify-content: space-between;
@@ -94,11 +87,14 @@ nav li:hover {
   padding-top: 80px;
 }
 
+#hero {
+  transition: padding-top 0.4s cubic-bezier(.77,0,.18,1);
+}
+
 .hero-text {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 10px;
   /* space between lines */
   margin-left: 30px;
   text-shadow:
@@ -428,4 +424,65 @@ nav li:hover {
 
 body.loading {
   overflow: hidden;
+}
+
+#mob-nav {
+  display: block;
+  position: absolute;
+  top: 120px; /* adjust as needed */
+  left: 2px;
+  width: 95vw;
+  z-index: 100;
+  opacity: 0;
+  overflow: hidden;
+  max-height: 0;
+  pointer-events: none;
+transition: max-height 0.5s cubic-bezier(.77,0,.18,1), opacity 0.3s;
+}
+
+/* When menu is open, add a class to trigger the animation */
+#mob-nav.open {
+  max-height: 500px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#hero.down{
+  padding-top:100px;
+}
+
+#upper,
+#lower {
+  padding: 5px;
+  border: none;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#upper a,
+#lower a {
+  color: #fff;
+  width: 45%;
+  text-align: center;
+  text-decoration: none;
+  padding: 15px;
+  background: linear-gradient(90deg, #e0ecff 0%, #f3e6fa 100%);
+  color: #7c1fa0;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#kk{
+  color:orange;
+}
+
+#upper a:hover,
+#lower a:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(95, 10, 135, 0.18);
 }

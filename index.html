@@ -13,6 +13,9 @@
 
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Timexa" />
+  <meta name="application-name" content="Timexa">
+  <meta name="apple-mobile-web-app-title" content="Timexa">
   <meta property="og:title" content="Timexa - Your Timetable Assistant">
   <meta property="og:url" content="https://timexa.netlify.app">
   <meta property="og:image" content="styles/icon.png">
@@ -20,11 +23,13 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="styles/favicon.png" type="image/png">
+
+
   <meta name="description"
     content="Create your perfect study schedule with Timexa — the timetable assistant designed for aspirants. Free, fast, and fully customizable.">
   <meta name="keywords"
     content="Timetable maker, JEE preparation, NEET timetable, Study planner, Competitive exam schedule, Timexa">
-    <link rel="icon" href="styles/site-icon.png" type="image/x-icon">
 
 
   <title>Timexa</title>
@@ -45,29 +50,49 @@
       <li><a id="nav-account-link" href="login">Sign Up/Login</a></li>
     </ul>
     <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()" alt="Menu Icon" loading="lazy">
-    <ul id="dropdown-menu">
-      <li><a href="">HOME</a></li>
-      <li><a href="create">CREATE</a></li>
-      <li><a href="plans">PLANS</a></li>
-      <li><a id="nav-account-link" href="login">Sign Up/Login</a></li>
-    </ul>
   </nav>
 
   <main class="main">
-    <div class="hero">
-      <div class="hero-text">
-        <h1>Your Own</h1>
-        <h1 id="stext">Time–Table Assistant</h1>
+    <div id="mob-nav">
+      <div id="upper">
+        <a href="">HOME</a>
+        <a href="create"
+          style="background:purple;color:cyan;transition:transform 0.6s cubic-bezier(.4,2,.6,1);display:inline-block;animation:scalePulse 1.2s infinite alternate;">CREATE</a>
+        <style>
+          @keyframes scalePulse {
+            from {
+              transform: scale(1.15);
+            }
+
+            to {
+              transform: scale(1);
+            }
+          }
+        </style>
       </div>
-      <img id="main-img" src="styles/main-im.png" alt="Timexa Hero Image" loading="lazy">
+      <div id="lower">
+        <a href="plans">PLANS</a>
+        <a id="nav-account-link" href="login">Sign Up/Login</a>
+      </div>
     </div>
-    <div class="hero-sub">
-      <span id="subtext">Timexa , built just to improve the Consistency of</span><span
-        style="color:purple;text-shadow:0 0 2px #ffffff,0 0 2px #ffffff,0 0 2px #ffffff;"> Aspiring Students. </span>
-    </div>
-    <div id="hton">
-      <button id="hero-button" onmouseover="buttonhover()" onclick="window.open('create', '_blank')">Create Your
-        Time-Table Now </button>
+
+
+    <div id="hero">
+      <div id="hero-in">
+        <div class="hero-text">
+          <h1>Your Own</h1>
+          <h1 id="stext">Time–Table Assistant</h1>
+        </div>
+        <img id="main-img" src="styles/main-im.png" alt="Timexa Hero Image" loading="lazy">
+      </div>
+      <div class="hero-sub">
+        <span id="subtext">Timexa , built just to improve the Consistency of</span><span
+          style="color:purple;text-shadow:0 0 2px #ffffff,0 0 2px #ffffff,0 0 2px #ffffff;"> Aspiring Students. </span>
+      </div>
+      <div id="hton">
+        <button id="hero-button" onmouseover="buttonhover()" onclick="window.open('create', '_blank')">Create Your
+          Time-Table Now </button>
+      </div>
     </div>
   </main>
 

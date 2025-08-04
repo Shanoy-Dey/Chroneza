@@ -9,13 +9,30 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="stylesheet" href="styles/mobile.css"
     media="only screen and (max-width: 600px), only screen and (max-device-width: 600px)">
+
+  <meta property="og:site_name" content="Timexa-Login" />
+  <meta name="application-name" content="Timexa-Login">
+  <meta name="apple-mobile-web-app-title" content="Timexa-Login">
+  <meta property="og:url" content="https://timexa.netlify.app/login">
+
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Timexa - Your Timetable Assistant">
+  <meta property="og:image" content="styles/icon.png">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="styles/favicon.png" type="image/png">
+
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3263604566953868"
     crossorigin="anonymous"></script>
 </head>
 
 <body>
-  
-   <nav class="nav-bar">
+
+  <nav class="nav-bar">
     <div id="nav-img">
       <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
     </div>
@@ -26,29 +43,49 @@
       <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
     </ul>
     <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
-    <ul id="dropdown-menu">
-      <li><a href="index.html">HOME</a></li>
-      <li><a href="create.html">CREATE</a></li>
-      <li><a href="plans.html">PLANS</a></li>
-      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
-    </ul>
   </nav>
 
   <main class="lmain">
-    <div class="lmain-form">
-      <br><br>
-      <h1 class="login-heading">Welcome to Timexa</span></h1>
-      <hr class="login-divider">
-      <form class="login-form" id="loginForm" onsubmit="login(event)">
-        <label for="username">Username/Email</label>
-        <input type="text" id="username" name="username" placeholder="Username/Email" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Password" required>
-        <button type="submit" class="login-btn">Login</button>
-      </form>
-      <p class="login-signup-link">
-        Don't have an account? <a href="signup.html">Sign Up</a>
-      </p>
+    <div id="mob-nav">
+      <div id="upper">
+        <a href="">HOME</a>
+        <a href="create"
+          style="background:purple;color:cyan;transition:transform 0.6s cubic-bezier(.4,2,.6,1);display:inline-block;animation:scalePulse 1.2s infinite alternate;">CREATE</a>
+        <style>
+          @keyframes scalePulse {
+            from {
+              transform: scale(1.15);
+            }
+
+            to {
+              transform: scale(1);
+            }
+          }
+        </style>
+      </div>
+      <div id="lower">
+        <a href="plans">PLANS</a>
+        <a id="nav-account-link" href="login">Sign Up/Login</a>
+      </div>
+    </div>
+
+
+    <div id="hero">
+      <div class="lmain-form">
+        <br><br>
+        <h1 class="login-heading">Welcome to Timexa</span></h1>
+        <hr class="login-divider">
+        <form class="login-form" id="loginForm" onsubmit="login(event)">
+          <label for="username">Username/Email</label>
+          <input type="text" id="username" name="username" placeholder="Username/Email" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Password" required>
+          <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p class="login-signup-link">
+          Don't have an account? <a href="signup.html">Sign Up</a>
+        </p>
+      </div>
     </div>
   </main>
   </div>
