@@ -4,9 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const navAccounts = document.querySelectorAll('#nav-account-link');
   navAccounts.forEach(navAccount => {
     if (userId) {
-      navAccount.innerHTML = '<href="account.html">ACCOUNT</href>';
-    } else {
-      navAccount.innerHTML = '<href="login.html">SIGN UP/LOGIN</href>';
+      navAccount.textContent = userId ? 'ACCOUNT' : 'SIGN UP/LOGIN';
+      navAccount.onclick = function() {
+        window.location.href = userId ? '/account' : '/login';
+      };
+      navAccount.style.cursor = 'pointer';
     }
   });
 });
