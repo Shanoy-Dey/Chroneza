@@ -27,6 +27,21 @@ document.addEventListener('click', function(e) {
     menuOpen = false;
   }
 });
+
+// Close menu on window resize
+window.addEventListener('resize', function() {
+  const menu = document.getElementById('mob-nav');
+  const icon = document.getElementById('navimg2');
+  const hero = document.getElementById('hero');
+  if (menuOpen) {
+    hero.classList.remove('down');
+    menu.classList.remove('open');
+    icon.style.transform = 'rotate(0deg)';
+    menuOpen = false;
+  }
+});
+
+
 let buttonHoverInterval = null;
 function buttonhover() {
   if (buttonHoverInterval) return; // Prevent multiple intervals

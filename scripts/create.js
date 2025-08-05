@@ -10,8 +10,14 @@ function isMobile() {
 isMobile();
 
 function Show_Message() {
-    document.getElementById("error-message").style.display = "inline";
-    if (document.getElementById("error-message").style.display === "inline") {
+    const errorMessage = document.getElementById("warning");
+    errorMessage.innerHTML = "";
+    const message=document.createElement("span");
+    message.setAttribute("id", "error-message");
+    message.textContent = "You may include 'Timetable' at the End.";
+    errorMessage.appendChild(message);
+    document.getElementById("error-message").style.display = "flex";
+    if (document.getElementById("error-message").style.display === "flex") {
         setTimeout(function () {
             document.getElementById("error-message").style.display = "none";
         }, 2000);

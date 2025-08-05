@@ -442,6 +442,8 @@ transition: max-height 0.5s cubic-bezier(.77,0,.18,1), opacity 0.3s;
 
 /* When menu is open, add a class to trigger the animation */
 #mob-nav.open {
+  display: block;
+  justify-content: center;
   max-height: 500px;
   opacity: 1;
   pointer-events: auto;

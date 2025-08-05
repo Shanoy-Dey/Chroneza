@@ -212,7 +212,7 @@ button {
   }
   #ftable {
     min-width: 400px; /* or whatever fits your columns */
-    width: max-content;
+    width: fit-content;
     margin: 0 auto;
   }
 
@@ -221,4 +221,11 @@ button {
     box-sizing: border-box;
     width:40px;
     min-width: 40px;
+    }
+
+    #error-message {
+      width:300px;
+      margin-top:30px;
+      margin-bottom: -30px;
+      padding-left: 40px;
     }

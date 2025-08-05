@@ -26,15 +26,12 @@ main {
 
 #form {
   padding: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   #heading {
     color: purple;
     padding-top: 40px;
   }
 }
+
 
 #warn {
   display: flex;
@@ -43,7 +40,6 @@ main {
 }
 
 #warn-text {
-  padding-left:30px;
   color: red;
   font-weight: 500;
   text-align: center;
@@ -90,18 +86,26 @@ select:focus {
 
 
 #error-message {
+  display: none;
+  align-items: center;
+  width: 320px;
+  margin-top: 10px;
+  margin-bottom: -10px;
+  text-align: center;
   border: 2px solid red;
   padding: 5px;
   background-color: #faffca;
-  position: absolute;
-  top: 0;
-  margin-left: 10px;
   color: red;
   font-size: 16px;
   font-weight: bold;
-  display: none;
   transition: opacity 0.3s ease-in-out;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
 }
+
 
 #Exam {
   margin-left: 140px;
