@@ -34,13 +34,13 @@
 <body>
   <nav class="nav-bar">
     <div id="nav-img">
-      <a href="index.html"><img id="nav-img" src="styles/timexa.png"></a>
+      <a href="*"><img id="nav-img" src="styles/timexa.png"></a>
     </div>
     <ul id="nav-content">
-      <li><a href="index.html">HOME</a></li>
-      <li><a href="create.html">CREATE</a></li>
-      <li><a href="plans.html">PLANS</a></li>
-      <li><a id="nav-account-link" href="login.html">Sign Up/Login</a></li>
+      <li><a href="*">HOME</a></li>
+      <li><a href="create">CREATE</a></li>
+      <li><a href="plans">PLANS</a></li>
+      <li><a id="nav-account-link" href="login">Sign Up/Login</a></li>
     </ul>
     <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
   </nav>
@@ -48,7 +48,7 @@
   <main class="amain">
     <div id="mob-nav">
       <div id="upper">
-        <a href="">HOME</a>
+        <a href="*">HOME</a>
         <a href="create"
           style="background:purple;color:cyan;transition:transform 0.6s cubic-bezier(.4,2,.6,1);display:inline-block;animation:scalePulse 1.2s infinite alternate;">CREATE</a>
         <style>
@@ -89,17 +89,17 @@
     </div>
     <p>For Queries,Email Us At : timexa.timetables@gmail.com</p>
     <div class="footer-links">
-      <a href="index.html">Home</a>
-      <a href="create.html">Create</a>
-      <a href="plans.html">Plans</a>
-      <a id="nav-account-link" href="login.html">Sign Up/Login</a>
+      <a href="*">Home</a>
+      <a href="create">Create</a>
+      <a href="plans">Plans</a>
+      <a id="nav-account-link" href="login">Sign Up/Login</a>
     </div>
   </footer>
 </body>
 <script>
   const userId = localStorage.getItem('userId');
   if (!userId) {
-    document.getElementById('account').innerHTML = `Please <a href="login.html"> login<a>.`;
+    document.getElementById('account').innerHTML = `Please <a href="login"> login<a>.`;
   } else {
     fetch(`/.netlify/functions/account?id=${userId}`)
       .then(res => {
@@ -117,7 +117,7 @@
 
           document.getElementById('signout-btn').onclick = function () {
             localStorage.removeItem('userId');
-            window.location.href = 'login.html';
+            window.location.href = 'login';
           };
         } else {
           document.getElementById('account').innerText = "Account data not found.";

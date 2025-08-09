@@ -42,21 +42,3 @@ window.addEventListener('resize', function() {
 });
 
 
-let buttonHoverInterval = null;
-function buttonhover() {
-  if (buttonHoverInterval) return; // Prevent multiple intervals
-  let progress = 0;
-  const button = document.getElementById("hero-button");
-  buttonHoverInterval = setInterval(() => {
-    if (progress > 100) {
-      clearInterval(buttonHoverInterval);
-      buttonHoverInterval = null;
-      button.style.background = `#c2185b`;
-      return;
-    }
-    button.style.background = `linear-gradient(90deg, #c2185b 0%, rgb(243, 179, 211) ${progress}%, #c2185b 100%)`;
-    button.style.transition = "background 0s";
-    progress += 5;
-  }, 20); // Smoother and a bit faster
-}
-

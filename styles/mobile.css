@@ -109,10 +109,11 @@
   text-align: center;
 }
 
-#error-message{
-  top:-20px;
+#error-message {
+  top: -20px;
   overlay: auto;
-  font-size: 12px;;
+  font-size: 12px;
+  ;
 }
 
 #heading {
@@ -130,7 +131,9 @@
 }
 
 #tab td,
-th,#tab2 td,th {
+th,
+#tab2 td,
+th {
   font-size: 12px;
 }
 
@@ -179,7 +182,7 @@ button {
 }
 
 #ftable {
-  
+
   font-size: 10px;
   max-width: 98vw;
 }
@@ -205,27 +208,48 @@ button {
 }
 
 .ftable-wrapper {
-    width: 90vw;
-    min-width: 0;
-    overflow-x: auto;
-    display: block; /* or flex, but block is fine for scroll */
-  }
-  #ftable {
-    min-width: 400px; /* or whatever fits your columns */
-    width: fit-content;
-    margin: 0 auto;
-  }
+  width: 90vw;
+  min-width: 0;
+  overflow-x: auto;
+  display: block;
+  /* or flex, but block is fine for scroll */
+}
 
-   #tab2 td, th {
-    padding:10px 0;
-    box-sizing: border-box;
-    width:40px;
-    min-width: 40px;
-    }
+#ftable {
+  min-width: 400px;
+  /* or whatever fits your columns */
+  width: fit-content;
+  margin: 0 auto;
+}
 
-    #error-message {
-      width:300px;
-      margin-top:30px;
-      margin-bottom: -30px;
-      padding-left: 40px;
-    }
+#tab2 td,
+th {
+  padding: 10px 0;
+  box-sizing: border-box;
+  width: 40px;
+  min-width: 40px;
+}
+
+#error-message {
+  width: 300px;
+  margin-top: 30px;
+  margin-bottom: -30px;
+  padding-left: 40px;
+}
+
+#overlay {
+  height: auto;
+  width: 90vw;
+}
+
+#overlay-img {
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.over-btn {
+  height: 6vh;
+  width: 6vh;
+}

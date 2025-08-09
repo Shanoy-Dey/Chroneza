@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Dancing+Script&family=Sacramento&family=Satisfy&family=Allura&family=Marck+Script&display=swap');
+
 main {
   background-color: #faffca;
   margin: 50px;
@@ -26,6 +28,7 @@ main {
 
 #form {
   padding: 70px;
+
   #heading {
     color: purple;
     padding-top: 40px;
@@ -130,7 +133,7 @@ input[type="radio"] {
   font-size: 24px;
 }
 
-button {
+.fbutton {
   padding: 15px;
   font-size: 15px;
   align-items: center;
@@ -145,13 +148,13 @@ button {
   margin-top: 20px;
 }
 
-button:hover {
+.fbutton:hover {
   background: #f3b4c9;
   transform: scale(1.05);
   color: black;
 }
 
-#centre{
+#centre {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -215,17 +218,20 @@ button:hover {
   text-align: center;
 }
 
+
 #ftable {
   text-align: center;
   margin: 0 auto;
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background: white;
   border: 2px solid purple;
   border-radius: 0%;
 
   td,
   th {
+    font-family: 'Caveat', cursive;
+    font-weight: 300;
     border-radius: 0%;
     color: purple;
   }
@@ -239,4 +245,61 @@ button:hover {
   width: 90px;
   text-align: center;
   border: 1px solid #000;
+}
+
+
+
+.temp {
+  filter: blur(2px);
+  margin: 10px;
+  height: 100px;
+  width: 200px;
+  border: 2px solid purple;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+
+#overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90vh;
+  pointer-events: auto;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  object-fit: cover;
+  border: 2px solid purple;
+  border-radius: 5px;
+  background: #fff;
+}
+
+#overlay-img {
+  margin: 0px 0px -5px 0px;
+  height: 80vh;
+  max-height: fit-content;
+}
+
+#overlay-div {
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.over-btn {
+  height: 6vh;
+  width: 6vh;
+  margin: 0px;
+  margin: 2vh 0;
+  background-size: cover;
+  cursor: pointer;
+  border-radius: 90%;
+}
+
+.over-btn:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }

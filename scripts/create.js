@@ -12,7 +12,7 @@ isMobile();
 function Show_Message() {
     const errorMessage = document.getElementById("warning");
     errorMessage.innerHTML = "";
-    const message=document.createElement("span");
+    const message = document.createElement("span");
     message.setAttribute("id", "error-message");
     message.textContent = "You may include 'Timetable' at the End.";
     errorMessage.appendChild(message);
@@ -67,7 +67,7 @@ submit.addEventListener('click', function (event) {
         os = [document.getElementById("os1"), document.getElementById("os2"), document.getElementById("os3")];
         Table();
     }
-     else {
+    else {
         const wt = document.getElementById("warn");
         wt.innerHTML = "";
         let warnText = null;
@@ -320,6 +320,7 @@ function Table() {
 
     const finalsubmit = document.createElement('button');
     finalsubmit.textContent = ' Finish ';
+    finalsubmit.setAttribute('class', 'fbutton');
     finalsubmit.setAttribute('id', 'sb');
     finalsubmit.setAttribute('type', 'submit');
     go.appendChild(finalsubmit);
@@ -331,6 +332,10 @@ function Table() {
     });
 }
 
+
+let font = ["Caveat,cursive", "Times New Roman", "Pacifico,cursive"];
+let fcolor = ["purple", "black", "darkblue"];
+let bg = ["white", "white", "linear-gradient(90deg, rgb(241, 241, 163),white)"];
 let os = [];
 let nexam = document.getElementById("Exam");
 var timec = [];
@@ -361,12 +366,109 @@ function Processing() {
     }
     // Calculate n once here for NEET
     n = Math.floor((timec.length - 1 - coach.length) / 3);
-    const hr = document.createElement("h3");
+    const hr = document.createElement("h2");
     hr.setAttribute("id", "heading");
-    hr.textContent = "Any Last Changes ?";
+    hr.textContent = "Last Step To Go !";
     hr.style.display = "block";
     hr.style.textAlign = "center";
     go.appendChild(hr);
+    const tlabel = document.createElement("h3");
+    tlabel.setAttribute("id", "heading");
+    tlabel.textContent = "Templates For Your Timetable";
+    tlabel.style.textAlign = "center";
+    tlabel.style.fontWeight = "bold";
+    go.appendChild(tlabel);
+    const tempdiv = document.createElement("div");
+    tempdiv.setAttribute("id", "templates");
+
+    const temp1 = document.createElement("img");
+    temp1.setAttribute("src", "styles/Template(Purple).jpg");
+    temp1.setAttribute("class", "temp");
+    tempdiv.appendChild(temp1);
+
+    const temp2 = document.createElement("img");
+    temp2.setAttribute("src", "styles/Template(Black).jpg");
+    temp2.setAttribute("class", "temp");
+    tempdiv.appendChild(temp2);
+
+    const temp3 = document.createElement("img");
+    temp3.setAttribute("src", "styles/Template(Blue).jpg");
+    temp3.setAttribute("class", "temp");
+    tempdiv.appendChild(temp3);
+    go.appendChild(tempdiv);
+
+
+    const overdiv = document.createElement("div");
+    overdiv.setAttribute("id", "overlay");
+    const divin = document.createElement("div");
+    divin.setAttribute("id", "overlay-div");
+    const overlayImg = document.createElement("img");
+    overlayImg.setAttribute("id", "overlay-img");
+    const apply = document.createElement("button");
+    apply.setAttribute("class", "over-btn");
+    apply.style.backgroundImage = "url('styles/check.png')";
+    const close = document.createElement("button");
+    close.setAttribute("class", "over-btn");
+    close.style.backgroundImage = "url('styles/cross.png')";
+    overdiv.appendChild(overlayImg);
+    divin.appendChild(apply);
+    divin.appendChild(close);
+    overdiv.appendChild(divin);
+    document.body.appendChild(overdiv);
+
+    const templatesDiv = document.getElementById("templates");
+    const templateImages = templatesDiv.querySelectorAll("img.temp");
+
+    function showOverlay(index) {
+        if (templateImages[index]) {
+            overlayImg.src = templateImages[index].src;
+            overdiv.style.display = "block";
+            overdiv.style.opacity = "1";
+        } else {
+            overdiv.style.display = "none";
+        }
+    }
+
+    let selectedTemplateIdx = null;
+    templateImages.forEach((img, idx) => {
+        img.addEventListener("click", () => {
+            selectedTemplateIdx = idx;
+            console.log(idx);
+            showOverlay(idx);
+        });
+    });
+    apply.addEventListener("click", () => {
+        overdiv.style.display = "none";
+        overdiv.style.opacity = "0";
+        const seltable = document.getElementById("ftable");
+        if (selectedTemplateIdx !== null) {
+            seltable.style.fontFamily = font[selectedTemplateIdx];
+            seltable.style.borderColor = fcolor[selectedTemplateIdx];
+            seltable.style.color = fcolor[selectedTemplateIdx];
+            // Apply styles to all td and th in seltable
+            const cells = seltable.querySelectorAll('td, th');
+            cells.forEach(cell => {
+                cell.style.fontFamily = font[selectedTemplateIdx];
+                cell.style.borderColor = fcolor[selectedTemplateIdx];
+                cell.style.color = fcolor[selectedTemplateIdx];
+            });
+            seltable.style.background = bg[selectedTemplateIdx];
+        }
+    });
+    close.addEventListener("click", () => {
+        overdiv.style.display = "none";
+        overdiv.style.opacity = "0";
+    });
+
+
+
+
+    const edit = document.createElement("h3");
+    edit.setAttribute("id", "heading");
+    edit.textContent = "Click on the cells to edit them !";
+    edit.style.textAlign = "center";
+    edit.style.fontWeight = "bold";
+    go.appendChild(edit);
     const wrapper = document.createElement('div');
     wrapper.className = 'ftable-wrapper';
     var ftable = document.createElement('table');
@@ -489,7 +591,7 @@ function Processing() {
         td.setAttribute('contenteditable', 'true');
     });
     const Gen = document.createElement("button");
-
+    Gen.setAttribute('class', 'fbutton');
     Gen.textContent = "Generate Timetable Image";
     Gen.addEventListener('click', function (event) {
         event.preventDefault();
