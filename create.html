@@ -64,41 +64,51 @@
       <h1 id="main-h"> Ready For Your New Timetable ?</h1>
       <form id="form">
         <div id="her">
-          <label>Enter Your Timetable Name </label>
-          <div id="t-input">
-            <input type="text" name="Timetable Name" placeholder="Timetable Name" id="tname">
-            <img src="styles/exclamation.png" alt="Exclamation Mark" id="exclamation-mark" onclick="Show_Message()"
-              loading="lazy">
+          <div id="herohero">
+            <div id="create-hero-text">
+              <label>Enter Your Timetable Name </label>
+              <div id="t-input">
+                <input type="text" name="Timetable Name" placeholder="Timetable Name" id="tname">
+                <img src="styles/exclamation.png" alt="Exclamation Mark" id="exclamation-mark" onclick="Show_Message()"
+                  loading="lazy">
               </div>
-            <div id="warning"></div>
-          <br>
-          <label>Choose Your Exam </label>
-          <select name="exam" id="Exam">
-            <option value="">Select Exam</option>
-            <option value="jee">JEE</option>
-            <option value="neet">NEET</option>
-          </select>
-          <br>
-          <label id="rd">Any Optional Subject</label>
-          <div id="rad">
-            <input type="radio" name="optional" value="0" checked>0
-            <input type="radio" name="optional" value="1">1
-            <input type="radio" name="optional" value="2">2
-            <input type="radio" name="optional" value="3">3
+              <div id="warning"></div>
+              <br>
+              <label>Choose Your Exam </label>
+              <select name="exam" id="Exam">
+                <option value="">Select Exam</option>
+                <option value="jee">JEE</option>
+                <option value="neet">NEET</option>
+              </select>
+              <br>
+              <label id="rd">Any Optional Subject</label>
+              <div id="rad">
+                <input type="radio" name="optional" value="0" checked>0
+                <input type="radio" name="optional" value="1">1
+                <input type="radio" name="optional" value="2">2
+                <input type="radio" name="optional" value="3">3
+              </div>
+              <br>
+              <div id="here"></div>
+              <label>Schooling ?</label>
+              <select name="schooling" id="schooling">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+                <option value="no">Vacations On!</option>
+              </select>
+              <br>
+              <label>Enter Your Dream College</label>
+              <input type="text" name="Dream College" placeholder="Dream College" id="dcollege">
+              <div id="warn">
+              </div>
+              <br>
+              <button type="submit" class="fbutton" id="sb" name="submit">GET SET GO</button>
+            </div>
+
+            <div id="create_hero">
+              <img src="styles/create_hero.png" alt="Create Hero Image" id="create-hero-img" loading="lazy">
+            </div>
           </div>
-          <br>
-          <div id="here"></div>
-          <label>Schooling ?</label>
-          <select name="schooling" id="schooling">
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-            <option value="no">Vacations On!</option>
-          </select>
-          <br>
-          <div id="warn">
-          </div>
-          <br>
-          <button type="submit" class="fbutton" id="sb" name="submit">GET SET GO</button>
         </div>
 
       </form>

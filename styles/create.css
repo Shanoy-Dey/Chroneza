@@ -55,6 +55,11 @@ label {
   font-size: 25px;
 }
 
+#create-hero-text label::before {
+  content: "• ";
+    color: purple; 
+}
+
 input,
 select {
   margin-bottom: 20px;
@@ -87,6 +92,33 @@ select:focus {
   }
 }
 
+#herohero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+
+}
+
+#create-hero {
+  padding-left: 70px;
+  margin-top: -80px;
+
+}
+
+#create-hero-img {
+  border: 2px solid purple;
+  width: 250px;
+  transition: transform 0.3s ease;
+}
+
+#create-hero-img:hover {
+  transform: scale(1.01);
+}
+
+#here {
+  margin-left: -80px;
+}
 
 #error-message {
   display: none;
@@ -112,6 +144,11 @@ select:focus {
 
 #Exam {
   margin-left: 140px;
+}
+
+#dcollege {
+  margin-left: 56px;
+  ;
 }
 
 #schooling {

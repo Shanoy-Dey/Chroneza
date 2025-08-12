@@ -166,7 +166,8 @@ select {
 }
 
 #Exam,
-#schooling {
+#schooling,
+#dcollege {
   margin-left: 0;
 }
 
@@ -252,4 +253,16 @@ th {
 .over-btn {
   height: 6vh;
   width: 6vh;
+}
+
+#create-hero-img{
+  display:none;
+}
+
+#herohero{
+  display:block;
+}
+
+#here{
+  margin-left: 0;
 }

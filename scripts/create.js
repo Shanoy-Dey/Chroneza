@@ -60,12 +60,31 @@ for (let i = 0; i < input.length; i++) {
 const tname = document.getElementById("tname");
 const exa = document.getElementById("Exam");
 const school = document.getElementById("schooling");
+const dcollege = document.getElementById("dcollege");
 const submit = document.getElementById("sb");
 submit.addEventListener('click', function (event) {
     event.preventDefault();
-    if (form.checkValidity() && exa.value !== "") {
+    if (tname.value !== "" && exa.value !== "") {
+
         os = [document.getElementById("os1"), document.getElementById("os2"), document.getElementById("os3")];
-        Table();
+        os = os.filter(item => item !== undefined && item !== null && item !== "");
+        if (os.length > 0) {
+            for (let i = 0; i < os.length; i++) {
+                if (os[i].value === "") {
+                    const wt = document.getElementById("warn");
+                    wt.innerHTML = "";
+                    let warnText = document.createElement("span");
+                    warnText.setAttribute("id", "warn-text");
+                    warnText.textContent = "Please Fill The Optional Subjects !";
+                    wt.appendChild(warnText);
+                    return;
+                }
+            }
+            Table();
+        }
+        else {
+            Table();
+        }
     }
     else {
         const wt = document.getElementById("warn");
@@ -577,7 +596,11 @@ function Processing() {
     const row = document.createElement("tr");
     const td = document.createElement("td");
     td.setAttribute("colspan", "8");
-    td.textContent = "AIM -for- " + aim[xy];
+    if (dcollege.value === "") {
+        td.textContent = "AIM -for- " + aim[xy];
+    } else {
+        td.textContent = "AIM -for- " + dcollege.value;
+    }
     td.style.textAlign = "center";
     td.style.fontSize = "24px";
     td.style.fontWeight = '500';
@@ -618,8 +641,7 @@ function neet(cell, o, x) {
         "Physics", "Physics Numericals",
         "Chemistry", "Chemistry Numericals",
         "Botany", "Ncert Reading",
-        "Zoology", "Ncert Reading",
-        "Phy-Chem NEET MCQs ",
+        "Zoology", "Revision", "Phy-Chem NEET MCQs ",
         "Biology NEET MCQs "
     ];
     os = os.filter(item => item !== undefined && item !== null && item !== "");
@@ -678,7 +700,7 @@ function neet(cell, o, x) {
                 }
                 if (z != n) {
                     if (z == n - 1) {
-                        cell.textContent = subjects[7];
+                        cell.textContent = subjects[5];
                         z++;
                         return;
                     }
@@ -711,10 +733,10 @@ function neet(cell, o, x) {
                     return;
                 }
                 if (l == timec.length - 1) {
-                    cell.textContent = "Phy-Chem NCERT Reading";
+                    cell.textContent = "Phy-Chem NCERT Go Through";
                     return;
                 }
-                cell.textContent = "Revision";
+                cell.textContent = subjects[7];
                 t = 0;
                 return;
 
