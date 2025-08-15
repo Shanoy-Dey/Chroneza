@@ -2,7 +2,7 @@
 
 // Show loader and play reverse animation
 function showReverseLoader(callback) {
-  let loader = document.getElementById('timexa-loader');
+  let loader = document.getElementById('timexza-loader');
   if (!loader) {
     return callback && callback();
   }
@@ -17,7 +17,7 @@ function showReverseLoader(callback) {
   document.querySelector('.center-box').style.opacity = '0';
 
   setTimeout(() => {
-    // Animate panels inward (TIMEXA still hidden)
+    // Animate panels inward (TIMEXZA still hidden)
     document.querySelector('.panel-top').style.transform = 'translateY(0)';
     document.querySelector('.panel-bottom').style.transform = 'translateY(0)';
     document.querySelector('.panel-left').style.transform = 'translateX(0)';
@@ -25,7 +25,7 @@ function showReverseLoader(callback) {
     // Do NOT show .center-box yet
   }, 10);
 
-  // After panels have shut, show TIMEXA
+  // After panels have shut, show TIMEXZA
   setTimeout(() => {
     document.querySelector('.center-box').style.opacity = '1';
   }, 700); // Adjust this to match your panel animation duration
@@ -33,7 +33,7 @@ function showReverseLoader(callback) {
   // After animation, call callback (navigate)
   setTimeout(() => {
     if (callback) callback();
-  }, 1200); // Give time for TIMEXA to appear before navigating
+  }, 1200); // Give time for TIMEXZA to appear before navigating
 }
 
 // Normal loader on page load (panels slide out)
@@ -48,10 +48,10 @@ window.addEventListener('DOMContentLoaded', function() {
   }, 600);
 
   setTimeout(() => {
-    document.getElementById('timexa-loader').style.opacity = '0';
+    document.getElementById('timexza-loader').style.opacity = '0';
     document.body.classList.remove('loading');
     setTimeout(() => {
-      const loader = document.getElementById('timexa-loader');
+      const loader = document.getElementById('timexza-loader');
       if (loader) loader.style.display = 'none';
     }, 600);
   }, 2200);

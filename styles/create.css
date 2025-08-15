@@ -57,7 +57,7 @@ label {
 
 #create-hero-text label::before {
   content: "• ";
-    color: purple; 
+  color: purple;
 }
 
 input,
@@ -339,4 +339,17 @@ input[type="radio"] {
 .over-btn:hover {
   transform: scale(1.1);
   transition: transform 0.3s ease;
+}
+
+.label-icon {
+  width: 50px;
+  user-select: none;
+  margin-top: 40px;
+  margin-right: 10px;;
+}
+
+#label-pair {
+  padding-left:10px;
+  display:flex;
+  align-items: flex-start;
 }

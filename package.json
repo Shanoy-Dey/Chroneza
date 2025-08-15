@@ -1,5 +1,5 @@
 {
-  "name": "timexa",
+  "name": "timexza",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shanoy-Dey/Timexa.git"
+    "url": "git+https://github.com/Shanoy-Dey/Timexza.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Shanoy-Dey/Timexa/issues"
+    "url": "https://github.com/Shanoy-Dey/Timexza/issues"
   },
-  "homepage": "https://github.com/Shanoy-Dey/Timexa#readme",
+  "homepage": "https://github.com/Shanoy-Dey/Timexza#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "pg": "^8.16.0"

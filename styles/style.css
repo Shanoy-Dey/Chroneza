@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Dancing+Script&family=Sacramento&family=Satisfy&family=Allura&family=Marck+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@200..700&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -21,8 +23,22 @@
   padding: 20px;
 }
 
-#nav-img img {
-  width: 200px;
+#nav-img a{
+  font-family: "Mozilla Headline", sans-serif !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color:white;
+  margin-top:-10px;
+  margin-left:30px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+#nav-img img{
+  filter:invert(100%);
+  width: 90px;
 }
 
 #navimg2 {
@@ -30,7 +46,7 @@
 }
 
 nav ul {
-  padding-top: 12px;
+  padding-top: 25px;
   list-style: none;
   font-weight: 400;
 }
@@ -39,7 +55,7 @@ nav li {
   display: inline;
 }
 
-nav a {
+#nav-content a {
   padding: 25px;
   text-decoration: none;
   color: purple;
@@ -90,7 +106,15 @@ nav li:hover {
 #hero {
   transition: padding-top 0.4s cubic-bezier(.77,0,.18,1);
 }
-
+.hero-text h1{
+  font-family: "Mozilla Headline", sans-serif !important;
+  font-optical-sizing: auto;
+  font-weight:700;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+  word-spacing: 5px;
+}
 .hero-text {
   display: flex;
   flex-direction: column;
@@ -105,13 +129,13 @@ nav li:hover {
 
 #stext {
   display: block;
-  font-weight: bold;
   /* Optional: add margin or font-size adjustments */
 }
 
 #main-img {
   width: 520px;
   margin-top: -60px;
+  margin-left:200px;
   margin-right: -40px;
 }
 
@@ -350,7 +374,7 @@ nav li:hover {
   transform: scale(1.1);
 }
 
-#timexa-loader {
+#timexza-loader {
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -414,7 +438,7 @@ nav li:hover {
   transition: filter 0.8s cubic-bezier(.77, 0, .18, 1);
 }
 
-#timexa-text {
+#timexza-text {
   font-size: 2.5rem;
   font-family: 'Segoe UI', Arial, sans-serif;
   color: #222;

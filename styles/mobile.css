@@ -3,7 +3,12 @@
 }
 
 #nav-img img {
-  width: 200px;
+  padding-left:20px;
+  width: 90px;
+}
+
+#nav-img a{
+  margin-left:0;
 }
 
 .nav-bar a {
@@ -85,6 +90,10 @@
 #nav-account-link {
   display: block;
   align-self: center;
+}
+
+#stext{
+  margin-top:-20px;
 }
 
 
@@ -265,4 +274,15 @@ th {
 
 #here{
   margin-left: 0;
+}
+
+.label-icon {
+  margin:0;
+}
+
+#label-pair {
+  padding-left: 0;
+  display:flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -115,14 +115,23 @@ var j = 1;
 const go = document.getElementById("her");
 
 function createHourTable(label, isMorning) {
+    const container = document.createElement('div'); // wrapper for this instance
+    go.appendChild(container);
+    const labelpair = document.createElement('div');
+    labelpair.setAttribute('id', 'label-pair');
+    const icon = document.createElement('img');
+    icon.setAttribute('src', 'styles/label_icon.png');
+    icon.setAttribute('class', 'label-icon');
+    labelpair.appendChild(icon);
     const head = document.createElement('h4');
     head.textContent = label;
     head.setAttribute('id', 'heading');
-    go.appendChild(head);
-
+    labelpair.appendChild(head);
+    container.appendChild(labelpair);
     const table = document.createElement('table');
-    const row = document.createElement('tr');
     table.setAttribute('id', 'tab');
+    const row = document.createElement('tr');
+
     for (let i = 0; i <= 11; i++) {
         const col = document.createElement('td');
         if (isMorning) {
@@ -146,16 +155,24 @@ function createHourTable(label, isMorning) {
     }
 
     table.appendChild(row);
-    go.appendChild(table);
-    go.appendChild(document.createElement('br'));
+    container.appendChild(table);
+    const br = document.createElement('br');
+    container.appendChild(br);
 }
 
+
 function createTable(label, isMorning) {
+    const labelpair = document.createElement('div');
+    labelpair.setAttribute('id', 'label-pair');
+    const icon = document.createElement('img');
+    icon.setAttribute('src', 'styles/label_icon.png');
+    icon.setAttribute('class', 'label-icon');
+    labelpair.appendChild(icon);
     const head = document.createElement('h4');
     head.textContent = label;
     head.setAttribute('id', 'heading');
-    go.appendChild(head);
-
+    labelpair.appendChild(head);
+    go.appendChild(labelpair);
     const table = document.createElement('table');
     table.setAttribute('id', 'tab2');
     for (let i = 0; i < 2; i++) {
@@ -187,6 +204,7 @@ function createTable(label, isMorning) {
     go.appendChild(table);
     go.appendChild(document.createElement('br'));
 }
+
 
 
 var atime = [];
@@ -261,6 +279,7 @@ function Table() {
 
     const messageDiv = document.createElement('div');
     messageDiv.setAttribute('id', 'hour-limit-message');
+    messageDiv.textContent = `You have to study at least a total of 8 hours if you want to crack ${nexam.value.toUpperCase()} !`;
     go.appendChild(messageDiv);
 
     function handleCellClick(event) {
@@ -269,23 +288,45 @@ function Table() {
             if (ok == false) {
                 if (clickedCell.classList.contains('self-study')) {
                     clickedCell.classList.remove('self-study');
+                    setTime(clickedCell.getAttribute('value'));
                     count--;
                 }
                 else if (clickedCell.classList.contains('coaching')) {
                     clickedCell.classList.remove('coaching');
+                    setCoachingTime(clickedCell.getAttribute('value'));
                     count--;
                 }
                 else {
+                    atime = atime.filter(item => item !== undefined && item !== null && item !== "");
+                    coach = coach.filter(item => item !== undefined && item !== null && item !== "");
+
+
+                    if (val == "yes" && count >= 12) {
+                        messageDiv.textContent = "You can only select a maximum of 12 hours because 6 hours School and 6 hours Sleep is Necessary !";
+                        return;
+                    }
+
+                    else if (val == "no" && count >= 18) {
+                        messageDiv.textContent = "You can only select a maximum of 18 hours because 6 hours Sleep is Necessary !";
+                        return;
+                    }
+
                     if (window.choice == true) {
                         clickedCell.classList.add('self-study');
                         setTime(clickedCell.getAttribute('value'));
                         count++;
                     }
-                    else if (window.choice == false) {
+                    else if (window.choice == false && coach.length < 4) {
                         clickedCell.classList.add('coaching');
                         setTime(clickedCell.getAttribute('value'));
                         setCoachingTime(clickedCell.getAttribute('value'));
                         count++;
+                    }
+
+                    if (coach.length > 3) {
+                        if (!messageDiv.textContent.includes("maximum of 4 hours")) {
+                            messageDiv.textContent += "You can only select a maximum of 4 hours for Coaching !";
+                        }
                     }
 
                     if (count < 8) {
@@ -295,15 +336,6 @@ function Table() {
                     else {
                         messageDiv.textContent = "";
                         finalsubmit.disabled = false;
-                    }
-
-                    if (val == "yes" && count >= 12) {
-                        messageDiv.textContent = "You can only select a maximum of 12 hours because 6 hours School and 6 hours Sleep is Necessary !";
-                        return;
-                    }
-                    else if (val == "no" && count >= 18) {
-                        messageDiv.textContent = "You can only select a maximum of 18 hours because 6 hours Sleep is Necessary !";
-                        return;
                     }
                 }
             }
@@ -640,19 +672,27 @@ function neet(cell, o, x) {
     const subjects = [
         "Physics", "Physics Numericals",
         "Chemistry", "Chemistry Numericals",
-        "Botany", "Ncert Reading",
-        "Zoology", "Revision", "Phy-Chem NEET MCQs ",
-        "Biology NEET MCQs "
+        "Botany", "Botany Ncert Reading",
+        "Zoology", "Revision", "Physics NEET MCQs ",
+        "Biology NEET MCQs ", "Zoology Ncert Reading", "Chemistry NEET MCQs"
     ];
     os = os.filter(item => item !== undefined && item !== null && item !== "");
     // n is now calculated once in Processing()
-    if (x == 1 && o % 2 == 1) {
-        p = 0;
-        c = 0;
-        b = 0;
-        z = 0;
-        pcf = 0;
-        mcq = 0;
+    if (x == 1) {
+        if (n >= 2) {
+            pcf = 1;
+            mcq = 1;
+        }
+        else {
+            pcf = 0;
+            mcq = 0;
+        }
+        if (o % 2 == 1) {
+            p = 0;
+            c = 0;
+            b = 0;
+            z = 0;
+        }
     }
     for (let i = o; i <= 6; i++) {
         n = Math.floor((timec.length - coach.length - 1) / 3);
@@ -676,7 +716,7 @@ function neet(cell, o, x) {
                     p++;
                     return;
                 }
-                if (c != n) {
+                if (c != n && o % 2 == 0) {
                     if (c == n - 1) {
                         cell.textContent = subjects[3];
                         c++;
@@ -686,8 +726,8 @@ function neet(cell, o, x) {
                     c++;
                     return;
                 }
-                if (b != n) {
-                    if (b == n - 1 && l != 1 && z == n - 1) {
+                if (b != n && o % 2 == 0) {
+                    if (b == n - 1) {
                         cell.textContent = subjects[5];
                         b++;
                         return;
@@ -700,7 +740,7 @@ function neet(cell, o, x) {
                 }
                 if (z != n) {
                     if (z == n - 1) {
-                        cell.textContent = subjects[5];
+                        cell.textContent = subjects[10];
                         z++;
                         return;
                     }
@@ -708,13 +748,17 @@ function neet(cell, o, x) {
                     z++;
                     return;
                 }
-                if (pcf != n - 1) {
-                    cell.textContent = subjects[8];
+
+                if (pcf != n) {
+                    if (o % 2 == 0)
+                        cell.textContent = subjects[11];
+                    else
+                        cell.textContent = subjects[8];
                     pcf++;
                     return;
                 }
 
-                if (mcq != n - 1) {
+                if (mcq != n) {
                     cell.textContent = subjects[9];
                     mcq++;
                     return;
@@ -835,10 +879,18 @@ function jee(cell, o, x) {
                     cell.textContent = "Notes Review";
                     return;
                 }
-                if (o % 2 == 0)
-                    cell.textContent = "Mistake Analysis";
-                else
-                    cell.textContent = subjects[6];
+                if (o % 2 == 0) {
+                    if (l % 2 == 1)
+                        cell.textContent = "Mistake Analysis";
+                    else
+                        cell.textContent = subjects[6];
+                }
+                else {
+                    if (l % 2 == 1)
+                        cell.textContent = subjects[6];
+                    else
+                        cell.textContent = "Notes Revision";
+                }
                 t = 0;
                 return;
 
