@@ -5,20 +5,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-  <title>Timexza-Sign Up</title>
+  <title>Chroneza-Sign Up</title>
   <link rel="stylesheet" href="styles/user.css" />
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="stylesheet" href="styles/mobile.css"
     media="only screen and (max-width: 600px), only screen and (max-device-width: 600px)">
 
-  <meta property="og:site_name" content="Timexza-Sign Up" />
-  <meta name="application-name" content="Timexza-Sign Up">
-  <meta name="apple-mobile-web-app-title" content="Timexza-Sign Up">
-  <meta property="og:url" content="https://timexza.netlify.app/signup">
+  <meta property="og:site_name" content="Chroneza-Sign Up" />
+  <meta name="application-name" content="Chroneza-Sign Up">
+  <meta name="apple-mobile-web-app-title" content="Chroneza-Sign Up">
+  <meta property="og:url" content="https://chroneza.netlify.app/signup">
 
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Timexza - Your Timetable Assistant">
+  <meta property="og:title" content="Chroneza - Your Timetable Assistant">
   <meta property="og:image" content="styles/icon.png">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
@@ -33,9 +33,9 @@
 
 <body>
 
-  <nav class="nav-bar">
+  <nav class="nav-bar" style="background-image: url('styles/bg.png'); ">
     <div id="nav-img">
-      <a href="*"><img id="nav-img" src="styles/timexza.png">TIMEXZA</a>
+      <a href="*"><img src="styles/chroneza.png" alt="Chroneza Logo" loading="lazy">CHRONEZA</a>
     </div>
     <ul id="nav-content">
       <li><a href="*">HOME</a></li>
@@ -43,9 +43,8 @@
       <li><a href="plans">PLANS</a></li>
       <li><a id="nav-account-link" href="login">Sign Up/Login</a></li>
     </ul>
-    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()">
+    <img src="styles/menu_icon.png" id="navimg2" onclick="toggleDropdownMenu()" alt="Menu Icon" loading="lazy">
   </nav>
-
   <main class="smain">
     <div id="mob-nav">
       <div id="upper">
@@ -74,7 +73,7 @@
     <div id="hero">
       <div class="lmain-form">
         <br><br>
-        <h1 class="login-heading">Welcome to Timexza</span></h1>
+        <h1 class="login-heading">Welcome to Chroneza</span></h1>
         <hr class="login-divider">
         <form method="POST" class="login-form" id="loginForm" onsubmit="signup(event)">
           <label for="username">Username</label>
@@ -92,17 +91,26 @@
     </div>
   </main>
   <footer class="footer">
-    <p>&copy; 2025 Timexza. All rights reserved.</p>
+    <p>&copy; 2025 Chroneza. All rights reserved.</p>
+    <p style="padding:10px 0;">For Queries,Email Us At : chroneza.timetables@gmail.com</p>
+    <div class="footer-links">
+      <h3>OUR PAGES</h3>
+      <div id="link">
+        <a href="*">HOME</a>
+        <a href="create">CREATE</a>
+        <a href="plans">PLANS</a>
+        <a id="nav-account-link" href="login">SIGN UP/LOGIN</a>
+      </div>
+    </div>
+    <div class="footer-exam">
+      <h3>EXAMINATION TIMETABLES</h3>
+      <a href="create?exam=jee">JEE</a>
+      <a href="create?exam=neet">NEET</a>
+    </div>
     <div class="footer-text">
       <p>Follow us on :</p>
-      <a href=""><img src="styles/Telegram.png" alt="Telegram"></a>
-    </div>
-    <p>For Queries,Email Us At : timexza.timetables@gmail.com</p>
-    <div class="footer-links">
-      <a href="*">HOME</a>
-      <a href="create">CREATE</a>
-      <a href="plans">PLANS</a>
-      <a id="nav-account-link" href="login">SIGN UP/LOGIN</a>
+      <a href=""><img src="styles/Telegram.png" alt="Telegram" loading="lazy"></a>
+      <a href=""><img src="styles/instagram.png" alt="Instagram" loading="lazy"></a>
     </div>
   </footer>
 </body>
@@ -124,7 +132,7 @@
       .then(data => alert(data.message || data.error));
   }
 </script>
-<script src="scripts/navbar.js"></script>
-<script src="scripts/script.js"></script>
+<script src="static/scripts/navbar.js"></script>
+<script src="static/scripts/script.js"></script>
 
 </html>
