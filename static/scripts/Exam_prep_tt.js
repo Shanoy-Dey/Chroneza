@@ -59,7 +59,7 @@ function Exam_prep() {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    const res = await fetch('https://chroneza.onrender.com/upload', { // ✅ full backend URL
+    const res = await fetch('https://chroneza-render.onrender.com/upload', { // ✅ full backend URL
       method: 'POST',
       body: formData
     });
