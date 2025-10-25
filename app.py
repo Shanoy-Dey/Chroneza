@@ -6,27 +6,46 @@ import re
 from datetime import datetime
 import os
 
+# Set Tesseract command path if necessary (especially for Render/Linux environments)
+# If Tesseract is not found, uncomment and adjust the path:
+# pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/bin/tesseract' 
+
 app = Flask(__name__, static_folder='static')
 
 # --- Helper Functions ---
 
 def normalize_date(date_str):
     """Convert date to YYYY-MM-DD format, trying various formats."""
-    # Common date formats to attempt parsing
+    # Common date formats to attempt parsing, prioritized by completeness
     date_formats = [
-        "%d %B %Y", "%d %b %Y", "%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y", 
-        "%B %d, %Y", "%b %d, %Y", "%Y-%m-%d" # Added more common formats
+        # Full date formats (e.g., 3 November 2025, 3 Nov 25)
+        "%d %B %Y", "%d %b %Y",
+        "%d %B %y", "%d %b %y",
+        "%B %d %Y", "%b %d %Y", # Month Day Year (e.g., November 3 2025)
+
+        # Standard formats (e.g., 03/11/2025)
+        "%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y", 
+        "%m/%d/%Y", "%m-%d-%Y", "%m.%d.%Y", # Added month/day/year formats
+
+        # Year-first formats
+        "%Y-%m-%d"
     ]
+    # Clean up the string to remove extraneous commas/spaces/ordinal suffixes like 'rd'
+    cleaned_str = re.sub(r'(\s+)', ' ', date_str.strip()).replace(',', '').replace('rd', '').replace('st', '').replace('th', '').replace('nd', '')
+    
     for fmt in date_formats:
         try:
-            return datetime.strptime(date_str.strip(), fmt).strftime("%Y-%m-%d")
+            # Use strict parsing
+            return datetime.strptime(cleaned_str, fmt).strftime("%Y-%m-%d")
         except ValueError:
             continue
+            
     return date_str # Return original if no format matches
 
 def extract_exam_data(np_array):
     """
     Run OCR and extract subjects + dates from an image array using in-memory processing.
+    Includes enhanced preprocessing for low-quality images.
     """
     # 1. Decode the image from the numpy array in memory
     img = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
@@ -34,44 +53,43 @@ def extract_exam_data(np_array):
     if img is None:
         raise ValueError("Could not decode image array. The file may be corrupt or not a valid image.")
 
-    # 2. Image Pre-processing for better OCR
+    # 2. Image Pre-processing for better OCR on low-quality images
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
-    # Use adaptive thresholding for better handling of uneven lighting
+    # 2a. Add Gaussian Blur to smooth out high-frequency noise before thresholding
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    
+    # 2b. Use adaptive thresholding on the blurred image
+    # This dynamically handles uneven lighting across the image
     thresh = cv2.adaptiveThreshold(
-        gray, 
+        blurred, 
         255, 
         cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
         cv2.THRESH_BINARY, 
-        11, 
-        2
+        21, # Larger block size is often better for uneven illumination
+        4   # C constant (subtracted from the mean)
     )
     
-    # Optional: Noise reduction or mild dilation to connect broken characters
-    kernel = np.ones((1, 1), np.uint8)
-    processed_img = cv2.erode(thresh, kernel, iterations=1)
-    processed_img = cv2.dilate(processed_img, kernel, iterations=1)
-    
-    # Ensure background is white and text is black (Tesseract preference)
-    processed_img = cv2.bitwise_not(processed_img)
+    # Ensure text is black on white background (Tesseract preference for binary images)
+    processed_img = cv2.bitwise_not(thresh)
 
     # 3. OCR text extraction
-    # Use page segmentation mode 6 (Assume a single uniform block of text)
-    custom_config = r'--psm 6'
+    custom_config = r'--psm 6' # Assume a single uniform block of text
     text = pytesseract.image_to_string(processed_img, config=custom_config)
     print("OCR Raw Output:\n", text)
 
     # 4. Clean and process text
-        # 4. Clean and process text
     text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ').replace(';', ' ')
     lines = [line.strip() for line in text.split('\n') if line.strip()]
 
-    # Patterns for both directions
-    date_pattern = r'(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{2,4})'
+    # Patterns for both directions (Subject-Date and Date-Subject)
+    # This date pattern is robust: captures day, optional month name, and 2 or 4 digit year
+    date_pattern = r'(\d{1,2}[\s\./-]?[A-Za-z]{0,4}\s*(?:[A-Za-z]{3,}\s*)?\d{2,4})'
     subject_pattern = r'([A-Za-z/&\s]{3,})'
 
-    # Two regex: subject-first and date-first
+    # Subject-first regex: Subject [separator] Date
     subject_first = re.compile(subject_pattern + r'\s*[-:\s]+\s*' + date_pattern, re.IGNORECASE)
+    # Date-first regex: Date [separator] Subject
     date_first = re.compile(date_pattern + r'\s*[-:\s]+\s*' + subject_pattern, re.IGNORECASE)
 
     data = []
@@ -79,7 +97,7 @@ def extract_exam_data(np_array):
     for line in lines:
         match = subject_first.search(line) or date_first.search(line)
         if match:
-            # Detect which matched group order
+            # Determine the order of groups (subject is group 1 or 2)
             if subject_first.search(line):
                 subject = match.group(1).strip()
                 date_str = normalize_date(match.group(2).strip())
@@ -87,7 +105,8 @@ def extract_exam_data(np_array):
                 date_str = normalize_date(match.group(1).strip())
                 subject = match.group(2).strip()
 
-            if len(subject) > 2 and not subject.isdigit():
+            # Final check to ensure we got a valid subject/date pair
+            if len(subject) > 2 and not subject.isdigit() and date_str != line.strip():
                 data.append({"subject": subject, "date": date_str})
 
     return data
@@ -122,8 +141,7 @@ def upload():
         data = extract_exam_data(np_array)
         
         if not data:
-            # If data is empty, return a successful response but warn the user
-            return jsonify({'exams': [], 'warning': 'No exam data could be extracted. Please ensure the text is clear.'})
+            return jsonify({'exams': [], 'warning': 'No structured exam data could be extracted. Please ensure the text is clear and follows a Subject-Date format.'})
 
         return jsonify({'exams': data})
 
@@ -135,5 +153,5 @@ def upload():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    # This is for local running; Gunicorn is used on Render
+    # Note: On Render, Gunicorn or a similar WSGI server is used.
     app.run(debug=True, host='0.0.0.0', port=port)
