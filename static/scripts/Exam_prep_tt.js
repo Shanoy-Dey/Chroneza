@@ -1,7 +1,8 @@
 function Exam_prep() {
-  go.innerHTML = '';
+    go.innerHTML = '';
 
-  const wrapper = document.createElement('div');
+    // --- UI Elements Setup ---
+    const wrapper = document.createElement('div');
     wrapper.className = 'p-4 border border-gray-200 rounded-lg shadow-md max-w-lg mx-auto';
     
     const inputWrapper = document.createElement('div');
@@ -114,7 +115,8 @@ function Exam_prep() {
             // 3. Handle successful extraction
             if (data.exams && data.exams.length > 0) {
                 calculateAndDisplayPrepTimetable(data.exams);
-                displayCustomMessage(`Successfully extracted ${data.exams.length} exams!`, 'success');
+                // UPDATED: Message changed from "exams" to "entries" for more general accuracy
+                displayCustomMessage(`Successfully extracted ${data.exams.length} entries!`, 'success'); 
             } else if (!data.warning) {
                  // Fallback message if no exams but no specific warning
                  displayCustomMessage('Extraction finished, but no data was recognized.', 'warning');
@@ -163,22 +165,24 @@ function Exam_prep() {
         const today = new Date();
         today.setHours(0, 0, 0, 0); // Normalize to start of day
 
-        // 1. Calculate days remaining and create new objects
-        const prepExams = exams.map(exam => {
-            const examDate = new Date(exam.date);
-            examDate.setHours(0, 0, 0, 0);
+        // 1. ADDED FILTER: Filter out subjects that are too short (like 'ete' or 'I')
+        const prepExams = exams
+            .filter(exam => exam.subject && exam.subject.trim().length > 3) 
+            .map(exam => {
+                const examDate = new Date(exam.date);
+                examDate.setHours(0, 0, 0, 0);
 
-            // Calculate difference in milliseconds
-            const diffTime = examDate.getTime() - today.getTime();
-            // Convert to days, rounding down
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-            
-            return {
-                subject: exam.subject,
-                date: exam.date,
-                daysRemaining: diffDays
-            };
-        });
+                // Calculate difference in milliseconds
+                const diffTime = examDate.getTime() - today.getTime();
+                // Convert to days, rounding up (ceil)
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                
+                return {
+                    subject: exam.subject,
+                    date: exam.date,
+                    daysRemaining: diffDays
+                };
+            });
 
         // 2. Sort the exams by date (Ascending: closest exam first)
         prepExams.sort((a, b) => {
@@ -227,10 +231,14 @@ function Exam_prep() {
 
         resultsDiv.appendChild(ul);
         
-        // Add a suggestion for the next step
-        const tip = document.createElement('p');
-        tip.className = 'mt-4 text-sm text-gray-500 italic border-t pt-3';
-        tip.textContent = 'This list is sorted by exam date. Now we can start creating tasks for the days remaining!';
-        resultsDiv.appendChild(tip);
+        if (prepExams.length === 0) {
+            resultsDiv.innerHTML += '<p class="text-gray-500 italic mt-3">No valid subjects were found after filtering.</p>';
+        } else {
+             // Add a suggestion for the next step
+            const tip = document.createElement('p');
+            tip.className = 'mt-4 text-sm text-gray-500 italic border-t pt-3';
+            tip.textContent = 'This list is sorted by exam date. Now we can start creating tasks for the days remaining!';
+            resultsDiv.appendChild(tip);
+        }
     }
 }

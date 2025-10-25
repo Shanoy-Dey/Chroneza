@@ -57,37 +57,33 @@ def extract_exam_data(np_array):
     # 2. Image Pre-processing for better OCR on low-quality images
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
-    # ADDED: Gaussian Blur to smooth out high-frequency noise before thresholding
+    # 2a. Apply Gaussian Blur to smooth out high-frequency noise
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     
-    # 2b. Use adaptive thresholding on the blurred image
-    # This dynamically handles uneven lighting across the image
-    thresh = cv2.adaptiveThreshold(
-        blurred, 
-        255, 
-        cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-        cv2.THRESH_BINARY, 
-        21, # Larger block size is often better for uneven illumination
-        4   # C constant (subtracted from the mean)
-    )
+    # 2b. **MODIFIED** Use Otsu's thresholding for aggressive binarization
+    # This works well when text is darker than background across the image.
+    _, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     
-    # Ensure text is black on white background (Tesseract preference for binary images)
-    processed_img = cv2.bitwise_not(thresh)
+    # Invert the image if necessary (Tesseract prefers black text on white background)
+    # Since Otsu's usually makes text black, we use the threshold output directly
+    processed_img = thresh
 
     # 3. OCR text extraction
-    custom_config = r'--psm 6' # Assume a single uniform block of text
+    # Using a less restrictive PSM might help capture more text
+    custom_config = r'--psm 3' # PSM 3: Fully automatic page segmentation (better for complex layouts)
     text = pytesseract.image_to_string(processed_img, config=custom_config)
     print("OCR Raw Output:\n", text)
 
     # 4. Clean and process text
-    # Added cleaning for common OCR errors in timetables
     text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ').replace(';', ' ')
     lines = [line.strip() for line in text.split('\n') if line.strip()]
 
     # Patterns for both directions (Subject-Date and Date-Subject)
-    # UPDATED REGEX: Made the date pattern more aggressive to capture DD.MM.YY format
+    # Date pattern remains robust for DD.MM.YY format
     date_pattern = r'(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{1,2}[\s\./-]?\s*\d{2,4})'
-    subject_pattern = r'([A-Za-z/&\s]{3,})'
+    
+    # MODIFIED: Subject pattern now allows for numbers and parentheses common in exam names (e.g., 'Hindi (I - V)')
+    subject_pattern = r'([A-Za-z0-9\s/&()\-\.]{3,})'
 
     # Subject-first regex: Subject [separator] Date
     subject_first = re.compile(subject_pattern + r'\s*[-:\s]+\s*' + date_pattern, re.IGNORECASE)
@@ -113,7 +109,8 @@ def extract_exam_data(np_array):
             normalized_date = normalize_date(date_str)
 
             # Final check to ensure we got a valid subject/date pair
-            if len(subject) > 2 and not subject.isdigit() and normalized_date != date_str:
+            # We rely on the JS filter for length, but ensure the date was actually normalized
+            if normalized_date != date_str:
                 data.append({"subject": subject, "date": normalized_date})
 
     return data
