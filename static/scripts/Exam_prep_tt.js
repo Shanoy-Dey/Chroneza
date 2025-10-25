@@ -59,19 +59,61 @@ function Exam_prep() {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    const res = await fetch('https://chroneza-render.onrender.com/upload', { // ✅ full backend URL
+    const res = await fetch('/upload', { // ✅ full backend URL
       method: 'POST',
       body: formData
     });
 
     const data = await res.json();
-    console.log(data);
+    if (!res.ok) {
+      // Use custom message box instead of alert()
+      displayCustomMessage('Upload failed: ' + (data.details || data.error), 'error');
+      return;
+    }
 
-    if (data.status === "success") {
-      console.log("Extracted text:", data.data); // ✅ check console
-      alert("Extracted Text: " + data.data);
-    } else {
-      alert("Error: " + data.error);
+    // 2. Handle successful OCR warning (empty result with status 200)
+    if (data.warning) {
+      displayCustomMessage('Extraction Complete: ' + data.warning, 'warning');
+    }
+
+    // 3. Handle successful extraction
+    if (data.exams && data.exams.length > 0) {
+      renderResults(data.exams); // New function to display the list
+      displayCustomMessage(`Successfully extracted ${data.exams.length} exams!`, 'success');
     }
   });
+
+  // Custom message box function
+  function displayCustomMessage(message, type) {
+    const msgBox = document.createElement('div');
+    msgBox.textContent = message;
+    msgBox.style.padding = '10px';
+    msgBox.style.marginTop = '10px';
+    msgBox.style.borderRadius = '5px';
+    msgBox.style.color = 'white';
+    switch(type) {
+      case 'error':
+        msgBox.style.backgroundColor = 'red';
+        break;
+      case 'warning':
+        msgBox.style.backgroundColor = 'orange';
+        break;
+      case 'success':
+        msgBox.style.backgroundColor = 'green';
+        break;
+    }
+  }
+   
+  function renderResults(exams) {
+    const resultsDiv = document.createElement('div');
+    resultsDiv.style.marginTop = '15px';
+    const ul = document.createElement('ul');
+    exams.forEach(exam => {
+      const li = document.createElement('li');
+      li.textContent = `${exam.course} - ${exam.date} at ${exam.time}`;
+      ul.appendChild(li);
+    });
+    resultsDiv.appendChild(ul);
+    go.appendChild(resultsDiv);
+  }
 }
