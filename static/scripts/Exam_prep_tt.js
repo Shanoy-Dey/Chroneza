@@ -65,6 +65,7 @@ function Exam_prep() {
     });
 
     const data = await res.json();
+    console.log(data);
     if (!res.ok) {
       // Use custom message box instead of alert()
       displayCustomMessage('Upload failed: ' + (data.details || data.error), 'error');

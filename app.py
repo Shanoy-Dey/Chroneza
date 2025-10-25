@@ -62,28 +62,36 @@ def extract_exam_data(np_array):
     print("OCR Raw Output:\n", text)
 
     # 4. Clean and process text
+        # 4. Clean and process text
     text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ').replace(';', ' ')
     lines = [line.strip() for line in text.split('\n') if line.strip()]
 
-    # Regex Pattern: Capture 1) Subject Name and 2) Date
-    # Date pattern is robust for various formats (e.g., 25 Oct 2025, 25/10/2025)
+    # Patterns for both directions
     date_pattern = r'(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{2,4})'
-    # Subject: A sequence of letters/spaces (at least 3 chars), followed by separator, then date
-    pattern = r'([A-Za-z\s]{3,})\s*[-:\s]+\s*' + date_pattern
-    
+    subject_pattern = r'([A-Za-z/&\s]{3,})'
+
+    # Two regex: subject-first and date-first
+    subject_first = re.compile(subject_pattern + r'\s*[-:\s]+\s*' + date_pattern, re.IGNORECASE)
+    date_first = re.compile(date_pattern + r'\s*[-:\s]+\s*' + subject_pattern, re.IGNORECASE)
+
     data = []
 
     for line in lines:
-        match = re.search(pattern, line, re.IGNORECASE)
+        match = subject_first.search(line) or date_first.search(line)
         if match:
-            subject = match.group(1).strip()
-            date_str = normalize_date(match.group(2).strip())
-            
-            # Simple check: Subject should not be purely numerical or too short
-            if len(subject) > 3 and not subject.isdigit():
+            # Detect which matched group order
+            if subject_first.search(line):
+                subject = match.group(1).strip()
+                date_str = normalize_date(match.group(2).strip())
+            else:
+                date_str = normalize_date(match.group(1).strip())
+                subject = match.group(2).strip()
+
+            if len(subject) > 2 and not subject.isdigit():
                 data.append({"subject": subject, "date": date_str})
 
     return data
+
 
 # --- Flask Routes ---
 
