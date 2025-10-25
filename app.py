@@ -23,11 +23,12 @@ def normalize_date(date_str):
         "%d %B %y", "%d %b %y",
         "%B %d %Y", "%b %d %Y", # Month Day Year (e.g., November 3 2025)
 
-        # Standard formats (e.g., 03/11/2025)
+        # Standard formats (e.g., 03/11/2025, 03.11.25)
         "%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y", 
-        "%m/%d/%Y", "%m-%d-%Y", "%m.%d.%Y", # Added month/day/year formats
-
-        # Year-first formats
+        "%d/%m/%y", "%d-%m-%y", "%d.%m.%y", # ADDED: 2-digit year formats for robustness
+        
+        # Month/day/year formats
+        "%m/%d/%Y", "%m-%d-%Y", "%m.%d.%Y", 
         "%Y-%m-%d"
     ]
     # Clean up the string to remove extraneous commas/spaces/ordinal suffixes like 'rd'
@@ -56,7 +57,7 @@ def extract_exam_data(np_array):
     # 2. Image Pre-processing for better OCR on low-quality images
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
-    # 2a. Add Gaussian Blur to smooth out high-frequency noise before thresholding
+    # ADDED: Gaussian Blur to smooth out high-frequency noise before thresholding
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     
     # 2b. Use adaptive thresholding on the blurred image
@@ -79,12 +80,13 @@ def extract_exam_data(np_array):
     print("OCR Raw Output:\n", text)
 
     # 4. Clean and process text
+    # Added cleaning for common OCR errors in timetables
     text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ').replace(';', ' ')
     lines = [line.strip() for line in text.split('\n') if line.strip()]
 
     # Patterns for both directions (Subject-Date and Date-Subject)
-    # This date pattern is robust: captures day, optional month name, and 2 or 4 digit year
-    date_pattern = r'(\d{1,2}[\s\./-]?[A-Za-z]{0,4}\s*(?:[A-Za-z]{3,}\s*)?\d{2,4})'
+    # UPDATED REGEX: Made the date pattern more aggressive to capture DD.MM.YY format
+    date_pattern = r'(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{1,2}[\s\./-]?\s*\d{2,4})'
     subject_pattern = r'([A-Za-z/&\s]{3,})'
 
     # Subject-first regex: Subject [separator] Date
@@ -100,14 +102,19 @@ def extract_exam_data(np_array):
             # Determine the order of groups (subject is group 1 or 2)
             if subject_first.search(line):
                 subject = match.group(1).strip()
-                date_str = normalize_date(match.group(2).strip())
+                # REPLACE DOTS: Replace periods with slash to help standard date parsers
+                date_str = match.group(2).strip().replace('.', '/') 
             else:
-                date_str = normalize_date(match.group(1).strip())
+                # REPLACE DOTS: Replace periods with slash to help standard date parsers
+                date_str = match.group(1).strip().replace('.', '/') 
                 subject = match.group(2).strip()
+            
+            # Normalize the date using the updated format strings
+            normalized_date = normalize_date(date_str)
 
             # Final check to ensure we got a valid subject/date pair
-            if len(subject) > 2 and not subject.isdigit() and date_str != line.strip():
-                data.append({"subject": subject, "date": date_str})
+            if len(subject) > 2 and not subject.isdigit() and normalized_date != date_str:
+                data.append({"subject": subject, "date": normalized_date})
 
     return data
 
