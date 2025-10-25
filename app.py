@@ -65,15 +65,23 @@ def extract_exam_data(np_array):
                 date_str = match.group(1).strip().replace('.', '/') 
                 subject = match.group(2).strip()
             
-            subject = re.sub(r'(?i)\s*\([IVXLCDM\s\-]+\)', '', subject).strip()
+            # START FIXES FOR CLEANUP AND FILTERING
             
-            subject = re.sub(r'[.,\s]*$', '', subject).strip()
+            # FIX: Robustly remove ALL bracketed content (including parentheses, numbers, and Roman numerals) 
+            # and the space preceding it. This cleans up '(I-V)', '(8th', etc.
+            subject = re.sub(r'\s*\([^\)]*\)', '', subject, flags=re.IGNORECASE).strip()
             
+            # FIX: Remove any remaining trailing characters like hyphens, slashes, or periods 
+            # that were left over from the broken cleaning process, which should fix 'indi -'.
+            subject = re.sub(r'[\s\.\-/]*$', '', subject).strip()
+            
+            # END FIXES
+
             normalized_date = normalize_date(date_str)
 
             if (
                 normalized_date != date_str and 
-                len(subject) > 3 and 
+                len(subject) > 5 and # FIX: Increased minimum subject length to 5. This will help filter out short, incomplete noise like 'indi' or 'Principal' entirely.
                 not subject.isdigit()
             ):
                 data.append({"subject": subject, "date": normalized_date})
