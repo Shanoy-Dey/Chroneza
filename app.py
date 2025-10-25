@@ -32,63 +32,92 @@ def normalize_date(date_str):
 
 def extract_exam_data(np_array):
     img = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
-    
     if img is None:
-        raise ValueError("Could not decode image array. The file may be corrupt or not a valid image.")
+        raise ValueError("Could not decode image array.")
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    _, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    processed_img = thresh
+    gray = cv2.GaussianBlur(gray, (3, 3), 0)
+    _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-    custom_config = r'--psm 6' # FIX: Changed PSM to 6 (Assume a single uniform block of text) to help extract the first 'Hindi' entry.
-    text = pytesseract.image_to_string(processed_img, config=custom_config)
-    print("OCR Raw Output:\n", text)
+    custom_config = r'--psm 6'
+    text = pytesseract.image_to_string(thresh, config=custom_config)
 
-    text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ').replace(';', ' ')
+    print("\n🔹 OCR Output:\n", text)
+
+    # --- Basic cleanup ---
+    text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ')
+    text = text.replace(';', ' ').replace('~', ' ')
     lines = [line.strip() for line in text.split('\n') if line.strip()]
 
-    date_pattern = r'(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{1,2}[\s\./-]?\s*\d{2,4})'
-    subject_pattern = r'([A-Za-z0-9\s/&()\-\.]{3,})' 
-
-    subject_first = re.compile(subject_pattern + r'[\s\./-:]+' + date_pattern, re.IGNORECASE)
-    date_first = re.compile(date_pattern + r'[\s\./-:]+' + subject_pattern, re.IGNORECASE)
-    data = []
-
-    subjects={'Hindi','Math','English', 'Science', 'Social Studies', 'Biology', 'Chemistry', 'Physics', 'History', 'Geography', 'Computer', 'Economics', 'Civics', 'Physical Education', 'Environmental Science', 'Information Technology'}
+    # --- Merge lines if next line is short (like part of subject) ---
+    merged = []
+    buffer = ""
     for line in lines:
-        match = subject_first.search(line) or date_first.search(line)
-        if match:
-            if subject_first.search(line):
-                subject = match.group(1).strip()
-                date_str = match.group(2).strip().replace('.', '/') 
+        if re.search(r'\d{1,2}[-/.\s]\d{1,2}[-/.\s]\d{2,4}', line):
+            # if line has date, push previous buffer
+            if buffer.strip():
+                merged.append(buffer.strip())
+                buffer = ""
+            merged.append(line)
+        else:
+            if len(line.split()) <= 3:  # probably continuation
+                buffer += " " + line
             else:
-                date_str = match.group(1).strip().replace('.', '/') 
-                subject = match.group(2).strip()
-            
-            # START FIXES FOR CLEANUP AND FILTERING
-            
-            # FIX: Robustly remove ALL bracketed content (including parentheses, numbers, and Roman numerals) 
-            # and the space preceding it. This cleans up '(I-V)', '(8th', etc.
-            subject = re.sub(r'\s*\([^\)]*\)', '', subject, flags=re.IGNORECASE).strip()
-            
-            # FIX: Remove any remaining trailing characters like hyphens, slashes, or periods 
-            # that were left over from the broken cleaning process, which should fix 'indi -'.
-            subject = re.sub(r'[\s\.\-/]*$', '', subject).strip()
-            
-            if subject.lower().startswith("indi"):
-                subject = "Hindi"
+                if buffer:
+                    merged.append(buffer.strip())
+                buffer = line
+    if buffer:
+        merged.append(buffer.strip())
 
-            normalized_date = normalize_date(date_str)
+    # --- Extract all date occurrences ---
+    date_pattern = r'\d{1,2}[-/.\s]?\d{1,2}[-/.\s]?\d{2,4}'
+    dates = []
+    for i, line in enumerate(merged):
+        for m in re.finditer(date_pattern, line):
+            dates.append((i, m.group()))
 
-            if (
-                normalized_date != date_str and 
-                len(subject) > 5 and # FIX: Increased minimum subject length to 5. This will help filter out short, incomplete noise like 'indi' or 'Principal' entirely.
-                not subject.isdigit()
-            ):
-                data.append({"subject": subject, "date": normalized_date})
+    data = []
+    for idx, raw_date in dates:
+        normalized_date = normalize_date(raw_date)
+        # Look backward for subject text near this line
+        subject = ""
+        search_back = 2  # Look up to 2 lines before date
+        for j in range(idx, max(-1, idx - search_back), -1):
+            candidate = merged[j]
+            if not re.search(date_pattern, candidate):
+                subject = candidate.strip()
+                break
 
-    return data
+        # --- Clean subject ---
+        subject = re.sub(r'\s*\([^\)]*\)', '', subject)
+        subject = re.sub(r'[\.\-–/]+$', '', subject).strip()
+
+        # --- Auto corrections ---
+        if re.match(r'indi', subject, re.IGNORECASE):
+            subject = "Hindi"
+        if re.search(r'sci|evs', subject, re.IGNORECASE):
+            subject = "E.V.S / Science"
+        if re.search(r'social', subject, re.IGNORECASE):
+            subject = "Social Studies"
+        if re.search(r'lang', subject, re.IGNORECASE) and "English" in subject:
+            subject = "English Language - I"
+        if re.search(r'literature|gk|general knowledge', subject, re.IGNORECASE):
+            subject = "English Literature - II / General Knowledge"
+
+        banned = ["principal", "note", "head", "exam", "controller"]
+        if subject and not any(bad in subject.lower() for bad in banned):
+            data.append({"subject": subject, "date": normalized_date})
+
+    # --- Deduplicate ---
+    seen = set()
+    unique_data = []
+    for d in data:
+        key = (d['subject'].lower(), d['date'])
+        if key not in seen:
+            unique_data.append(d)
+            seen.add(key)
+
+    return unique_data
 
 
 @app.route('/')
