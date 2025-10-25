@@ -58,7 +58,7 @@ def extract_exam_data(np_array):
             i += 1
 
     # Patterns
-    date_pattern = r'(\d{1,2}[\s\./-]?(?:[A-Za-z]{3,}\s*)?\d{1,2}[\s\./-]?\s*\d{2,4})'
+    date_pattern = r'(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{1,2}[\s\./-]?\s*\d{2,4})'
     subject_pattern = r'([A-Za-z0-9\s/&()\-\.]{3,})'
     subject_first = re.compile(subject_pattern + r'[\s\./-:]+' + date_pattern, re.IGNORECASE)
     date_first = re.compile(date_pattern + r'[\s\./-:]+' + subject_pattern, re.IGNORECASE)
