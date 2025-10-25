@@ -35,71 +35,90 @@ def extract_exam_data(np_array):
     if img is None:
         raise ValueError("Could not decode image array.")
 
-    # --- STEP 1: Preprocess for cleaner OCR ---
+    # --- STEP 1: Preprocess ---
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray = cv2.bilateralFilter(gray, 9, 75, 75)
     gray = cv2.adaptiveThreshold(
         gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2
     )
-
-    # Morphological open to remove small noise
     kernel = np.ones((2, 2), np.uint8)
     gray = cv2.morphologyEx(gray, cv2.MORPH_OPEN, kernel)
 
-    # --- STEP 2: OCR using PSM 4 (column-like layout) ---
+    # --- STEP 2: OCR (column layout) ---
     custom_config = r'--psm 4'
     text = pytesseract.image_to_string(gray, config=custom_config)
 
     print("\n🔹 OCR Raw Output:\n", text)
 
-    # --- STEP 3: Clean up ---
     text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ')
     text = re.sub(r'[^A-Za-z0-9/\-\n\s\.]', ' ', text)
     lines = [line.strip() for line in text.split('\n') if line.strip()]
 
-    # Remove header/footer noise
-    noise_words = ['school', 'principal', 'note', 'controller', 'examination', 'session']
-    lines = [l for l in lines if not any(word in l.lower() for word in noise_words)]
+    # --- Remove clear noise lines (header/footer) ---
+    banned_words = ['school', 'principal', 'note', 'controller', 'examination', 'session']
+    lines = [l for l in lines if not any(bad in l.lower() for bad in banned_words)]
 
-    # --- STEP 4: Find all dates ---
+    # --- STEP 3: Find all dates ---
     date_pattern = r'\d{1,2}[-/\.]\d{1,2}[-/\.]\d{2,4}'
-    data = []
+    all_data = []
+
     for i, line in enumerate(lines):
-        dates = re.findall(date_pattern, line)
-        if dates:
-            for date_str in dates:
-                normalized_date = normalize_date(date_str)
+        for m in re.finditer(date_pattern, line):
+            raw_date = m.group()
+            normalized_date = normalize_date(raw_date)
+            subject = line.replace(raw_date, '').strip()
 
-                # Find possible subject near date
-                subject = line.replace(date_str, '').strip()
-                if not subject and i > 0:
-                    subject = lines[i - 1].strip()
+            if not subject and i > 0:
+                subject = lines[i - 1].strip()
 
-                # Clean subject
-                subject = re.sub(r'\s*\([^\)]*\)', '', subject).strip()
-                subject = re.sub(r'[\.\-–/]+$', '', subject).strip()
+            subject = re.sub(r'\s*\([^\)]*\)', '', subject)
+            subject = re.sub(r'[\.\-–/]+$', '', subject).strip()
 
-                # Keyword corrections
-                if re.match(r'indi', subject, re.IGNORECASE):
-                    subject = "Hindi"
-                elif re.search(r'math', subject, re.IGNORECASE):
-                    subject = "Maths"
-                elif re.search(r'sci|evs', subject, re.IGNORECASE):
-                    subject = "E.V.S / Science"
-                elif re.search(r'social', subject, re.IGNORECASE):
-                    subject = "Social Studies"
-                elif re.search(r'english.*lang', subject, re.IGNORECASE):
-                    subject = "English Language - I"
-                elif re.search(r'english.*lit|gk|general', subject, re.IGNORECASE):
-                    subject = "English Literature - II / General Knowledge"
+            # Smart name fixes
+            if re.match(r'indi', subject, re.IGNORECASE):
+                subject = "Hindi"
+            elif re.search(r'math', subject, re.IGNORECASE):
+                subject = "Maths"
+            elif re.search(r'sci|evs', subject, re.IGNORECASE):
+                subject = "E.V.S / Science"
+            elif re.search(r'social', subject, re.IGNORECASE):
+                subject = "Social Studies"
+            elif re.search(r'english.*lang', subject, re.IGNORECASE):
+                subject = "English Language - I"
+            elif re.search(r'english.*lit|gk|general', subject, re.IGNORECASE):
+                subject = "English Literature - II / General Knowledge"
 
-                if len(subject) > 3:
-                    data.append({"subject": subject, "date": normalized_date})
+            if len(subject) > 3:
+                all_data.append({"subject": subject, "date": normalized_date})
 
-    # --- STEP 5: Deduplicate & Final Filter ---
+    # --- STEP 4: Month consistency check (exclude unrelated 09/2025 etc.) ---
+    # Find dominant month-year
+    from collections import Counter
+    if all_data:
+        month_years = [d['date'][3:] for d in all_data if len(d['date']) >= 7]
+        if month_years:
+            common_month_year = Counter(month_years).most_common(1)[0][0]
+            all_data = [d for d in all_data if d['date'][3:] == common_month_year]
+
+    # --- STEP 5: Ensure all core subjects exist ---
+    subjects_found = [d['subject'].lower() for d in all_data]
+    needed = {
+        "hindi": r"indi",
+        "e.v.s / science": r"(sci|evs|environment)"
+    }
+
+    # Look for these in OCR text even if no date matched
+    for sub_name, pat in needed.items():
+        if not any(sub_name in s for s in subjects_found):
+            m = re.search(pat + r".{0,25}?(\d{1,2}[-/\.]\d{1,2}[-/\.]\d{2,4})", text, re.IGNORECASE)
+            if m:
+                recovered_date = normalize_date(m.group(1))
+                all_data.append({"subject": sub_name.title(), "date": recovered_date})
+
+    # --- STEP 6: Deduplicate ---
     seen = set()
     final_data = []
-    for d in data:
+    for d in all_data:
         key = (d['subject'].lower(), d['date'])
         if key not in seen:
             seen.add(key)
