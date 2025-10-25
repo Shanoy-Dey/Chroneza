@@ -35,89 +35,77 @@ def extract_exam_data(np_array):
     if img is None:
         raise ValueError("Could not decode image array.")
 
+    # --- STEP 1: Preprocess for cleaner OCR ---
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray = cv2.GaussianBlur(gray, (3, 3), 0)
-    _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    gray = cv2.bilateralFilter(gray, 9, 75, 75)
+    gray = cv2.adaptiveThreshold(
+        gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2
+    )
 
-    custom_config = r'--psm 6'
-    text = pytesseract.image_to_string(thresh, config=custom_config)
+    # Morphological open to remove small noise
+    kernel = np.ones((2, 2), np.uint8)
+    gray = cv2.morphologyEx(gray, cv2.MORPH_OPEN, kernel)
 
-    print("\n🔹 OCR Output:\n", text)
+    # --- STEP 2: OCR using PSM 4 (column-like layout) ---
+    custom_config = r'--psm 4'
+    text = pytesseract.image_to_string(gray, config=custom_config)
 
-    # --- Basic cleanup ---
+    print("\n🔹 OCR Raw Output:\n", text)
+
+    # --- STEP 3: Clean up ---
     text = text.replace('—', '-').replace('–', '-').replace('|', 'I').replace(':', ' ')
-    text = text.replace(';', ' ').replace('~', ' ')
+    text = re.sub(r'[^A-Za-z0-9/\-\n\s\.]', ' ', text)
     lines = [line.strip() for line in text.split('\n') if line.strip()]
 
-    # --- Merge lines if next line is short (like part of subject) ---
-    merged = []
-    buffer = ""
-    for line in lines:
-        if re.search(r'\d{1,2}[-/.\s]\d{1,2}[-/.\s]\d{2,4}', line):
-            # if line has date, push previous buffer
-            if buffer.strip():
-                merged.append(buffer.strip())
-                buffer = ""
-            merged.append(line)
-        else:
-            if len(line.split()) <= 3:  # probably continuation
-                buffer += " " + line
-            else:
-                if buffer:
-                    merged.append(buffer.strip())
-                buffer = line
-    if buffer:
-        merged.append(buffer.strip())
+    # Remove header/footer noise
+    noise_words = ['school', 'principal', 'note', 'controller', 'examination', 'session']
+    lines = [l for l in lines if not any(word in l.lower() for word in noise_words)]
 
-    # --- Extract all date occurrences ---
-    date_pattern = r'\d{1,2}[-/.\s]?\d{1,2}[-/.\s]?\d{2,4}'
-    dates = []
-    for i, line in enumerate(merged):
-        for m in re.finditer(date_pattern, line):
-            dates.append((i, m.group()))
-
+    # --- STEP 4: Find all dates ---
+    date_pattern = r'\d{1,2}[-/\.]\d{1,2}[-/\.]\d{2,4}'
     data = []
-    for idx, raw_date in dates:
-        normalized_date = normalize_date(raw_date)
-        # Look backward for subject text near this line
-        subject = ""
-        search_back = 2  # Look up to 2 lines before date
-        for j in range(idx, max(-1, idx - search_back), -1):
-            candidate = merged[j]
-            if not re.search(date_pattern, candidate):
-                subject = candidate.strip()
-                break
+    for i, line in enumerate(lines):
+        dates = re.findall(date_pattern, line)
+        if dates:
+            for date_str in dates:
+                normalized_date = normalize_date(date_str)
 
-        # --- Clean subject ---
-        subject = re.sub(r'\s*\([^\)]*\)', '', subject)
-        subject = re.sub(r'[\.\-–/]+$', '', subject).strip()
+                # Find possible subject near date
+                subject = line.replace(date_str, '').strip()
+                if not subject and i > 0:
+                    subject = lines[i - 1].strip()
 
-        # --- Auto corrections ---
-        if re.match(r'indi', subject, re.IGNORECASE):
-            subject = "Hindi"
-        if re.search(r'sci|evs', subject, re.IGNORECASE):
-            subject = "E.V.S / Science"
-        if re.search(r'social', subject, re.IGNORECASE):
-            subject = "Social Studies"
-        if re.search(r'lang', subject, re.IGNORECASE) and "English" in subject:
-            subject = "English Language - I"
-        if re.search(r'literature|gk|general knowledge', subject, re.IGNORECASE):
-            subject = "English Literature - II / General Knowledge"
+                # Clean subject
+                subject = re.sub(r'\s*\([^\)]*\)', '', subject).strip()
+                subject = re.sub(r'[\.\-–/]+$', '', subject).strip()
 
-        banned = ["principal", "note", "head", "exam", "controller"]
-        if subject and not any(bad in subject.lower() for bad in banned):
-            data.append({"subject": subject, "date": normalized_date})
+                # Keyword corrections
+                if re.match(r'indi', subject, re.IGNORECASE):
+                    subject = "Hindi"
+                elif re.search(r'math', subject, re.IGNORECASE):
+                    subject = "Maths"
+                elif re.search(r'sci|evs', subject, re.IGNORECASE):
+                    subject = "E.V.S / Science"
+                elif re.search(r'social', subject, re.IGNORECASE):
+                    subject = "Social Studies"
+                elif re.search(r'english.*lang', subject, re.IGNORECASE):
+                    subject = "English Language - I"
+                elif re.search(r'english.*lit|gk|general', subject, re.IGNORECASE):
+                    subject = "English Literature - II / General Knowledge"
 
-    # --- Deduplicate ---
+                if len(subject) > 3:
+                    data.append({"subject": subject, "date": normalized_date})
+
+    # --- STEP 5: Deduplicate & Final Filter ---
     seen = set()
-    unique_data = []
+    final_data = []
     for d in data:
         key = (d['subject'].lower(), d['date'])
         if key not in seen:
-            unique_data.append(d)
             seen.add(key)
+            final_data.append(d)
 
-    return unique_data
+    return final_data
 
 
 @app.route('/')
