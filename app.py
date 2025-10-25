@@ -37,7 +37,7 @@ def normalize_date(date_str):
     for fmt in date_formats:
         try:
             # Use strict parsing
-            return datetime.strptime(cleaned_str, fmt).strftime("%Y-%m-%d")
+            return datetime.strptime(cleaned_str, fmt).strftime("%Y-%MM-%d")
         except ValueError:
             continue
             
@@ -60,17 +60,15 @@ def extract_exam_data(np_array):
     # 2a. Apply Gaussian Blur to smooth out high-frequency noise
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     
-    # 2b. **MODIFIED** Use Otsu's thresholding for aggressive binarization
-    # This works well when text is darker than background across the image.
+    # 2b. Use Otsu's thresholding for aggressive binarization
     _, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     
-    # Invert the image if necessary (Tesseract prefers black text on white background)
-    # Since Otsu's usually makes text black, we use the threshold output directly
+    # Use the threshold output directly (black text on white background)
     processed_img = thresh
 
     # 3. OCR text extraction
-    # Using a less restrictive PSM might help capture more text
-    custom_config = r'--psm 3' # PSM 3: Fully automatic page segmentation (better for complex layouts)
+    # PSM 3: Fully automatic page segmentation (better for complex layouts)
+    custom_config = r'--psm 3' 
     text = pytesseract.image_to_string(processed_img, config=custom_config)
     print("OCR Raw Output:\n", text)
 
@@ -82,13 +80,15 @@ def extract_exam_data(np_array):
     # Date pattern remains robust for DD.MM.YY format
     date_pattern = r'(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{1,2}[\s\./-]?\s*\d{2,4})'
     
-    # MODIFIED: Subject pattern now allows for numbers and parentheses common in exam names (e.g., 'Hindi (I - V)')
-    subject_pattern = r'([A-Za-z0-9\s/&()\-\.]{3,})'
+    # MODIFIED: Subject pattern now allows a wider range of characters and minimum length is reduced to 2 for better initial capture
+    # This might help capture 'Hindi' if it's abbreviated or read with a stray character.
+    subject_pattern = r'([A-Za-z0-9\s/&()\-\.]{2,})' 
 
     # Subject-first regex: Subject [separator] Date
-    subject_first = re.compile(subject_pattern + r'\s*[-:\s]+\s*' + date_pattern, re.IGNORECASE)
+    # MODIFIED: Relaxed the separator requirement to better catch the first line.
+    subject_first = re.compile(subject_pattern + r'[\s\./-:]+' + date_pattern, re.IGNORECASE)
     # Date-first regex: Date [separator] Subject
-    date_first = re.compile(date_pattern + r'\s*[-:\s]+\s*' + subject_pattern, re.IGNORECASE)
+    date_first = re.compile(date_pattern + r'[\s\./-:]+' + subject_pattern, re.IGNORECASE)
 
     data = []
 
@@ -105,12 +105,28 @@ def extract_exam_data(np_array):
                 date_str = match.group(1).strip().replace('.', '/') 
                 subject = match.group(2).strip()
             
+            # --- START SUBJECT CLEANUP & FILTER ---
+            # 1. NEW: Remove Roman numerals inside brackets (e.g., (I - V))
+            # Use a slightly more robust pattern to catch all variations of Roman numerals and spaces/hyphens
+            subject = re.sub(r'\s*\([IVXLCDM\s\-]+\)', '', subject, flags=re.IGNORECASE).strip()
+            
+            # 2. Remove trailing punctuation/noise (like a period at the end of the line)
+            subject = re.sub(r'[.,\s]*$', '', subject).strip()
+            # --- END SUBJECT CLEANUP & FILTER ---
+            
             # Normalize the date using the updated format strings
             normalized_date = normalize_date(date_str)
 
             # Final check to ensure we got a valid subject/date pair
-            # We rely on the JS filter for length, but ensure the date was actually normalized
-            if normalized_date != date_str:
+            # We now enforce three checks:
+            if (
+                # Check 1: Date must be successfully normalized (not equal to original string)
+                normalized_date != date_str and 
+                # Check 2: Subject must be long enough to be a real exam (> 3 characters) - Prevents short noise like 'ete'
+                len(subject) > 3 and 
+                # Check 3: Subject is not purely digits
+                not subject.isdigit()
+            ):
                 data.append({"subject": subject, "date": normalized_date})
 
     return data
