@@ -30,4 +30,4 @@ COPY . .
 
 # Define the command to run your application
 # Set a generous timeout (e.g., 60 seconds) for OCR operations
-CMD ["gunicorn", "--timeout", "60", "app:app"]
+CMD ["gunicorn", "--timeout", "120", "app:app"]
