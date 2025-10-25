@@ -29,4 +29,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Define the command to run your application
-CMD ["gunicorn", "app:app"]
+# Set a generous timeout (e.g., 60 seconds) for OCR operations
+CMD ["gunicorn", "--timeout", "60", "app:app"]
