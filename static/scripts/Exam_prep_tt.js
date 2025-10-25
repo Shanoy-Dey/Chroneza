@@ -59,7 +59,7 @@ function Exam_prep() {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
-    const res = await fetch('/upload', { // ✅ full backend URL
+    const res = await fetch('https://chroneza-render.onrender.com/upload', { // ✅ full backend URL
       method: 'POST',
       body: formData
     });
@@ -102,6 +102,7 @@ function Exam_prep() {
         msgBox.style.backgroundColor = 'green';
         break;
     }
+    go.appendChild(msgBox);
   }
    
   function renderResults(exams) {
