@@ -37,7 +37,7 @@ def normalize_date(date_str):
     for fmt in date_formats:
         try:
             # Use strict parsing
-            return datetime.strptime(cleaned_str, fmt).strftime("%Y-%MM-%d")
+            return datetime.strptime(cleaned_str, fmt).strftime("%Y-%m-%d")
         except ValueError:
             continue
             
@@ -82,7 +82,7 @@ def extract_exam_data(np_array):
     
     # MODIFIED: Subject pattern now allows a wider range of characters and minimum length is reduced to 2 for better initial capture
     # This might help capture 'Hindi' if it's abbreviated or read with a stray character.
-    subject_pattern = r'([A-Za-z0-9\s/&()\-\.]{2,})' 
+    subject_pattern = r'([A-Za-z0-9\s/&()\-\.]{3,})' 
 
     # Subject-first regex: Subject [separator] Date
     # MODIFIED: Relaxed the separator requirement to better catch the first line.
@@ -107,7 +107,8 @@ def extract_exam_data(np_array):
             # --- START SUBJECT CLEANUP & FILTER ---
             # 1. NEW: Remove Roman numerals inside brackets (e.g., (I - V))
             # Use a slightly more robust pattern to catch all variations of Roman numerals and spaces/hyphens
-            subject = re.sub(r'\s*\([IVXLCDM\s\-]+\)', '', subject, flags=re.IGNORECASE).strip()
+            # Use inline (?i) to make the pattern case-insensitive instead of passing flags to re.sub
+            subject = re.sub(r'(?i)\s*\([IVXLCDM\s\-]+\)', '', subject).strip()
             
             # 2. Remove trailing punctuation/noise (like a period at the end of the line)
             subject = re.sub(r'[.,\s]*$', '', subject).strip()
