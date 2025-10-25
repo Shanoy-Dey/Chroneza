@@ -76,12 +76,7 @@ def extract_exam_data(np_array):
             # that were left over from the broken cleaning process, which should fix 'indi -'.
             subject = re.sub(r'[\s\.\-/]*$', '', subject).strip()
             
-            if subject.lower().startswith("indi"):
-                subject = "Hindi"
-
-            subject_lower = subject.lower()
-            if not any(s.lower() in subject_lower for s in subjects):
-                continue
+            
 
             normalized_date = normalize_date(date_str)
 
