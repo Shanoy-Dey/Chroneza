@@ -86,10 +86,9 @@ def extract_exam_data(np_array):
 
     # Subject-first regex: Subject [separator] Date
     # MODIFIED: Relaxed the separator requirement to better catch the first line.
-    subject_first = re.compile(subject_pattern + r'[\s\./-:]+' + date_pattern, re.IGNORECASE)
+    subject_first = re.compile(subject_pattern + r'\s*[-:\s]+\s*' + date_pattern, re.IGNORECASE)
     # Date-first regex: Date [separator] Subject
-    date_first = re.compile(date_pattern + r'[\s\./-:]+' + subject_pattern, re.IGNORECASE)
-
+    date_first = re.compile(date_pattern + r'\s*[-:\s]+\s*' + subject_pattern, re.IGNORECASE)
     data = []
 
     for line in lines:
