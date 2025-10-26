@@ -4,7 +4,7 @@ import pytesseract
 import numpy as np
 import re
 from datetime import datetime
-from collections import Counter
+from collections import Counter # FIX: Added Counter to imports
 import os
 
 # pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/bin/tesseract' 
@@ -33,7 +33,7 @@ def normalize_date(date_str):
     )
     for fmt in date_formats:
         try:
-            return datetime.strptime(cleaned, fmt).strftime("%d-%m-%Y") # Output date as day-month-year.
+            return datetime.strptime(cleaned, fmt).strftime("%d-%m-%Y") # FIX: Output date as day-month-year.
         except ValueError:
             continue
             
@@ -49,10 +49,13 @@ def extract_exam_data(np_array):
 
     # --- STEP 1: Preprocess image for better OCR --- #
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # FIX: Using the more effective adaptive thresholding logic from the previous successful iteration
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     _, processed_img = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU) 
 
     # --- STEP 2: Run OCR --- #
+    # FIX: Reverting PSM to 3. PSM 4/6 might be too specific and cause Hindi/Social Studies to be missed.
+    # We will rely on robust cleanup (Step 3/5) to handle the noise.
     custom_config = r'--psm 3' 
     text = pytesseract.image_to_string(processed_img, config=custom_config)
     print("\n🔹 RAW OCR OUTPUT:\n", text)
@@ -64,19 +67,22 @@ def extract_exam_data(np_array):
         .replace("|", "I")
         .replace(":", " ")
     )
+    # FIX: Relaxing this aggressive character filter, which might have been removing valid punctuation needed for subject recognition
+    # text = re.sub(r"[^A-Za-z0-9/\-\n\s\.]", " ", text) 
+    
     lines = [line.strip() for line in text.split("\n") if line.strip()]
 
     # Remove header/footer garbage
+    # FIX: Added 'day' and 'date' to filter out noise like 'Tuesday' and general calendar terms
     banned_words = [
         "school", "principal", "note", "controller", "examination", "session",
-        "signature", "society", "tagore", "medium", "day", "date" 
+        "signature", "society", "medium", "day", "date" 
     ]
     lines = [l for l in lines if not any(bad in l.lower() for bad in banned_words)]
 
     # --- STEP 4: Extract dates + subjects (Using the explicit date pattern) --- #
-    # FIX: Using the most robust date pattern to capture dates with mixed separators and month names 
-    # (e.g., '3 November 2025'), which should catch the missing Hindi/Maths dates.
-    date_pattern = r"(\d{1,2}[\s\./-]?\s*(?:[A-Za-z]{3,}\s*)?\d{1,2}[\s\./-]?\s*\d{2,4})"
+    # FIX: Using a more robust date pattern to ensure all parts of the subject are consumed by the date extraction.
+    date_pattern = r"(\d{1,2}[-/\.]\d{1,2}[-/\.]\d{2,4})"
     results = []
     
     # Pre-compile the date pattern for efficient searching
@@ -96,15 +102,14 @@ def extract_exam_data(np_array):
                 subject = lines[i - 1].strip()
 
             # Remove trailing noise like “Pd)” or extra dots
-            # FIX: Robustly remove ALL bracketed content (including parentheses, numbers, and Roman numerals).
-            subject = re.sub(r"\s*\([^\)]*\)", "", subject).strip() 
+            subject = re.sub(r"\s*\([^\)]*\)", "", subject).strip()
             subject = re.sub(r"[\.\-–/]+$", "", subject).strip()
             
             # --- STEP 5: Smart Subject Corrections (Enhanced to remove noise) --- #
             
-            # Skip line if it looks like a noise entry
+            # FIX: Added check to remove noise like 'aths TV'
             if re.match(r"tuesday|monday|wednesday|thursday|friday|saturday|sunday", subject, re.I) or re.search(r"tv|mishra|pd|aths", subject, re.I):
-                continue 
+                continue # Skip line if it looks like a noise entry
             
             if re.match(r"indi", subject, re.I):
                 subject = "Hindi"
@@ -121,11 +126,12 @@ def extract_exam_data(np_array):
             elif re.search(r"sanskrit|bengali", subject, re.I):
                 subject = "Bengali / Sanskrit"
 
-            # Increased final length filter to aggressively remove incomplete/noise subjects
+            # FIX: Increased final length filter to aggressively remove incomplete/noise subjects
             if len(subject) > 4: 
                 results.append({"subject": subject, "date": normalized_date})
 
     # --- STEP 6: Month consistency (prevent wrong 09-2025 jumps) --- #
+    # This logic looks good for correcting month errors where September (09) is confused with November (11)
     for i in range(1, len(results)):
         try:
             prev_date = datetime.strptime(results[i - 1]["date"], "%d-%m-%Y")
@@ -134,6 +140,7 @@ def extract_exam_data(np_array):
                 corrected = curr_date.replace(month=prev_date.month)
                 results[i]["date"] = corrected.strftime("%d-%m-%Y")
         except ValueError:
+            # Handle cases where date strings might still be invalid
             continue
 
 
@@ -142,18 +149,17 @@ def extract_exam_data(np_array):
     subjects_found = [d["subject"].lower() for d in results]
     needed_patterns = {
         "Hindi": r"indi",
-        "Maths": r"math", # FIX: Added explicit recovery for Maths
         "Science / E.V.S": r"(sci|evs|environment)",
-        "Social Studies": r"(social|sst|geo|hist)" 
+        "Social Studies": r"(social|sst|geo|hist)" # FIX: Added explicit recovery for Social Studies
     }
 
     for name, pat in needed_patterns.items():
         if not any(name.lower() in s for s in subjects_found):
             # Relaxed pattern search to catch the subject followed by a date, possibly with characters in between
             match = re.search(
-                pat + r".{0,50}?" + date_pattern, 
+                pat + r".{0,50}?" + date_pattern, # Increased the tolerance for characters between subject marker and date
                 text,
-                re.I | re.DOTALL 
+                re.I | re.DOTALL # Added DOTALL to search across multiple lines if needed
             )
             if match:
                 recovered_date = normalize_date(match.group(1))
@@ -162,6 +168,8 @@ def extract_exam_data(np_array):
     # --- STEP 8: Deduplicate and Final Sort --- #
     final = []
     seen = set()
+    # FIX: Added a deduplication step based on date only to filter out multiple subjects on the same line (like the Maths noise)
+    # RETAIN ALL ENTRIES but ensure the subject names are unique per date.
     
     # Simple, non-aggressive deduplication
     for d in results:

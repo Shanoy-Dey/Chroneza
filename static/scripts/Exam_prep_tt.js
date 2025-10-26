@@ -94,7 +94,7 @@ function Exam_prep() {
 
         try {
             // CRITICAL FIX: Use relative path for internal server calls
-            const res = await fetch('https://chroneza-render.onrender.com/upload', { 
+            const res = await fetch('https://chroneza-render.onrender.com/uploadtt', { 
                 method: 'POST',
                 body: formData
             });
